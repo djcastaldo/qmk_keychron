@@ -245,9 +245,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  :  _______________________________________________________________________________________   ________________   ______________________  :
 //  : |    ||    ||    ||    ||    ||    ||    ||    ||    ||    ||    ||Arro||Wave||         | |LLck||TPrv||WPrv| |Rout||Acct||DPW ||SFCU| :
 //  : |____||____||____||____||____||____||____||____||____||____||____||____||____||_________| |____||____||____| |____||____||____||____| :
-//  : |M(TMUX)||    ||    ||Mail||RPho||Time||    ||Uni ||    ||    ||    ||    ||    ||      | |    ||TNxt||WNxt| |Mail||WMa1||WMa2||    | :
+//  : |M(TMUX)||WMa2||WMa1||Mail||RPho||WPho||    ||Uni ||    ||    ||    ||    ||    ||      | |    ||TNxt||WNxt| |Mail||WMa1||WMa2||    | :
 //  : |_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____||    | :
-//  : |        ||Addr||    ||    ||Phon||    ||    ||    ||    ||Lead||    ||    ||           |                    |Addr||City||ZIP ||    | :
+//  : |        ||Addr||City||ZIP ||Phon||    ||    ||    ||    ||Lead||    ||    ||           |                    |Addr||City||ZIP ||    | :
 //  : |________||____||____||____||____||____||____||____||____||____||____||____||___________|        ____        |____||____||____||____| :
 //  : |MO(SFT_L)  ||    ||Rout||Acct||    ||    ||    ||    ||    ||    ||    ||MO(SFT_LAYER) |       |    |       |Phon||RPho||WPho||    | :
 //  : |___________||____||____||____||____||____||____||____||____||____||____||______________|  ____ |____| ____  |____||____||____||    | :
@@ -259,9 +259,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                       SSMENU,MOD_SIRI,GNEWS, DM_REC1,DM_REC2,DM_PLY1,DM_PLY2,
         _______,_______,_______,_______,_______,_______,_______,_______,_______,_______, _______, ARROW, WAVE, _______,
                                                                               LLOCK,V_TAB_PRV,V_WSPC_PRV,SECRET10,SECRET11,SECRET12,SECRET13,
-        MO(TMUX_LAYER),_______,_______,SECRET1,SECRET8,TIMESTAMP,_______,UNICODE,_______,_______,_______,_______,_______, _______,
+        MO(TMUX_LAYER),SECRET3,SECRET2,SECRET1,SECRET8,SECRET9,_______,UNICODE,_______,_______,_______,_______,_______, _______,
                                                                                    _______,V_TAB_NXT,V_WSPC_NXT,SECRET1,SECRET2,SECRET3,
-        _______,SECRET4,_______,_______,SECRET7,_______,_______,_______,_______, QK_LEAD, _______, _______,      _______,
+        _______,SECRET4,SECRET5,SECRET6,SECRET7,_______,_______,_______,_______, QK_LEAD, _______, _______,      _______,
                                                                                                             SECRET4,SECRET5,SECRET6,_______,
         SFTLAYER, _______, SECRET10, SECRET11, _______,_______,_______,_______,_______,_______,_______, SFTLAYER,
                                                                                                          _______,   SECRET7,SECRET8,SECRET9,
@@ -1972,6 +1972,21 @@ void leader_end_user(void) {
     }
     else if (leader_sequence_three_keys(KC_Q, KC_F, KC_Y)) {  // qmk flash yunzii firmware
         SEND_STRING("qmk flash -kb yunzii/al68 -km djcastaldo" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_four_keys(KC_G, KC_I, KC_T, KC_L)) {        // git log
+        SEND_STRING("git log\n");
+    }
+    else if (leader_sequence_four_keys(KC_G, KC_I, KC_T, KC_A)) {        // git add
+        SEND_STRING("git add -A\n");
+    }
+    else if (leader_sequence_four_keys(KC_G, KC_I, KC_T, KC_C)) {        // git commit
+        SEND_STRING("git commit -m \"\"" SS_TAP(X_LEFT));
+    }
+    else if (leader_sequence_four_keys(KC_G, KC_I, KC_T, KC_P)) {        // git push
+        SEND_STRING("git push\n");
+    }
+    else if (leader_sequence_five_keys(KC_G, KC_I, KC_T, KC_C, KC_O)) {  // git checkout .
+        SEND_STRING("git checkout .\n");
     }
     else if (leader_sequence_four_keys(KC_Q, KC_C, KC_K, KC_V)) {  // qmk compile keychron V6 firmware
         SEND_STRING("qmk compile -kb keychron/v6_max/ansi_encoder -km djcastaldo" SS_TAP(X_ENT));
