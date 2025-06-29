@@ -73,6 +73,7 @@ enum layers {
     CTL_LAYER,
     OPT_LAYER,
     TMUX_LAYER,
+    SYMB_LAYER,
     LOCK_LAYER
 };
 
@@ -400,6 +401,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                                                  LTRANS,LTRANS,LTRANS,LTRANS,
         _______,LTRANS,LTRANS,LTRANS,_______,_______,LTRANS,_______,LTRANS,LTRANS,LTRANS, _______,  LTRANS,  LTRANS,LTRANS,LTRANS,
         KC_LCTL,KC_LALT,_______,        LTRANS,       _______,KC_LALT,_______,KC_RCTL, LTRANS,LTRANS,LTRANS, LTRANS, LTRANS, _______),
+//  [SYMB_LAYER] 
+//  ,---------------------------------------------------------------------------------------------------------------------------------------,
+//  :  ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________  :
+//  : |    | |    ||    ||    ||    | |    ||    ||    ||    | |    ||    ||    ||    | :     : |    ||    ||    | |    ||    ||    ||    | :
+//  : |____| |____||____||____||____| |____||____||____||____| |____||____||____||____| `.___.  |____||____||____| |____||____||____||____| :
+//  :  _______________________________________________________________________________________   ________________   ______________________  :
+//  : |LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||         | |    ||    ||    | |    ||    ||    ||    | :
+//  : |____||____||____||____||____||____||____||____||____||____||____||____||____||_________| |____||____||____| |____||____||____||____| :
+//  : |       ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN  | |    ||    ||    | |    ||    ||    ||    | :
+//  : |_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____||    | :
+//  : |        ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||           |                    |    ||    ||    ||    | :
+//  : |________||____||____||____||____||____||____||____||____||____||____||____||___________|        ____        |____||____||____||____| :
+//  : |LShift     ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||RShift        |       |    |       |    ||    ||    ||    | :
+//  : |___________||____||____||____||____||____||____||____||____||____||____||______________|  ____ |____| ____  |____||____||____||    | :
+//  : |     ||     ||     ||                                     ||     ||     ||     ||      | |    ||    ||    | |          ||    ||    | :
+//  : |_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____| :
+//  `---------------------------------------------------------------------------------------------------------------------------------------`
+    [SYMB_LAYER] = LAYOUT_109_ansi(
+        _______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______, _______,
+                                                                                 _______,_______,_______,  _______, _______, _______,_______,
+        LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,_______,
+                                                                                    _______,_______,_______, _______,_______,_______,_______,
+        _______,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,
+                                                                                             _______,_______,_______,_______,_______,_______,
+        _______,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,_______,
+                                                                                                             _______,_______,_______,_______,
+        KC_LSFT,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS, KC_RSFT,       _______,       _______,_______,_______,
+        _______,_______,_______,        _______,       _______,_______,_______,_______, _______,_______,_______, _______, _______, _______),
 //  [LOCK_LAYER]
 //  ,---------------------------------------------------------------------------------------------------------------------------------------,
 //  :  ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________  :
@@ -435,6 +464,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [CTL_LAYER]  = {ENCODER_CCW_CW(PENT_ENCL, PENT_ENCR)},
     [OPT_LAYER]  = {ENCODER_CCW_CW(DUAL_ENCL2, DUAL_ENCR2)},
     [TMUX_LAYER] = {ENCODER_CCW_CW(ENC_TSIZEL, ENC_TSIZER)},
+    [SYMB_LAYER] = {ENCODER_CCW_CW(KC_TRNS, KC_TRNS)},
     [LOCK_LAYER] = {ENCODER_CCW_CW(KC_NO, KC_NO)},
 };
 
@@ -481,6 +511,7 @@ enum key_indexes {
     I_CIRC = 16,
     I_TRI = 17,
     I_SQR = 18,
+    I_GRV = 19,
     I_EKS = 72,
     I_MREC1 = 16,
     I_MREC2 = 17,
@@ -520,6 +551,7 @@ enum key_indexes {
     I_ENT = 71,
     I_PMINS = 73,
     I_LSFT = 79,
+    I_N = 85,
     I_RSFT = 90,
     I_LCTL = 95,
     I_LALT = 96,
@@ -1704,6 +1736,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         }
         break;
+    case KC_LOPT:
+    case KC_ROPT:
+        if (record->event.pressed) {
+            if (get_highest_layer(layer_state) < 3) {
+                layer_on(SYMB_LAYER);
+            }
+        }
+        else {
+            layer_off(SYMB_LAYER);
+        }
+        break;
     case COLORTEST:
         if (record->event.pressed) {
             color_test_timer = timer_read();
@@ -1986,6 +2029,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 		        case LOCK_LAYER:
                             rgb_matrix_set_color(index, 0, 0, 0);
 			    break;
+                        case SYMB_LAYER:
+                            rgb_matrix_set_color(index, RGB_SPRINGGREEN);
+                            break;
 		        case FN_LAYER:	
 			    if (index == I_MREC1 || index == I_MREC2) { // macro recording keys
                                 rgb_matrix_set_color(index, RGB_CORAL);
@@ -2011,6 +2057,14 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 rgb_matrix_set_color(I_RCTL, RGB_RED);     // right ctrl
                 rgb_matrix_set_color(I_TAB, RGB_CYAN);     // tab
 	    }	
+            // custom colors for tap dance keys on symbol layer
+            else if (layer == SYMB_LAYER) {
+              rgb_matrix_set_color(I_GRV, RGB_WHITE); // grave
+              rgb_matrix_set_color(I_E, RGB_WHITE);   // e
+              rgb_matrix_set_color(I_U, RGB_WHITE);   // u
+              rgb_matrix_set_color(I_I, RGB_WHITE);   // i
+              rgb_matrix_set_color(I_N, RGB_WHITE);   // n
+            }
             // set up the layer blinking indicator
             if (!layer_timer) {
   	        is_led_on = true;
@@ -2039,6 +2093,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                     rgb_matrix_set_color(I_LOPT, RGB_YELLOW);      // lopt
                     rgb_matrix_set_color(I_ROPT, RGB_YELLOW);      // ropt
                     //rgb_matrix_set_color(I_INDICATOR, RGB_YELLOW); // indicator
+		    break;
+	        case SYMB_LAYER:
+                    rgb_matrix_set_color(I_LOPT, RGB_SPRINGGREEN); // lopt
+                    rgb_matrix_set_color(I_ROPT, RGB_SPRINGGREEN); // ropt
 		    break;
 	        case TMUX_LAYER:
                     rgb_matrix_set_color(I_TAB, RGB_CYAN);         // Tab
@@ -2296,7 +2354,7 @@ bool key_should_fade(keytracker key, uint8_t layer) {
        ((key.index == I_LSFT || key.index == I_RSFT) && (layer == 1 || layer == 3 || is_caps_word_on())) ||         // shift
        (layer < 2 && key.index > 94 && key.index < 103) ||                                                          // bottom row mods
        (layer == 4 && (key.index == I_LCTL || key.index == I_RCTL || key.index == I_HOME || key.index == I_END)) || // ctrl, home, end
-       (layer == 5 && (key.index == I_LOPT || key.index == I_ROPT))) {                                              // option
+       ((layer == 5 || layer == SYMB_LAYER) && (key.index == I_LOPT || key.index == I_ROPT))) {                     // option
  	 should_fade = false;
        }
     return should_fade; 
@@ -2462,6 +2520,9 @@ void ropt_finished (tap_dance_state_t *state, void *user_data) {
       break;
     case SINGLE_HOLD: 
       register_code(KC_ROPT); 
+      if (get_highest_layer(layer_state) < 3) {
+          layer_on(SYMB_LAYER);
+      }
       break;
   }
 }
@@ -2472,6 +2533,7 @@ void ropt_reset (tap_dance_state_t *state, void *user_data) {
       break;
     case SINGLE_HOLD:
       unregister_code(KC_ROPT);
+      layer_off(SYMB_LAYER);
       break;
   }
   ropt_tap_state.state = 0;

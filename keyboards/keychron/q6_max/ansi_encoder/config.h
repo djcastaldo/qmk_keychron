@@ -54,7 +54,7 @@
 #endif
 
 /* increase layer count above the default of 4 */
-#    define DYNAMIC_KEYMAP_LAYER_COUNT 7
+#    define DYNAMIC_KEYMAP_LAYER_COUNT 9
 
 /* force enable NKRO */
 #    define FORCE_NKRO
