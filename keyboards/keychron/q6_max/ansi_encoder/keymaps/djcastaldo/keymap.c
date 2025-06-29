@@ -88,6 +88,7 @@ enum custom_keycodes {
     SFTLAYER,
     FJLIGHT,
     HROWLIGHT,
+    KTRACK,
     WAVE,
     ARROW,
     BSPCFAST,
@@ -190,8 +191,8 @@ enum custom_keycodes {
     ENC_TSIZER,
     ENC_TMON,
     LTRANS,
-    BOOTLDR,
     COLORTEST,
+    BOOTLDR,
     FLASH_KB
 };
 
@@ -323,7 +324,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |    | |    ||    ||    ||    | |RSet||    ||    ||    | |    ||    ||CTst||Debg| : RGB : |KLck||    ||RGBM| |    ||Log ||    ||    | :
 //  : |____| |____||____||____||____| |____||____||____||____| |____||____||____||____| `.___.  |____||____||____| |____||____||____||____| :
 //  :  _______________________________________________________________________________________   ________________   ______________________  :
-//  : |    ||BT1 ||BT2 ||BT3 ||2.4G||    ||    ||    ||    ||    ||    ||    ||    ||         | |LLck||FJLi||    | |    ||    ||    ||    | :
+//  : |    ||BT1 ||BT2 ||BT3 ||2.4G||    ||    ||    ||    ||    ||    ||    ||    ||         | |LLck||FJLi||    | |KTrk||    ||    ||    | :
 //  : |____||____||____||____||____||____||____||____||____||____||____||____||____||_________| |____||____||____| |____||____||____||____| :
 //  : |       ||    ||    ||    ||    ||    ||    ||    || Up ||    ||    ||    ||    ||      | |    ||HRLi||    | |    ||    ||    ||    | :
 //  : |_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____||    | :
@@ -338,7 +339,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,_______,_______,_______,_______,KB_RESET,_______,_______,_______,_______,_______,COLORTEST,DB_TOGG, PENT_ENCPUSH,
                                                                                 QK_LOCK, _______, RGB_MOD, _______, SECRET0, _______,_______,
         _______,BT_HST1,BT_HST2,BT_HST3,P2P4G,_______,_______,_______,_______,_______,_______,_______,_______,_______,
-                                                                                       LLOCK,FJLIGHT,_______,_______,_______,_______,_______,
+                                                                                       LLOCK,FJLIGHT,_______, KTRACK,_______,_______,_______,
         _______,_______,_______,_______,_______,_______,_______,_______,KC_UP,_______,_______,_______,_______,_______,
                                                                                            _______,HROWLIGHT,_______,_______,_______,_______,
         _______,_______,_______,_______,FLASH_KB,_______,_______,KC_LEFT,KC_DOWN,KC_RIGHT,_______,_______,_______,
@@ -586,6 +587,8 @@ bool is_capsword_shifted(uint8_t i) {
 bool fj_light;
 // and for tracking if the full home row light is on
 bool hrow_light;
+// for disabling the keytracker, which will also disable key-reactive fade
+bool enable_keytracker = true;
 
 // for tracking whether to blink an led as an indicator
 bool is_led_on;
@@ -732,7 +735,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         host_mouse_send(&jiggler_report);
     }
     // record key index pressed for rgb reactive changes
-    if (!is_macro_playing && keycode != QK_LEAD) {
+    if (enable_keytracker && !is_macro_playing && keycode != QK_LEAD) {
         int key_idx = g_led_config.matrix_co[record->event.key.row][record->event.key.col];
         if (record->event.pressed) {
             dprintf("%u \n", key_idx); // added to figure out where the leds are on q6 max
@@ -1005,6 +1008,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	   hrow_light = !hrow_light;
 	}
     	break;
+    case KTRACK:
+        if (record->event.pressed) {
+           // update the var used to enable/disable keytracker and per-key fade
+           enable_keytracker = !enable_keytracker;
+        }
+        break;
     case WAVE:  // Types ~=~=~=~=~=~ or <~>~<~>~<~>~<~>
         static deferred_token wave_token = INVALID_DEFERRED_TOKEN;
         static uint8_t wave_phase = 0;
@@ -2253,46 +2262,52 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 }
             }
         }
-        // if homekey highlight is on, turn the home key white on layer MC_FN2
-	if (layer == CTL_LAYER && fj_light)
+        // if any rgb key highlights are on, turn the setting keys white on layer CTL_LAYER
+	if (layer == CTL_LAYER)
 	{
-	    rgb_matrix_set_color(I_FJLIGHT, 255, 255, 255);     // home (fj highlight key)
-	}
-	if (layer == CTL_LAYER && hrow_light)
-	{
-	    rgb_matrix_set_color(I_HROWLIGHT, 255, 255, 255);   // end (hrow highlight key)
+            if (fj_light) {
+                rgb_matrix_set_color(I_FJLIGHT, 255, 255, 255);     // home (fj highlight key)
+            }
+            if (hrow_light) {
+                rgb_matrix_set_color(I_HROWLIGHT, 255, 255, 255);   // end (hrow highlight key)
+            }
+            if (enable_keytracker) {
+                rgb_matrix_set_color(I_NUMLOCK, 255, 255, 255);     // num (keytracker set key)
+            }
 	}
         // calculate the reactive rgb for keypresses
-        for (int i = 0; i < tk_length; i++) {
-            if (tracked_keys[i].press) {
-                // esc, enter turn red 
-                if (tracked_keys[i].index == I_ESC || tracked_keys[i].index == I_ENT) {
-                    rgb_matrix_set_color(tracked_keys[i].index, 255, 0, 0);
-	        }
-	        // everything else is white
-	        else {   
-                    rgb_matrix_set_color(tracked_keys[i].index, 255, 255, 255);
-	        }
-            }
-            // do the key fade if key should fade
-            else if (key_should_fade(tracked_keys[i], layer)) {
-                if (tracked_keys[i].fade > 255) {
-                    rgb_matrix_set_color(tracked_keys[i].index, 255, 255, 255);
-                }           
-                else if (tracked_keys[i].fade > 200) {
-                    rgb_matrix_set_color(tracked_keys[i].index, tracked_keys[i].fade, tracked_keys[i].fade, 255);
-                } else if (tracked_keys[i].fade > 175) {    
-                    rgb_matrix_set_color(tracked_keys[i].index, tracked_keys[i].fade, tracked_keys[i].fade, tracked_keys[i].fade + 55);
-                } else if (tracked_keys[i].fade >  115) {
-                    rgb_matrix_set_color(tracked_keys[i].index, tracked_keys[i].fade, tracked_keys[i].fade, tracked_keys[i].fade + 80);
-                } else if (tracked_keys[i].fade > 80) {
-                    rgb_matrix_set_color(tracked_keys[i].index, tracked_keys[i].fade, tracked_keys[i].fade, tracked_keys[i].fade + 100);
-                } else if (tracked_keys[i].fade > 35) {
-                    rgb_matrix_set_color(tracked_keys[i].index, tracked_keys[i].fade, tracked_keys[i].fade, tracked_keys[i].fade + 150);
-                } else {
-                    rgb_matrix_set_color(tracked_keys[i].index, 35, 24, 189); 
+        if (enable_keytracker) {
+            for (int i = 0; i < tk_length; i++) {
+                if (tracked_keys[i].press) {
+                    // esc, enter turn red
+                    if (tracked_keys[i].index == I_ESC || tracked_keys[i].index == I_ENT) {
+                        rgb_matrix_set_color(tracked_keys[i].index, 255, 0, 0);
+                    }
+                    // everything else is white
+                    else {
+                        rgb_matrix_set_color(tracked_keys[i].index, 255, 255, 255);
+                    }
                 }
-	    }
+                // do the key fade if key should fade
+                else if (key_should_fade(tracked_keys[i], layer)) {
+                    if (tracked_keys[i].fade > 255) {
+                        rgb_matrix_set_color(tracked_keys[i].index, 255, 255, 255);
+                    }
+                    else if (tracked_keys[i].fade > 200) {
+                        rgb_matrix_set_color(tracked_keys[i].index, tracked_keys[i].fade, tracked_keys[i].fade, 255);
+                    } else if (tracked_keys[i].fade > 175) {
+                        rgb_matrix_set_color(tracked_keys[i].index, tracked_keys[i].fade, tracked_keys[i].fade, tracked_keys[i].fade + 55);
+                    } else if (tracked_keys[i].fade >  115) {
+                        rgb_matrix_set_color(tracked_keys[i].index, tracked_keys[i].fade, tracked_keys[i].fade, tracked_keys[i].fade + 80);
+                    } else if (tracked_keys[i].fade > 80) {
+                        rgb_matrix_set_color(tracked_keys[i].index, tracked_keys[i].fade, tracked_keys[i].fade, tracked_keys[i].fade + 100);
+                    } else if (tracked_keys[i].fade > 35) {
+                        rgb_matrix_set_color(tracked_keys[i].index, tracked_keys[i].fade, tracked_keys[i].fade, tracked_keys[i].fade + 150);
+                    } else {
+                        rgb_matrix_set_color(tracked_keys[i].index, 35, 24, 189);
+                    }
+                }
+            }
         }
         if (macro_recording) {
             // make the numpad - key a different color since that is used to insert delays
