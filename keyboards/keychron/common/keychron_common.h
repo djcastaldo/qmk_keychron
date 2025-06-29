@@ -55,10 +55,32 @@ enum {
     PROF2,
     PROF3,
 #endif
-#ifdef LED_MATRIX_ENABLE
-    BL_SPI,
-    BL_SPD,
-#endif
+    SECRET0,
+    SECRET1,
+    SECRET2,
+    SECRET3,
+    SECRET4,
+    SECRET5,
+    SECRET6,
+    SECRET7,
+    SECRET8,
+    SECRET9,
+    SECRET10,
+    SECRET11,
+    SECRET12,
+    SECRET13,
+    SECRET14,
+    SECRET15,
+    SECRET16,
+    SECRET17,
+    SECRET18,
+    SECRET19,
+    SECRET20,
+    SECRET21,
+    SECRET22,
+    SECRET23,
+    SECRET24,
+    SECRET25,
     NEW_SAFE_RANGE,
 };
 
@@ -87,10 +109,10 @@ typedef struct PACKED {
     uint8_t keycode[3];
 } key_combination_t;
 
-void keychron_common_init(void);
 bool process_record_keychron_common(uint16_t keycode, keyrecord_t *record);
 void keychron_common_task(void);
 
 #ifdef ENCODER_ENABLE
 void encoder_cb_init(void);
 #endif
+
