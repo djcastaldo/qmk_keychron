@@ -61,6 +61,10 @@
             { 23 }
 #        define BAT_LEVEL_LED_LIST \
             { 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 }
+#        define BAT_LEVEL_LED_ALT_LIST \
+            { 92, 93, 94, 76, 77, 78, 56, 57, 58, 106 }
+#        define BAT_LEVEL_LED_EXTRA_LIST \
+            { 36, 37, 38, 107 }
 
 /* Backlit disable timeout when keyboard is disconnected(unit: second) */
 #        define DISCONNECTED_BACKLIGHT_DISABLE_TIMEOUT 40
