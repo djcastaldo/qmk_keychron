@@ -1,20 +1,4 @@
 
-/* Copyright 2023~2025 @ Keychron (https://www.keychron.com)
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 #include "quantum.h"
 #include "wireless.h"
 #include "indicator.h"
@@ -88,18 +72,43 @@ bool bat_level_animiation_actived(void) {
 void bat_level_animiation_indicate(void) {
 #ifdef LED_MATRIX_ENABLE
     uint8_t  bat_lvl_led_list[10] = BAT_LEVEL_LED_LIST;
+#ifdef BAT_LEVEL_LED_ALT_LIST
+    uint8_t  bat_lvl_led_alt_list[10] = BAT_LEVEL_LED_ALT_LIST;
+#endif
+#ifdef BAT_LEVEL_LED_EXTRA_LIST
+    uint8_t bat_lvl_led_extra_list[] = BAT_LEVEL_LED_EXTRA_LIST;
+    size_t num_extra = sizeof(bat_lvl_led_extra_list) / sizeof(bat_lvl_led_extra_list[0]);
+#endif
 
     for (uint8_t i = 0; i <= LED_MATRIX_LED_COUNT; i++) {
         led_matrix_set_value(i, 0);
     }
 
     if (animation_state == BAT_LVL_ANI_GROWING || animation_state == BAT_LVL_ANI_BLINK_ON)
-        for (uint8_t i = 0; i < cur_percentage / 10; i++)
+        for (uint8_t i = 0; i < cur_percentage / 10; i++) {
             led_matrix_set_value(bat_lvl_led_list[i], 255);
+#ifdef BAT_LEVEL_LED_ALT_LIST
+            led_matrix_set_value(bat_lvl_led_alt_list[i], 255);
+#endif
+#ifdef BAT_LEVEL_LED_EXTRA_LIST
+            if (i == 9) {
+                for (uint8_t i = 0; i < num_extra; i++) {
+                    led_matrix_set_value(bat_lvl_led_extra_list[i], 255);
+                }
+            }
+#endif
+        }
 #endif
 
 #ifdef RGB_MATRIX_ENABLE
     uint8_t  bat_lvl_led_list[10] = BAT_LEVEL_LED_LIST;
+#ifdef BAT_LEVEL_LED_ALT_LIST
+    uint8_t  bat_lvl_led_alt_list[10] = BAT_LEVEL_LED_ALT_LIST;
+#endif
+#ifdef BAT_LEVEL_LED_EXTRA_LIST
+    uint8_t bat_lvl_led_extra_list[] = BAT_LEVEL_LED_EXTRA_LIST;
+    size_t num_extra = sizeof(bat_lvl_led_extra_list) / sizeof(bat_lvl_led_extra_list[0]);
+#endif
 
     for (uint8_t i = 0; i <= RGB_MATRIX_LED_COUNT; i++) {
         rgb_matrix_set_color(i, 0, 0, 0);
@@ -108,6 +117,16 @@ void bat_level_animiation_indicate(void) {
     if (animation_state == BAT_LVL_ANI_GROWING || animation_state == BAT_LVL_ANI_BLINK_ON) {
         for (uint8_t i = 0; i < cur_percentage / 10; i++) {
             rgb_matrix_set_color(bat_lvl_led_list[i], r, g, b);
+#ifdef BAT_LEVEL_LED_ALT_LIST
+            rgb_matrix_set_color(bat_lvl_led_alt_list[i], r, g, b);
+#endif
+#ifdef BAT_LEVEL_LED_EXTRA_LIST
+            if (i == 9) {
+                for (uint8_t i = 0; i < num_extra; i++) {
+                    rgb_matrix_set_color(bat_lvl_led_extra_list[i], r, g, b);
+                }
+            }
+#endif
         }
     }
 #endif
