@@ -46,6 +46,22 @@
 // Locked key state. This is an array of 256 bits, one for each of the standard keys supported qmk.
 uint64_t key_state[4] = {0x0, 0x0, 0x0, 0x0};
 bool     watching     = false;
+// djc: added for easier tracking in keymap
+bool is_key_lock_watching(void) {
+    return watching;
+}
+void set_key_lock_watching(void) {
+    watching = true;
+}
+// djc: need this too
+bool is_key_locked = false;
+uint8_t locked_key_count = 0;
+bool lcmd_locked = false;
+bool rcmd_locked = false;
+bool rsft_locked = false;
+bool lsft_locked = false;
+bool lctl_locked = false;
+bool lopt_locked = false;
 
 // Translate any OSM keycodes back to their unmasked versions.
 static inline uint16_t translate_keycode(uint16_t keycode) {
@@ -58,6 +74,7 @@ static inline uint16_t translate_keycode(uint16_t keycode) {
 
 void cancel_key_lock(void) {
     watching = false;
+    is_key_locked = false;
     UNSET_KEY_STATE(0x0);
 }
 
@@ -113,6 +130,28 @@ bool process_key_lock(uint16_t *keycode, keyrecord_t *record) {
             // KC_F press is registered, when the user likely meant to hold F
             if (watching) {
                 watching = false;
+                is_key_locked = true;
+                if (!(KEY_STATE(translated_keycode))) {
+                    locked_key_count++;
+                }
+                if (translated_keycode == KC_LCMD) {
+                    lcmd_locked = true;
+                }
+                else if (translated_keycode == KC_RCMD) {
+                    rcmd_locked = true;
+                }
+                else if (translated_keycode == KC_RSFT) {
+                    rsft_locked = true;
+                }
+                else if (translated_keycode == KC_LSFT) {
+                    lsft_locked = true;
+                }
+                else if (translated_keycode == KC_LCTL) {
+                    lctl_locked = true;
+                }
+                else if (translated_keycode == KC_LOPT) {
+                    lopt_locked = true;
+                }
                 SET_KEY_STATE(translated_keycode);
                 // We need to set the keycode passed in to be the translated keycode, in case we
                 // translated a OSM back to the original keycode.
@@ -123,6 +162,28 @@ bool process_key_lock(uint16_t *keycode, keyrecord_t *record) {
 
             if (KEY_STATE(translated_keycode)) {
                 UNSET_KEY_STATE(translated_keycode);
+                locked_key_count--;
+                if (locked_key_count == 0) {
+                    is_key_locked = false;
+                }
+                if (translated_keycode == KC_LCMD) {
+                    lcmd_locked = false;
+                }
+                else if (translated_keycode == KC_RCMD) {
+                    rcmd_locked = false;
+                }
+                else if (translated_keycode == KC_RSFT) {
+                    rsft_locked = false;
+                }
+                else if (translated_keycode == KC_LSFT) {
+                    lsft_locked = false;
+                }
+                else if (translated_keycode == KC_LCTL) {
+                    lctl_locked = false;
+                }
+                else if (translated_keycode == KC_LOPT) {
+                    lopt_locked = false;
+                }
                 // The key is already held, stop this process. The up event will be sent when the user
                 // releases the key.
                 return false;
