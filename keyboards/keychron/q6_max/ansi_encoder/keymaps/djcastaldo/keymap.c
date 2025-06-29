@@ -2026,6 +2026,14 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                     if (index >= led_min && index < led_max && index != NO_LED &&
                     keymap_key_to_keycode(layer, (keypos_t){col,row}) > KC_TRNS) {
 		        switch (layer) {
+		        case FN_LAYER:
+			    if (index == I_MREC1 || index == I_MREC2) { // macro recording keys
+                                rgb_matrix_set_color(index, RGB_CORAL);
+			    }
+			    else {
+                                rgb_matrix_set_color(index, RGB_GREEN);
+			    }
+			    break;
 		        case SFT_LAYER:
                             rgb_matrix_set_color(index, RGB_ORANGE);
 			    break;
@@ -2035,22 +2043,16 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 		        case OPT_LAYER:
                             rgb_matrix_set_color(index, RGB_YELLOW);
 			    break;
-		        case LOCK_LAYER:
-                            rgb_matrix_set_color(index, 0, 0, 0);
+		        case TMUX_LAYER:
+                            rgb_matrix_set_color(index, RGB_CYAN);
 			    break;
-                        case SYMB_LAYER:
+		        case SYMB_LAYER:
                             rgb_matrix_set_color(index, RGB_SPRINGGREEN);
-                            break;
-		        case FN_LAYER:	
-			    if (index == I_MREC1 || index == I_MREC2) { // macro recording keys
-                                rgb_matrix_set_color(index, RGB_CORAL);
-			    }
-			    else {	
-                                rgb_matrix_set_color(index, RGB_GREEN);
-			    }
+			    break;
+		        case LOCK_LAYER:
 			    break;
 		        default:	
-                            rgb_matrix_set_color(index, RGB_CYAN);
+                            rgb_matrix_set_color(index, RGB_BLUE);
 			    break;
 		        }
                     }
@@ -2088,37 +2090,34 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             if (is_led_on)
             {
 	        switch (layer) {
+	        case FN_LAYER:
+                    rgb_matrix_set_color(I_CAPS, RGB_GREEN);       // caps
+                    rgb_matrix_set_color(I_FN, RGB_GREEN);         // fn
+		    break;
 	        case SFT_LAYER:
                     rgb_matrix_set_color(I_LSFT, RGB_ORANGE);      // lshift 
                     rgb_matrix_set_color(I_RSFT, RGB_ORANGE);      // rshift
-                    //rgb_matrix_set_color(I_INDICATOR, RGB_ORANGE); // indicator
 		    break;
 	        case CTL_LAYER:
                     rgb_matrix_set_color(I_LCTL, RGB_RED);         // lctrl
                     rgb_matrix_set_color(I_RCTL, RGB_RED);         // rctrl
-                    //rgb_matrix_set_color(I_INDICATOR, RGB_RED);    // indicator
 		    break;
 	        case OPT_LAYER:
                     rgb_matrix_set_color(I_LOPT, RGB_YELLOW);      // lopt
                     rgb_matrix_set_color(I_ROPT, RGB_YELLOW);      // ropt
-                    //rgb_matrix_set_color(I_INDICATOR, RGB_YELLOW); // indicator
+		    break;
+	        case TMUX_LAYER:
+                    rgb_matrix_set_color(I_TAB, RGB_CYAN);         // Tab
 		    break;
 	        case SYMB_LAYER:
                     rgb_matrix_set_color(I_LOPT, RGB_SPRINGGREEN); // lopt
                     rgb_matrix_set_color(I_ROPT, RGB_SPRINGGREEN); // ropt
-		    break;
-	        case TMUX_LAYER:
-                    rgb_matrix_set_color(I_TAB, RGB_CYAN);         // Tab
-                    //rgb_matrix_set_color(I_INDICATOR, RGB_CYAN);   // indicator
 		    break;
 	        case LOCK_LAYER:
                     rgb_matrix_set_color(I_EKS, RGB_RED);          // X
                     rgb_matrix_set_color(I_INDICATOR, RGB_RED);    // indicator
 		    break;
 	        default:	
-                    rgb_matrix_set_color(I_CAPS, RGB_GREEN);       // caps
-                    rgb_matrix_set_color(I_FN, RGB_GREEN);         // fn
-                    //rgb_matrix_set_color(I_INDICATOR, RGB_GREEN);  // indicator
    		    break;
 	        }
             } 
