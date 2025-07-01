@@ -19,6 +19,7 @@
 #include "keychron_common.h"
 #include "wireless/battery.h"
 #include "wireless/bat_level_animation.h"
+#include "wireless/wireless.h"
 #include "features/layer_lock.h"
 
 #define NEWFINDER LOPT(LCMD(KC_SPC))            // open new Finder search window
@@ -517,6 +518,8 @@ enum key_indexes {
     I_MREC1 = 16,
     I_MREC2 = 17,
     I_MPLY1 = 18,
+    I_N1 = 20,
+    I_N4 = 23,
     I_MPLY2 = 72,
     I_LLOCK = 33,
     I_INS = 33,
@@ -710,6 +713,14 @@ uint32_t leader_error_callback(uint32_t trigger_time, void* cb_arg) {
 // callback for when a mcaro on osl is run (to turn off the layer) 
 uint32_t osl_macro_callback(uint32_t trigger_time, void *cb_arg) {
     layer_off(FN_LAYER);
+    return 0;
+}
+
+// setup this token to be used to create a delay from when wireless mode is changed until when key fade turns back on
+// to see the wireless status indicator
+static deferred_token wireless_mode_token = INVALID_DEFERRED_TOKEN;
+uint32_t wireless_mode_callback(uint32_t trigger_time, void *cb_arg) {
+    enable_keytracker = true;
     return 0;
 }
 
@@ -1756,6 +1767,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             layer_off(SYMB_LAYER);
         }
         break;
+    // for bt mode change, stop fade for a little while so can see the connection status lights
+    case BT_HST1:
+    case BT_HST2:
+    case BT_HST3:
+    case P2P4G:
+        if (record->event.pressed) {
+            if (wireless_mode_token) {
+                cancel_deferred_exec(wireless_mode_token);
+                wireless_mode_token = INVALID_DEFERRED_TOKEN;
+            }
+        }
+        else if (enable_keytracker) {
+            enable_keytracker = false;
+            wireless_mode_token = defer_exec(3000, wireless_mode_callback, NULL);
+        }
+        break;
+    // show all the named colors on different keys
     case COLORTEST:
         if (record->event.pressed) {
             color_test_timer = timer_read();
@@ -2368,6 +2396,14 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 rgb_matrix_set_color(I_L, RGB_YELLOW);
             }
         }
+        // show wireless connection on CTL_LAYER if in bt or 2.4g modes
+	if (layer == CTL_LAYER)
+	{
+            if (wireless_get_state() == WT_CONNECTED) {
+                // host_index is set to 24 for 2.4g, bt is 1,2,3
+                rgb_matrix_set_color(wireless_get_host_index() == 24 ? I_N4 : wireless_get_host_index() + 19, RGB_WHITE);
+            }
+        }
     }
     return false;
 }
@@ -2381,6 +2417,7 @@ bool key_should_fade(keytracker key, uint8_t layer) {
        (layer < 2 && key.index == I_CAPS) ||                                                                        // caps lock
        (key.index == I_INS || key.index == I_ENT) ||                                                                // ins, enter
        ((key.index == I_LSFT || key.index == I_RSFT) && (layer == 1 || layer == 3 || is_caps_word_on())) ||         // shift
+       (layer == CTL_LAYER && (key.index >= I_N1 && key.index <= I_N4)) ||                                          // wireless mode keys
        (layer < 2 && key.index > 94 && key.index < 103) ||                                                          // bottom row mods
        (layer == 4 && (key.index == I_LCTL || key.index == I_RCTL || key.index == I_HOME || key.index == I_END)) || // ctrl, home, end
        ((layer == 5 || layer == SYMB_LAYER) && (key.index == I_LOPT || key.index == I_ROPT))) {                     // option

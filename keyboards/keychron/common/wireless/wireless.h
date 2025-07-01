@@ -104,3 +104,5 @@ bool process_record_wireless(uint16_t keycode, keyrecord_t *record);
 
 void wireless_raw_hid_rx(uint8_t *data, uint8_t length);
 
+// djc: added
+uint8_t wireless_get_host_index(void);

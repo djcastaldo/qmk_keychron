@@ -573,6 +573,12 @@ wt_state_t wireless_get_state(void) {
     return wireless_state;
 };
 
+
+// djc: added for tracking the connected host
+uint8_t wireless_get_host_index(void) {
+    return host_index;
+}
+
 bool process_record_wireless(uint16_t keycode, keyrecord_t *record) {
     if (get_transport() & TRANSPORT_WIRELESS) {
         lpm_timer_reset();
