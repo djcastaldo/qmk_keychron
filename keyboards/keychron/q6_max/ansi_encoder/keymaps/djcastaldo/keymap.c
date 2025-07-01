@@ -733,10 +733,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         color_test = false;
         return false;
     }
-    // would like it to do some rgb even if the common process matches something, so commenting out the return false
-    if (!process_record_keychron_common(keycode, record)) {
-        //return false;
-    }
 
     // stop mouse jiggler
     if (jiggler_token && record->event.pressed) {
@@ -792,10 +788,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
        	    key_token = defer_exec(16, keytracker_callback, NULL);  // Schedule callback.
         }
     }
+
+    // keychron common
+    if (!process_record_keychron_common(keycode, record)) {
+        return false;
+    }
+
     // layer lock
     if (!process_layer_lock(keycode, record, LLOCK)) {
        return false;
     }
+
     switch (keycode) {
     // this is a custom version of KC_TRANS to press a key on default layer
     // setup so that I can use LTRANS in the keymap to denote which fallthrough keys get lit up on the layer
