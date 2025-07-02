@@ -2031,7 +2031,7 @@ void leader_end_user(void) {
         // after wireless retuns from sleep
         saved_rgb_mode = rgb_matrix_get_mode();
         rgblight_mode(RGB_MATRIX_BAND_VAL);
-        layer_lock_on(LOCK_LAYER);
+        layer_on(LOCK_LAYER);
     } 
     else if (leader_sequence_five_keys(KC_C, KC_O, KC_L, KC_O, KC_R)) { // start the color test
         color_test_timer = timer_read();
@@ -2865,7 +2865,7 @@ void kbunlock_finished (tap_dance_state_t *state, void *user_data) {
     case DOUBLE_TAP:
       break;
     case TRIPLE_TAP:
-      layer_lock_off(LOCK_LAYER);
+      layer_off(LOCK_LAYER);
       rgblight_mode(saved_rgb_mode);
       break;
     case SINGLE_HOLD:
