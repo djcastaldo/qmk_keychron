@@ -847,17 +847,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case LTRANS:
         if (record->event.pressed) {
             uint8_t layer = get_highest_layer(layer_state);
+            const uint8_t mods = get_mods();
             // prefix to send for the TMUX_LAYR
             // standard KC_TRANS keycodes will not get this prefix which is good for
             // stuff like shift and alt and control
             if (layer == TMUX_LAYER) {
-                const uint8_t mods = get_mods();
                 unregister_mods(mods); // temp remove mods
                 tap_code16(C(KC_B));   // send ctrl-b before keycode processing
                 register_mods(mods);   // reapply mods
             }
             // for some wide modes, should start with the spacing char
             else if (layer == WIDE_TEXT_LAYR && wide_firstchar) {
+                unregister_mods(mods); // temp remove mods
                 if (wide_bartext) {
                     tap_code16(KC_PIPE);
                 }
@@ -867,12 +868,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 else if (wide_underln) {
                     tap_code16(KC_UNDS);
                 }
+                register_mods(mods);   // reapply mods
                 wide_firstchar = false;
             }
             // send keydown from the default layer
             register_code(keymap_key_to_keycode(biton32(default_layer_state), record->event.key));
             // if WIDE_TEXT_LAYER, add the extra spacing char
             if (layer == WIDE_TEXT_LAYR) {
+                unregister_mods(mods); // temp remove mods
                 if (wide_bartext) {
                     tap_code16(KC_PIPE);
                 }
@@ -885,6 +888,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 else {
                     tap_code16(KC_SPC);
                 }
+                register_mods(mods);   // reapply mods
             }
         }
         else {
@@ -2360,7 +2364,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
         // if layer locked, turn the lock key white
         if (is_layer_locked(layer)) {
-    	    rgb_matrix_set_color(I_LLOCK, 255, 255, 255);   // ins (layer lock key)
+    	    rgb_matrix_set_color(I_LLOCK, RGB_WHITE);   // ins (layer lock key)
         }	
         // if key lock is watching for next key, turn the key lock key red
         if (is_key_lock_watching()) {
@@ -2522,13 +2526,13 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         // track mode keys on WIDE_TEXT_LAYR
         if (layer == WIDE_TEXT_LAYR) {
             if (wide_bartext) {
-                rgb_matrix_set_color(I_BARTEXT, 0x77, 0x77, 0x77);  // bartext toggle
+                rgb_matrix_set_color(I_BARTEXT, RGB_WHITE);  // bartext toggle
             }
             else if (wide_sthru) {
-                rgb_matrix_set_color(I_STHRU, 0x77, 0x77, 0x77);    // sthru toggle
+                rgb_matrix_set_color(I_STHRU, RGB_WHITE);    // sthru toggle
             }
             else if (wide_underln) {
-                rgb_matrix_set_color(I_UNDERLN, 0x77, 0x77, 0x77);  // underln toggle
+                rgb_matrix_set_color(I_UNDERLN, RGB_WHITE);  // underln toggle
             }
         }
         // show wireless connection on CTL_LAYER if in bt or 2.4g modes
