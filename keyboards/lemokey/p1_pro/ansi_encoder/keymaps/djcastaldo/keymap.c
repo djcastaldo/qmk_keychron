@@ -1050,7 +1050,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     case ENC_RGBRESET:
         if (record->event.pressed) {
-            rgblight_mode(4);
+            rgb_matrix_mode(RGB_MATRIX_BAND_VAL);
+            rgb_matrix_set_speed(80);
+            rgb_matrix_sethsv(170, 235, RGB_MATRIX_MAXIMUM_BRIGHTNESS);
         }
         break;
     //  insert delay if recording or playing a macro. otherwise, send mute
