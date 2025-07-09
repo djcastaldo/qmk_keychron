@@ -54,4 +54,39 @@
 #    define RGB_MATRIX_KEYPRESSES
 #    define RGB_MATRIX_FRAMEBUFFER_EFFECTS
 
+/* rgb settings */
+#    define RGB_MATRIX_DEFAULT_ON true
+#    define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_BAND_VAL
+#    define RGB_MATRIX_DEFAULT_HUE 170
+#    define RGB_MATRIX_DEFAULT_SAT 235
+#    define RGB_MATRIX_DEFAULT_VAL RGB_MATRIX_MAXIMUM_BRIGHTNESS
+#    define RGB_MATRIX_DEFAULT_SPD 80
+
 #endif
+
+/* increase layer count above the default of 4 */
+#    define DYNAMIC_KEYMAP_LAYER_COUNT 10
+
+/* force enable NKRO */
+#    define FORCE_NKRO
+
+/* tap time for tap dancing */
+#    define TAPPING_TERM 250
+
+/* enable caps word when both shift keys are tapped */
+#    define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+
+/* do not allow dynamic macros to nest (can cause infinite loop) */
+#    define DYNAMIC_MACRO_NO_NESTING
+
+/* allow setting constant mode mouse cursor and wheel speeds */
+#    define MK_3_SPEED
+#    define MK_C_OFFSET_0 1
+#    define MK_C_INTERVAL_0 6
+#    define MK_C_OFFSET_1 4
+#    define MK_C_INTERVAL_1 8
+
+/* leader key settings */
+#    define LEADER_TIMEOUT 200
+#    define LEADER_PER_KEY_TIMING
+#    define LEADER_NO_TIMEOUT

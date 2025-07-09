@@ -62,6 +62,9 @@ bool rsft_locked = false;
 bool lsft_locked = false;
 bool lctl_locked = false;
 bool lopt_locked = false;
+bool lalt_locked = false;
+bool lgui_locked = false;
+bool ralt_locked = false;
 
 // Translate any OSM keycodes back to their unmasked versions.
 static inline uint16_t translate_keycode(uint16_t keycode) {
@@ -136,6 +139,7 @@ bool process_key_lock(uint16_t *keycode, keyrecord_t *record) {
                 }
                 if (translated_keycode == KC_LCMD) {
                     lcmd_locked = true;
+                    lgui_locked = true;
                 }
                 else if (translated_keycode == KC_RCMD) {
                     rcmd_locked = true;
@@ -151,6 +155,13 @@ bool process_key_lock(uint16_t *keycode, keyrecord_t *record) {
                 }
                 else if (translated_keycode == KC_LOPT) {
                     lopt_locked = true;
+                    lalt_locked = true;
+                }
+                else if (translated_keycode == KC_RALT) {
+                    ralt_locked = true;
+                }
+                else if (translated_keycode == KC_RCTL) {
+                    rctl_locked = true;
                 }
                 SET_KEY_STATE(translated_keycode);
                 // We need to set the keycode passed in to be the translated keycode, in case we
@@ -168,6 +179,7 @@ bool process_key_lock(uint16_t *keycode, keyrecord_t *record) {
                 }
                 if (translated_keycode == KC_LCMD) {
                     lcmd_locked = false;
+                    lgui_locked = false;
                 }
                 else if (translated_keycode == KC_RCMD) {
                     rcmd_locked = false;
@@ -183,6 +195,13 @@ bool process_key_lock(uint16_t *keycode, keyrecord_t *record) {
                 }
                 else if (translated_keycode == KC_LOPT) {
                     lopt_locked = false;
+                    lalt_locked = false;
+                }
+                else if (translated_keycode == KC_RALT) {
+                    ralt_locked = false;
+                }
+                else if (translated_keycode == KC_RCTL) {
+                    rctl_locked = false;
                 }
                 // The key is already held, stop this process. The up event will be sent when the user
                 // releases the key.

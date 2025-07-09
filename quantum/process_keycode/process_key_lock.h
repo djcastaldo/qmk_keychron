@@ -31,3 +31,7 @@ bool rsft_locked;
 bool lsft_locked;
 bool lctl_locked;
 bool lopt_locked;
+bool lalt_locked;
+bool lgui_locked;
+bool ralt_locked;
+bool rctl_locked;

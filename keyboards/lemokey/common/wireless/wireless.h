@@ -99,3 +99,6 @@ wt_state_t wireless_get_state(void);
 void wireless_low_battery_shutdown(void);
 
 bool process_record_wireless_common(uint16_t keycode, keyrecord_t *record);
+
+// djc: added
+uint8_t wireless_get_host_index(void);
