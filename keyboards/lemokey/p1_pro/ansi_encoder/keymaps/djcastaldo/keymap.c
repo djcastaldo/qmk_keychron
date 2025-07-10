@@ -898,57 +898,57 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // tmux command list
     case TMUXLCMD:
         if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",10);
+           send_string_with_delay(SS_LCTL("b") ":",35);
            send_string("list-commands\n");
         }
         break;
     // tmux monitor window activity on 
     case TMONON:
         if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",10);
+           send_string_with_delay(SS_LCTL("b") ":",35);
            send_string("setw monitor-activity on\n");
         }
         break;
     // tmux monitor window activity off
     case TMONOF:
         if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",10);
+           send_string_with_delay(SS_LCTL("b") ":",35);
            send_string("setw monitor-activity off\n");
         }
         break;
     // tmux visual activity alerts on
     case TVISON:
         if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",10);
+           send_string_with_delay(SS_LCTL("b") ":",35);
            send_string("setw -g visual-activity on\n");
         }
         break;
     // tmux visual activity alerts off
     case TVISOF:
         if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",10);
+           send_string_with_delay(SS_LCTL("b") ":",35);
            send_string("setw -g visual-activity off\n");
         }
         break;
     // tmux move window left 1 position
     case TWINLFT:
         if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",10);
+           send_string_with_delay(SS_LCTL("b") ":",35);
            send_string("swap-window -t -1\n");
-           send_string_with_delay(SS_LCTL("b") "p",10);
+           send_string_with_delay(SS_LCTL("b") "p",35);
         }
         break;
     // tmux move window right 1 position
     case TWINRGT:
         if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",10);
+           send_string_with_delay(SS_LCTL("b") ":",35);
            send_string("swap-window -t +1\n");
-           send_string_with_delay(SS_LCTL("b") "n",10);
+           send_string_with_delay(SS_LCTL("b") "n",35);
         }
         break;
     case TJPANE:
         if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",10);
+           send_string_with_delay(SS_LCTL("b") ":",35);
            send_string("join-pane -t" SS_TAP(X_SPACE));
         }
         break;
@@ -1165,12 +1165,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
                 unregister_mods(MOD_MASK_CTRL);             // remove control
                 // turn on window actiivty monitor
-                send_string_with_delay(SS_LCTL("b") ":setw monitor-activity on" SS_TAP(X_ENT),8);
+                send_string_with_delay(SS_LCTL("b") ":",35);
+                send_string("setw monitor-activity on\n");
                 register_mods(mods);                        // add back mods
             }
             else {
                 // turn off window actiivty monitor
-                send_string_with_delay(SS_LCTL("b") ":setw monitor-activity off" SS_TAP(X_ENT),8);
+                send_string_with_delay(SS_LCTL("b") ":",35);
+                send_string("setw monitor-activity off\n");
             }
         }
         break;
