@@ -136,6 +136,8 @@ enum custom_keycodes {
     DUAL_ZOOMO,
     DUAL_ZOOMI,
     ENC_DUALPUSH,
+    ENC_MAINL,
+    ENC_MAINR,
     ENC_RGBRESET,
     ENC_TMON,
     ENC_TSIZEL,
@@ -430,8 +432,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
-    [BASE_LAYR]         = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [MAC_BASE_LAYR]     = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [BASE_LAYR]         = {ENCODER_CCW_CW(ENC_MAINL, ENC_MAINR)},
+    [MAC_BASE_LAYR]     = {ENCODER_CCW_CW(ENC_MAINL, ENC_MAINR)},
     [FN_LAYR]           = {ENCODER_CCW_CW(DUAL_ZOOMO, DUAL_ZOOMI)},
     [SFT_LAYR]          = {ENCODER_CCW_CW(KC_MS_WH_UP, KC_MS_WH_DOWN)},
     [CTL_LAYR]          = {ENCODER_CCW_CW(RGB_RMOD, RGB_MOD)},
@@ -955,10 +957,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         static uint8_t wave_phase = 0;
         if (!record->event.pressed) {  // On release.
             const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
             cancel_deferred_exec(wave_token);
             wave_token = INVALID_DEFERRED_TOKEN;
             // ensure the pattern always ends on a ">"
-            if (mods & MOD_MASK_CTRL) {  // Is ctl held?
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {  // is ctl held?
                 unregister_mods(MOD_MASK_CTRL); // temp remove ctl
                 if ((wave_phase & 1) == 0) {
                     send_string("<~>");
@@ -1062,7 +1065,39 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 send_string(SS_DELAY(150));
             }
             else {
-                tap_code(KC_MUTE);
+                const uint8_t mods = get_mods();
+                const uint8_t oneshot_mods = get_oneshot_mods();
+                if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                    tap_code(KC_MPLY);
+                }
+                else {
+                    tap_code(KC_MUTE);
+                }
+            }
+        }
+        break;
+    // keycodes for encoder l/r to do either volume or media control
+    case ENC_MAINL:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods)  & MOD_MASK_CTRL) {
+                tap_code(KC_MPRV);
+            }
+            else {
+                tap_code(KC_VOLD);
+            }
+        }
+        break;
+    case ENC_MAINR:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                tap_code(KC_MNXT);
+            }
+            else {
+                tap_code(KC_VOLU);
             }
         }
         break;
@@ -1071,7 +1106,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case DUAL_ZOOMI:
         if (record->event.pressed) {
             const uint8_t mods = get_mods();
-            if (mods & MOD_MASK_CTRL) {
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
                 send_string(SS_TAP(X_EQL));
             }
             else {
@@ -1082,7 +1118,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case DUAL_ZOOMO:
         if (record->event.pressed) {
             const uint8_t mods = get_mods();
-            if (mods & MOD_MASK_CTRL) {
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
                 send_string(SS_LCTL(SS_TAP(X_MINS)));
             }
             else {
@@ -1095,7 +1132,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case ENC_TSIZEL:
         if (record->event.pressed) {
             const uint8_t mods = get_mods();
-            if (mods & MOD_MASK_CTRL) {
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
                 unregister_mods(MOD_MASK_CTRL);                                  // remove control
                 send_string_with_delay(SS_LCTL("b") SS_LCTL(SS_TAP(X_UP)),5);    // size up
                 register_mods(mods);                                             // add back mods
@@ -1108,7 +1146,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case ENC_TSIZER:
         if (record->event.pressed) {
             const uint8_t mods = get_mods();
-            if (mods & MOD_MASK_CTRL) {
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
                 unregister_mods(MOD_MASK_CTRL);                                  // remove control
                 send_string_with_delay(SS_LCTL("b") SS_LCTL(SS_TAP(X_DOWN)),5);  // size down
                 register_mods(mods);                                             // add back mods
@@ -1122,7 +1161,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case ENC_TMON:
         if (record->event.pressed) {
             const uint8_t mods = get_mods();
-            if (mods & MOD_MASK_CTRL) {
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
                 unregister_mods(MOD_MASK_CTRL);             // remove control
                 // turn on window actiivty monitor
                 send_string_with_delay(SS_LCTL("b") ":setw monitor-activity on" SS_TAP(X_ENT),8);
@@ -1861,7 +1901,8 @@ void dual_key(uint16_t std_keycode, uint16_t alt_keycode, uint8_t mod_mask) {
     // if mod is being held, send mod_keycode
     // get current mod states
     const uint8_t mods = get_mods();
-    if (mods & mod_mask) {
+    const uint8_t oneshot_mods = get_oneshot_mods();
+    if ((mods | oneshot_mods) & mod_mask) {
         unregister_mods(mod_mask);  // remove mod
         tap_code16(alt_keycode);
         register_mods(mods); // restore original mods
