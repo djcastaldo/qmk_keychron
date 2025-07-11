@@ -161,7 +161,7 @@ enum custom_keycodes {
     CURSORL,
     CURSORR,
     MK_HOLD,
-    MK_REL,
+    OPT_HOLD,
     MK_ACCEL0,
     MK_ACCEL2,
     DUAL_ENCPUSH,
@@ -245,7 +245,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  [FN_LAYER]
 //  ,---------------------------------------------------------------------------------------------------------------------------------------,
 //  :  ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________  :
-//  : |    | |    ||    ||MCtl||LPad| |    ||    ||MPrv||MPly| |MNxt||    ||    ||    | :Zoom : |Snap||Siri||News| |Rec1||Rec2||Ply1||Ply2| :
+//  : |    | |    ||    ||VRep||    | |CkOt||    ||    ||GLog| |Add ||Cmit||    ||Push| :Zoom : |KLck||    ||Find| |Home||Apps||Docs||DLs | :
 //  : |____| |____||____||____||____| |____||____||____||____| |____||____||____||____| `.___.  |____||____||____| |____||____||____||____| :
 //  :  _______________________________________________________________________________________   ________________   ______________________  :
 //  : |    ||    ||    ||    ||    ||    ||    ||    ||    ||    ||    ||Arro||Wave||         | |LLck||TPrv||WPrv| |Rout||Acct||DPW ||SFCU| :
@@ -260,7 +260,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____| :
 //  `---------------------------------------------------------------------------------------------------------------------------------------`
     [FN_LAYER] = LAYOUT_109_ansi(
-        _______,_______,_______,KC_MCTRL,KC_LNPAD,_______,_______,KC_MPRV,KC_MPLY,KC_MNXT,_______,_______,_______, F_ZOOMR,
+        _______,_______,_______,VI_REPLACE,_______,GIT_CHKOUT,_______,_______,GIT_LOG,GIT_ADD,GIT_COMMIT,_______,GIT_PUSH,F_ZOOMR,
                                                                                       SSMENU,MOD_SIRI,GNEWS, DM_REC1,DM_REC2,DM_PLY1,DM_PLY2,
         _______,_______,_______,_______,_______,_______,_______,_______,_______,_______, _______, ARROW, WAVE, _______,
                                                                               LLOCK,V_TAB_PRV,V_WSPC_PRV,SECRET10,SECRET11,SECRET12,SECRET13,
@@ -331,11 +331,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  :  _______________________________________________________________________________________   ________________   ______________________  :
 //  : |    ||BT1 ||BT2 ||BT3 ||2.4G||    ||    ||    ||    ||    ||    ||    ||    ||         | |LLck||FJLi||    | |    ||    ||    ||    | :
 //  : |____||____||____||____||____||____||____||____||____||____||____||____||____||_________| |____||____||____| |____||____||____||____| :
-//  : |       ||    ||    ||    ||    ||    ||    ||    || Up ||    ||    ||    ||    ||      | |    ||HRLi||    | |    ||    ||    ||    | :
+//  : |       ||    ||    ||    ||Rebt||    ||    ||    ||    ||    ||    ||    ||    ||      | |    ||HRLi||    | |    ||    ||    ||    | :
 //  : |_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____||    | :
-//  : |        ||    ||    ||    ||Flsh||    ||    ||Left||Down||Rigt||    ||    ||           |                    |    ||    ||    ||    | :
+//  : |        ||    ||    ||    ||Flsh||    ||    ||    ||    ||    ||    ||    ||           |                    |    ||    ||    ||    | :
 //  : |________||____||____||____||____||____||____||____||____||____||____||____||___________|        ____        |____||____||____||____| :
-//  : |           ||    ||    ||EClr||    ||Boot||NKRo||    ||    ||    ||    ||              |       |RMo+|       |    ||    ||    ||    | :
+//  : |           ||    ||    ||EClr||    ||Boot||    ||    ||    ||    ||    ||              |       |RMo+|       |    ||    ||    ||    | :
 //  : |___________||____||____||____||____||____||____||____||____||____||____||______________|  ____ |____| ____  |____||____||____||    | :
 //  : |     ||     ||     ||          Battery Level              ||     ||     ||     ||      | |RSp-||RMo-||RSp+| |          ||    ||    | :
 //  : |_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____| :
@@ -345,40 +345,40 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                  QK_LOCK, KTRACK, RGB_MOD, _______, SECRET0, _______,_______,
         _______,BT_HST1,BT_HST2,BT_HST3,P2P4G,_______,_______,_______,_______,_______,_______,_______,_______,_______,
                                                                                       LLOCK,FJLIGHT,_______, _______,_______,_______,_______,
-        _______,_______,_______,_______,_______,_______,_______,_______,KC_UP,_______,_______,_______,_______,_______,
+        _______,_______,_______,_______,QK_RBT,_______,_______,_______,_______,_______,_______,_______,_______,_______,
                                                                                            _______,HROWLIGHT,_______,_______,_______,_______,
-        _______,_______,_______,_______,FLASH_KB,_______,_______,KC_LEFT,KC_DOWN,KC_RIGHT,_______,_______,_______,
+        _______,_______,_______,_______,FLASH_KB,_______,_______,_______,_______,_______,KTRACK,FJLIGHT,HROWLIGHT,
                                                                                                              _______,_______,_______,_______,
-        _______,_______,_______, EE_CLR,_______,BOOTLDR,NK_TOGG,_______,_______,_______,_______, _______,  RGB_MOD,  _______,_______,_______,
+        _______,_______,_______, EE_CLR,_______,BOOTLDR,_______,_______,_______,_______,_______, _______,  RGB_MOD,  _______,_______,_______,
         _______,_______,_______,        BAT_LVL,       _______,_______,_______,_______, RGB_SPD,RGB_RMOD,RGB_SPI, _______, _______, _______),
 //  [OPT_LAYER]
 //  ,---------------------------------------------------------------------------------------------------------------------------------------,
 //  :  ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________  :
-//  : |    | |    ||    ||VRep||    | |CkOt||    ||    ||GLog| |Add ||Cmit||    ||Push| :Scrol: |KLck||    ||Find| |Home||Apps||Docs||DLs | :
+//  : |    | |    ||    ||MCtl||LPad| |    ||    ||MPrv||MPly| |MNxt||    ||    ||    | :Scrol: |Snap||Siri||News| |Rec1||Rec2||Ply1||Ply2| :
 //  : |____| |____||____||____||____| |____||____||____||____| |____||____||____||____| `.___.  |____||____||____| |____||____||____||____| :
 //  :  _______________________________________________________________________________________   ________________   ______________________  :
 //  : |Quit||SOC1||SOC2||SOC3||SOC4||SOC5||SOC6||SOC7||SOC8||SOC9||SOC0||    ||    ||         | |LLck||TPrv||APrv| |QLok||Insp||Hide||Stat| :
 //  : |____||____||____||____||____||____||____||____||____||____||____||____||____||_________| |____||____||____| |____||____||____||____| :
-//  : |MAcel2 ||QLok||    ||    ||    ||Time||    ||Btn1||MSUp||    ||    ||    ||    ||OverVw| |FDel||TNxt||ANxt| |    ||    ||    ||    | :
+//  : |MAcel2 ||QLok||    ||    ||    ||Time||    ||Btn1||MSUp||OHld||    ||    ||    ||OverVw| |FDel||TNxt||ANxt| |    ||    ||    ||    | :
 //  : |_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____||    | :
 //  : |        ||    ||    ||    ||    ||    ||    ||MLft||MSDn||MRgt||TDAc||    ||           |                    |cd..||cd ~||cQMK||    | :
 //  : |________||____||____||____||____||____||____||____||____||____||____||____||___________|        ____        |____||____||____||____| :
-//  : |MAcel0     ||MAc2||    ||    ||    ||    ||MRel||MHld||CsrL||CsrR||Stat||              |       |    |       |ls  ||log ||rsnc||    | :
+//  : |MAcel0     ||MAc2||    ||    ||    ||    ||    ||MHld||CsrL||CsrR||Stat||              |       |    |       |ls  ||log ||rsnc||    | :
 //  : |___________||____||____||____||____||____||____||____||____||____||____||______________|  ____ |____| ____  |____||____||____||    | :
-//  : |     ||     ||     ||                                     ||     ||     ||     ||      | |    ||    ||    | |Timestamp ||    ||    | :
+//  : |     ||     ||Macl0||                                     ||     ||     ||     ||      | |    ||    ||    | |Timestamp ||    ||    | :
 //  : |_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____| :
 //  `---------------------------------------------------------------------------------------------------------------------------------------`
     [OPT_LAYER] = LAYOUT_109_ansi(
-        _______,_______,_______,VI_REPLACE,_______,GIT_CHKOUT,_______,_______,GIT_LOG,GIT_ADD,GIT_COMMIT,_______,GIT_PUSH,DUAL_ENCPUSH2,
+        _______,_______,_______,KC_MCTRL,KC_LNPAD,_______,_______,KC_MPRV,KC_MPLY,KC_MNXT,_______,_______,_______, DUAL_ENCPUSH2,
                                                                                           QK_LOCK,_______,NEWFINDER,FHOME,FAPPS,FDOCS,FDOWNL,
         FORCEQUIT,SOC1,SOC2,SOC3,SOC4,SOC5,SOC6,SOC7,SOC8,SOC9,SOC0,_______,_______,_______,
                                                                                  LLOCK,V_TAB_PRV,SCMDGRAVE,FQLOOK,FINSPECT,FVHIDDEN,FSTATBAR,
-        MK_ACCEL2,FQLOOK,_______,_______,_______,TIMESTAMP,_______,KC_MS_BTN1,KC_MS_UP,_______,_______,_______,_______,TOVERVIEW,
+        MK_ACCEL2,FQLOOK,_______,_______,_______,TIMESTAMP,_______,KC_MS_BTN1,KC_MS_UP,OPT_HOLD,_______,_______,_______,TOVERVIEW,
                                                                                           FDELETE,V_TAB_NXT,CMDGRAVE,_______,_______,_______,
         _______,_______,_______,_______,_______,_______,_______,KC_MS_LEFT,KC_MS_DOWN,KC_MS_RIGHT,TD(MOUSE_ACCEL),_______,_______,
                                                                                                          BACKDIR,HOMEDIR,SECRET22,_______,
-        MK_ACCEL0,MK_ACCEL2,_______,_______,_______,_______,MK_REL,MK_HOLD,CURSORL,CURSORR,FSTATBAR,_______,_______,LSLTRAH,GIT_LOG,SECRET25,
-        _______,_______,_______,        _______,       _______,_______,_______,_______, _______,_______,_______,  TIMESTAMP,_______,_______),
+        MK_ACCEL0,MK_ACCEL2,_______,_______,_______,_______,_______,MK_HOLD,CURSORL,CURSORR,FSTATBAR,_______,_______,LSLTRAH,GIT_LOG,SECRET25,
+        _______,_______,MK_ACCEL0,      _______,       _______,_______,_______,_______, _______,_______,_______,  TIMESTAMP,_______,_______),
 //  [TMUX_LAYER]
 //  ,---------------------------------------------------------------------------------------------------------------------------------------,
 //  :  ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________  :
@@ -410,7 +410,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  [SYMB_LAYER] 
 //  ,---------------------------------------------------------------------------------------------------------------------------------------,
 //  :  ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________  :
-//  : |    | |    ||    ||    ||    | |    ||    ||    ||    | |    ||    ||    ||    | :     : |    ||    ||    | |    ||    ||    ||    | :
+//  : |    | |    ||    ||    ||    | |    ||    ||    ||    | |    ||    ||    ||    | : Vol : |    ||    ||    | |    ||    ||    ||    | :
 //  : |____| |____||____||____||____| |____||____||____||____| |____||____||____||____| `.___.  |____||____||____| |____||____||____||____| :
 //  :  _______________________________________________________________________________________   ________________   ______________________  :
 //  : |LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||         | |    ||    ||    | |    ||    ||    ||    | :
@@ -425,7 +425,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____| :
 //  `---------------------------------------------------------------------------------------------------------------------------------------`
     [SYMB_LAYER] = LAYOUT_109_ansi(
-        _______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______, _______,
+        _______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______, KC_MUTE,
                                                                                  _______,_______,_______,  _______, _______, _______,_______,
         LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,_______,
                                                                                     _______,_______,_______, _______,_______,_______,_______,
@@ -438,7 +438,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  [WIDE_TEXT_LAYR]
 //  ,---------------------------------------------------------------------------------------------------------------------------------------,
 //  :  ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________  :
-//  : |    | |    ||    ||    ||    | |    ||    ||    ||    | |    ||    ||    ||    | :     : |    ||    ||    | |    ||    ||    ||    | :
+//  : |    | |    ||    ||    ||    | |    ||    ||    ||    | |    ||    ||    ||    | : Vol : |    ||    ||    | |    ||    ||    ||    | :
 //  : |____| |____||____||____||____| |____||____||____||____| |____||____||____||____| `.___.  |____||____||____| |____||____||____||____| :
 //  :  _______________________________________________________________________________________   ________________   ______________________  :
 //  : |LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||         | |LLck||    ||SThr| |    ||    ||    ||    | :
@@ -453,7 +453,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____| :
 //  `---------------------------------------------------------------------------------------------------------------------------------------`
     [WIDE_TEXT_LAYR] = LAYOUT_109_ansi(
-        _______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______, _______,
+        _______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______, KC_MUTE,
                                                                                  _______,_______,_______,  _______, _______, _______,_______,
         LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,_______,
                                                                                         LLOCK,_______,STHRU, _______,_______,_______,_______,
@@ -498,8 +498,8 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [CTL_LAYER]  = {ENCODER_CCW_CW(PENT_ENCL, PENT_ENCR)},
     [OPT_LAYER]  = {ENCODER_CCW_CW(DUAL_ENCL2, DUAL_ENCR2)},
     [TMUX_LAYER] = {ENCODER_CCW_CW(ENC_TSIZEL, ENC_TSIZER)},
-    [SYMB_LAYER] = {ENCODER_CCW_CW(KC_TRNS, KC_TRNS)},
-    [WIDE_TEXT_LAYR] = {ENCODER_CCW_CW(KC_TRNS, KC_TRNS)},
+    [SYMB_LAYER] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [WIDE_TEXT_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [LOCK_LAYER] = {ENCODER_CCW_CW(KC_NO, KC_NO)},
 };
 
@@ -589,10 +589,12 @@ enum key_indexes {
     I_K = 67,
     I_L = 68,
     I_SEMI = 69,
+    I_APOS = 70,
     I_ENT = 71,
     I_PMINS = 73,
     I_LSFT = 79,
     I_N = 85,
+    I_M = 86,
     I_RSFT = 90,
     I_LCTL = 95,
     I_LALT = 96,
@@ -669,6 +671,11 @@ bool oneshot_layer_active;
 bool color_test;
 // and use a timer so that it can be turned off after a delay even if no further key is pressed
 static uint16_t color_test_timer;
+
+// this was originally a static declaration in the switch case for MK_HOLD, but I also want to use it outside of
+// that switch case to do rgb change, so am moving it here.
+bool ms_btn_held = false;
+bool is_lopt_held = false;
 
 // for tracking wide-text options for the WIDE_TEXT_LAYR
 bool wide_sthru = false;
@@ -1571,13 +1578,30 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     	}
     	break;
     case MK_HOLD:
-    	if (record->event.pressed) {
-    	   register_code(KC_MS_BTN1);
+        if (record->event.pressed) {
+            if (!ms_btn_held) {
+                register_code(KC_MS_BTN1);
+                ms_btn_held = true;
+            }
+            else {
+                unregister_code(KC_MS_BTN1);
+                ms_btn_held = false;
+            }
         }
         break;
-    case MK_REL:
-    	if (record->event.pressed) {
-    	   unregister_code(KC_MS_BTN1);
+    case KC_MS_BTN1:
+        ms_btn_held = record->event.pressed;
+        break;
+    case OPT_HOLD:
+        if (record->event.pressed) {
+            if (!is_lopt_held) {
+                register_code(KC_LOPT);
+                is_lopt_held = true;
+            }
+            else {
+                unregister_code(KC_LOPT);
+                is_lopt_held = false;
+            }
         }
         break;
     case MK_ACCEL0:
@@ -1830,6 +1854,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         break;
     case KC_LOPT:
+        if (!record->event.pressed) {
+            is_lopt_held = false;
+        }
+    // no break here because next case also applies
     case KC_ROPT:
         if (record->event.pressed) {
             if (get_highest_layer(layer_state) < 3) {
@@ -2436,12 +2464,15 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 	{
             if (fj_light) {
                 rgb_matrix_set_color(I_FJLIGHT, 255, 255, 255);     // home (fj highlight key)
+                rgb_matrix_set_color(I_APOS, 255, 255, 255);        // ' (fj highlight key)
             }
             if (hrow_light) {
                 rgb_matrix_set_color(I_HROWLIGHT, 255, 255, 255);   // end (hrow highlight key)
+                rgb_matrix_set_color(I_ENT, 255, 255, 255);         // enter (hrow highlight key)
             }
             if (enable_keytracker) {
                 rgb_matrix_set_color(I_KTRACK, 255, 255, 255);      // mic (keytracker set key)
+                rgb_matrix_set_color(I_SEMI, 255, 255, 255);        // ; (keytracker set key)
             }
 	}
         // calculate the reactive rgb for keypresses
@@ -2523,6 +2554,15 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 rgb_matrix_set_color(I_L, RGB_YELLOW);
             }
         }
+        // track button holds on OPT_LAYER
+        if (layer == OPT_LAYER) {
+            if (ms_btn_held) { // show if mouse btn is held
+                rgb_matrix_set_color(I_M, RGB_WHITE);        // mouse btn1 hold key
+            }
+            if (is_lopt_held) { // show if lopt is held
+                rgb_matrix_set_color(I_O, RGB_WHITE);        // opt hold key
+            }
+        }
         // track mode keys on WIDE_TEXT_LAYR
         if (layer == WIDE_TEXT_LAYR) {
             if (wide_bartext) {
@@ -2556,11 +2596,12 @@ bool key_should_fade(keytracker key, uint8_t layer) {
        (layer < 2 && key.index == I_CAPS) ||                                                                        // caps lock
        (key.index == I_INS || key.index == I_ENT) ||                                                                // ins, enter
        ((layer == 1 || layer == 3 || layer == WIDE_TEXT_LAYR || is_caps_word_on()) &&
-         (key.index == I_LSFT || key.index == I_RSFT)) ||                                                              // shift
+         (key.index == I_LSFT || key.index == I_RSFT)) ||                                                           // shift
        (layer == WIDE_TEXT_LAYR && (key.index == I_BARTEXT || key.index == I_STHRU || key.index == I_UNDERLN)) ||   // wide-text mode toggles
        (layer == CTL_LAYER && (key.index >= I_N1 && key.index <= I_N4)) ||                                          // wireless mode keys
        (layer < 2 && key.index > 94 && key.index < 103) ||                                                          // bottom row mods
-       (layer == 4 && (key.index == I_LCTL || key.index == I_RCTL || key.index == I_HOME || key.index == I_END)) || // ctrl, home, end
+       (layer == 4 && (key.index == I_LCTL || key.index == I_RCTL || key.index == I_HOME || key.index == I_END ||
+         key.index == I_SEMI || key.index == I_APOS)) ||                                                            // ctrl, mode keys 
        ((layer == 5 || layer == SYMB_LAYER) && (key.index == I_LOPT || key.index == I_ROPT))) {                     // option
  	 should_fade = false;
        }
