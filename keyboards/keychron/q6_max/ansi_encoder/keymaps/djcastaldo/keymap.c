@@ -1658,16 +1658,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     case DUAL_ENCL2:
     	if (record->event.pressed) {
-            // standard: app switch, while command is held: mouse down 
+            // with command: app switch, standard: mouse down 
             const uint8_t mods = get_mods();
             const uint8_t oneshot_mods = get_oneshot_mods();
-            if (((mods | oneshot_mods) & MOD_MASK_GUI) && !app_switch_active()) {
-                del_oneshot_mods(MOD_MASK_GUI); // remove cmd
-                unregister_mods(MOD_MASK_GUI);  // remove cmd
-                tap_code16(KC_MS_WH_DOWN);
-                register_mods(mods);            // Restore mods.
-            }
-            else {
+            if ((mods | oneshot_mods) & MOD_MASK_GUI) {
 	        // If token is already waiting to exec, cancel it.
                 if (cmd_tab_token) {
                     cancel_deferred_exec(cmd_tab_token);
@@ -1681,20 +1675,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_TAB);
 	        cmd_tab_token = defer_exec(1000, cmd_tab_callback, NULL);  // Schedule callback.
             }
+            else {
+                tap_code16(KC_MS_WH_DOWN);
+            }
         }
         break;
     case DUAL_ENCR2:
     	if (record->event.pressed) {
-            // standard: app switch, while command is held: mouse up 
+            // with command: app switch, standard: mouse up 
             const uint8_t mods = get_mods();
             const uint8_t oneshot_mods = get_oneshot_mods();
-            if (((mods | oneshot_mods) & MOD_MASK_GUI) && !app_switch_active()) {  // Is cmd held?
-                del_oneshot_mods(MOD_MASK_GUI); // remove cmd
-                unregister_mods(MOD_MASK_GUI);  // remove cmd
-                tap_code16(KC_MS_WH_UP);
-                register_mods(mods);            // Restore mods.
-            }
-            else {
+            if ((mods | oneshot_mods) & MOD_MASK_GUI) {  // Is cmd held?
 	        // If token is already waiting to exec, cancel it.
                 if (cmd_tab_token) {
                     cancel_deferred_exec(cmd_tab_token);
@@ -1707,6 +1698,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
                 tap_code(KC_TAB);
 	        cmd_tab_token = defer_exec(1000, cmd_tab_callback, NULL);  // Schedule callback.
+            }
+            else {
+                tap_code16(KC_MS_WH_UP);
             }
         }
         break;
@@ -2110,18 +2104,6 @@ void leader_end_user(void) {
     else if (leader_sequence_four_keys(KC_T, KC_T, KC_Y, KC_L)) {  // talk to you later 
         SEND_STRING("talk to you later");
     }
-    else if (leader_sequence_three_keys(KC_Q, KC_C, KC_B)) {  // qmk compile shortcutstudio bridge75 firmware
-        SEND_STRING("qmk compile -kb shortcut/bridge75 -km djcastaldo" SS_TAP(X_ENT));
-    }
-    else if (leader_sequence_three_keys(KC_Q, KC_F, KC_B)) {  // qmk flash shortcutstudio bridge75 firmware
-        SEND_STRING("qmk flash -kb shortcut/bridge75 -km djcastaldo" SS_TAP(X_ENT));
-    }
-    else if (leader_sequence_three_keys(KC_Q, KC_C, KC_Y)) {  // qmk compile yunzii firmware
-        SEND_STRING("qmk compile -kb yunzii/al68 -km djcastaldo" SS_TAP(X_ENT));
-    }
-    else if (leader_sequence_three_keys(KC_Q, KC_F, KC_Y)) {  // qmk flash yunzii firmware
-        SEND_STRING("qmk flash -kb yunzii/al68 -km djcastaldo" SS_TAP(X_ENT));
-    }
     else if (leader_sequence_four_keys(KC_G, KC_I, KC_T, KC_L)) {        // git log
         SEND_STRING("git log\n");
     }
@@ -2136,6 +2118,24 @@ void leader_end_user(void) {
     }
     else if (leader_sequence_five_keys(KC_G, KC_I, KC_T, KC_C, KC_O)) {  // git checkout .
         SEND_STRING("git checkout .\n");
+    }
+    else if (leader_sequence_three_keys(KC_Q, KC_C, KC_B)) {  // qmk compile shortcutstudio bridge75 firmware
+        SEND_STRING("qmk compile -kb shortcut/bridge75 -km djcastaldo" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_three_keys(KC_Q, KC_F, KC_B)) {  // qmk flash shortcutstudio bridge75 firmware
+        SEND_STRING("qmk flash -kb shortcut/bridge75 -km djcastaldo" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_three_keys(KC_Q, KC_C, KC_Y)) {  // qmk compile yunzii firmware
+        SEND_STRING("qmk compile -kb yunzii/al68 -km djcastaldo" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_three_keys(KC_Q, KC_F, KC_Y)) {  // qmk flash yunzii firmware
+        SEND_STRING("qmk flash -kb yunzii/al68 -km djcastaldo" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_three_keys(KC_Q, KC_C, KC_L)) {  // qmk compile lemokey p1 firmware
+        SEND_STRING("qmk compile -kb lemokey/p1_pro/ansi_encoder -km djcastaldo" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_three_keys(KC_Q, KC_F, KC_L)) {  // qmk flash lemokey p1 firmware
+        SEND_STRING("qmk flash -kb lemokey/p1_pro/ansi_encoder -km djcastaldo" SS_TAP(X_ENT));
     }
     else if (leader_sequence_four_keys(KC_Q, KC_C, KC_K, KC_V)) {  // qmk compile keychron V6 firmware
         SEND_STRING("qmk compile -kb keychron/v6_max/ansi_encoder -km djcastaldo" SS_TAP(X_ENT));
