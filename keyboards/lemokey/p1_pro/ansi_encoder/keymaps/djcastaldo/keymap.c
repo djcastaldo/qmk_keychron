@@ -9,10 +9,6 @@
 #include "wireless/wireless.h"
 #include "features/layer_lock.h"
 
-#define F_ZOOMI LCTL(KC_MS_WH_UP)               // form zoom in
-#define F_ZOOMO LCTL(KC_MS_WH_DOWN)             // form zoom out
-#define F_ZOOMR LCTL(KC_0)                      // form zoom reset
-
 __attribute__ ((weak))
 bool process_record_secrets(uint16_t keycode, keyrecord_t *record) {
     return true;
@@ -79,6 +75,9 @@ enum custom_keycodes {
     TWINRGT,
     TJPANE,
     LTRANS,
+    F_ZOOMR,
+    SCROLL_UP,
+    SCROLL_DN,
     OPT2,
     OPT3,
     OPT4,
@@ -435,7 +434,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [BASE_LAYR]         = {ENCODER_CCW_CW(ENC_MAINL, ENC_MAINR)},
     [MAC_BASE_LAYR]     = {ENCODER_CCW_CW(ENC_MAINL, ENC_MAINR)},
     [FN_LAYR]           = {ENCODER_CCW_CW(DUAL_ZOOMO, DUAL_ZOOMI)},
-    [SFT_LAYR]          = {ENCODER_CCW_CW(KC_MS_WH_UP, KC_MS_WH_DOWN)},
+    [SFT_LAYR]          = {ENCODER_CCW_CW(SCROLL_UP, SCROLL_DN)},
     [CTL_LAYR]          = {ENCODER_CCW_CW(RGB_RMOD, RGB_MOD)},
     [TMUX_LAYR]         = {ENCODER_CCW_CW(ENC_TSIZEL, ENC_TSIZER)},
     [SYMBOL_LAYR]       = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
@@ -888,6 +887,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             jiggler_token = defer_exec(1, jiggler_callback, NULL);  // schedule callback
         }
         break;
+    // form zoom reset
+    case F_ZOOMR:
+        if (record->event.pressed) {
+            tap_code16(is_mac_base() ? LCMD(KC_0) : LCTL(KC_0));
+        }
+        break;
     // tmux bound key list
     case TMUXLKEY:
         if (record->event.pressed) {
@@ -1108,10 +1113,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             const uint8_t mods = get_mods();
             const uint8_t oneshot_mods = get_oneshot_mods();
             if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                send_string(SS_TAP(X_EQL));
+                if (is_mac_base()) {
+                    unregister_mods(MOD_MASK_CTRL);
+                    tap_code16(LCMD(KC_EQL));
+                    register_mods(mods);
+                }
+                else {
+                    tap_code(KC_EQL);
+                }
             }
             else {
-                tap_code16(F_ZOOMI);
+                tap_code16(is_mac_base() ? LCMD(KC_MS_WH_DOWN) : LCTL(KC_MS_WH_UP));
             }
         }
         break;
@@ -1120,11 +1132,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             const uint8_t mods = get_mods();
             const uint8_t oneshot_mods = get_oneshot_mods();
             if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                send_string(SS_LCTL(SS_TAP(X_MINS)));
+                if (is_mac_base()) {
+                    unregister_mods(MOD_MASK_CTRL);
+                    tap_code16(LCMD(KC_MINS));
+                    register_mods(mods);
+                }
+                else {
+                    tap_code(KC_MINS);
+                }
             }
             else {
-                tap_code16(F_ZOOMO);
+                tap_code16(is_mac_base() ? LCMD(KC_MS_WH_UP) : LCTL(KC_MS_WH_DOWN));
             }
+        }
+        break;
+    // set up so rotary encoder works right with mac set to natural scrolling
+    case SCROLL_UP:
+        if (record->event.pressed) {
+            tap_code16(is_mac_base() ? KC_MS_WH_DOWN : KC_MS_WH_UP);
+        }
+        break;
+    case SCROLL_DN:
+        if (record->event.pressed) {
+            tap_code16(is_mac_base() ? KC_MS_WH_UP : KC_MS_WH_DOWN);
         }
         break;
     // tmux encoder control
@@ -3629,7 +3659,12 @@ void leader_end_user(void) {
         SEND_STRING("sudo vi /sys/bus/thunderbolt/devices/0-3/authorized" SS_TAP(X_ENT));
     }
     else if (leader_sequence_two_keys(KC_S, KC_W)) {          // select word
-        SEND_STRING(SS_LCTL(SS_TAP(X_LEFT) SS_LSFT(SS_TAP(X_RIGHT))));
+        if (is_mac_base()) {
+            SEND_STRING(SS_LOPT(SS_TAP(X_LEFT) SS_LSFT(SS_TAP(X_RIGHT))));
+        }
+        else {
+            SEND_STRING(SS_LCTL(SS_TAP(X_LEFT) SS_LSFT(SS_TAP(X_RIGHT))));
+        }
     }
     else if (leader_sequence_two_keys(KC_S, KC_L)) {          // select line
         SEND_STRING(SS_TAP(X_HOME) SS_LSFT(SS_TAP(X_END)));
