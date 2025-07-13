@@ -413,7 +413,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |    | |    ||    ||    ||    | |    ||    ||    ||    | |    ||    ||    ||    | : Vol : |    ||    ||    | |    ||    ||    ||    | :
 //  : |____| |____||____||____||____| |____||____||____||____| |____||____||____||____| `.___.  |____||____||____| |____||____||____||____| :
 //  :  _______________________________________________________________________________________   ________________   ______________________  :
-//  : |LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||         | |    ||    ||    | |    ||    ||    ||    | :
+//  : |LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||         | |LLck||    ||    | |    ||    ||    ||    | :
 //  : |____||____||____||____||____||____||____||____||____||____||____||____||____||_________| |____||____||____| |____||____||____||____| :
 //  : |       ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN  | |    ||    ||    | |    ||    ||    ||    | :
 //  : |_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____||    | :
@@ -428,7 +428,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______, KC_MUTE,
                                                                                  _______,_______,_______,  _______, _______, _______,_______,
         LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,_______,
-                                                                                    _______,_______,_______, _______,_______,_______,_______,
+                                                                                      LLOCK,_______,_______, _______,_______,_______,_______,
         _______,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,
                                                                                              _______,_______,_______,_______,_______,_______,
         _______,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,_______,
@@ -1853,11 +1853,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         }
         break;
+    // functionality for opt keys with holds for OPT_LAYER and SYMB_LAYER
     case KC_LOPT:
         if (!record->event.pressed) {
             is_lopt_held = false;
         }
-    // no break here because next case also applies
+    // intentionally no break here
     case KC_ROPT:
         if (record->event.pressed) {
             if (get_highest_layer(layer_state) < 3) {
@@ -1865,7 +1866,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         }
         else {
-            layer_off(SYMB_LAYER);
+            if (is_layer_locked(SYMB_LAYER)) {
+                return false;
+            }
+            else {
+                layer_off(SYMB_LAYER);
+            }
         }
         break;
     case STHRU:
@@ -2781,7 +2787,9 @@ void ropt_reset (tap_dance_state_t *state, void *user_data) {
       break;
     case SINGLE_HOLD:
       unregister_code(KC_ROPT);
-      layer_off(SYMB_LAYER);
+      if (!is_layer_locked(SYMB_LAYER)) {
+          layer_off(SYMB_LAYER);
+      }
       break;
   }
   ropt_tap_state.state = 0;
@@ -2951,6 +2959,19 @@ bool caps_word_press_user(uint16_t keycode) {
 
         default:
             return false;  // Deactivate Caps Word.
+    }
+}
+
+// use this for special layer lock handling
+void layer_lock_set_user(layer_state_t locked_layers) {
+    static bool opt_is_held_for_symbol = false;
+    if (is_layer_locked(SYMB_LAYER)) {
+        register_code(KC_LOPT);
+        opt_is_held_for_symbol = true;
+    }
+    else if (opt_is_held_for_symbol && !is_layer_locked(SYMB_LAYER)) {
+        unregister_code(KC_LOPT);
+        opt_is_held_for_symbol = false;
     }
 }
 
