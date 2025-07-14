@@ -2969,7 +2969,7 @@ void layer_lock_set_user(layer_state_t locked_layers) {
         register_code(KC_LOPT);
         opt_is_held_for_symbol = true;
     }
-    else if (opt_is_held_for_symbol && !is_layer_locked(SYMB_LAYER)) {
+    else if (opt_is_held_for_symbol) {
         unregister_code(KC_LOPT);
         opt_is_held_for_symbol = false;
     }
