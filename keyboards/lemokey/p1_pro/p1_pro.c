@@ -18,8 +18,8 @@
 #include "lemokey_task.h"
 #ifdef FACTORY_TEST_ENABLE
 #    include "factory_test.h"
-#    include "lemokey_common.h"
 #endif
+#include "lemokey_common.h"
 #ifdef LK_WIRELESS_ENABLE
 #    include "lkbt51.h"
 #    include "wireless.h"
@@ -75,6 +75,11 @@ bool lemokey_task_kb(void) {
 }
 
 #ifdef LK_WIRELESS_ENABLE
+__attribute__ ((weak))
+bool factory_reset_indicating(void) {
+    return false;
+}
+
 bool lpm_is_kb_idle(void) {
     return power_on_indicator_timer_buffer == 0 && !factory_reset_indicating();
 }
