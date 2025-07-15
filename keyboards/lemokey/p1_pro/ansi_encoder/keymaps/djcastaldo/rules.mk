@@ -1,5 +1,6 @@
 CONSOLE_ENABLE = no
 KEYBOARD_SHARED_EP = no
+FACTORY_TEST_ENABLE = no
 EXTRAKEY_ENABLE = yes
 MOUSEKEY_ENABLE = yes
 DEFERRED_EXEC_ENABLE = yes
@@ -14,4 +15,7 @@ ifneq ("$(wildcard keyboards/lemokey/p1_pro/ansi_encoder/keymaps/djcastaldo/secr
 endif
 ifeq ($(strip $(NO_SECRETS)), yes)
     OPT_DEFS += -DNO_SECRETS
+endif
+ifeq ($(strip $(FACTORY_TEST_ENABLE)), yes)
+    OPT_DEFS += -DFACTORY_TEST_ENABLE
 endif
