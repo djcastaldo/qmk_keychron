@@ -19,6 +19,7 @@
 
 #ifdef FACTORY_TEST_ENABLE
 #    include "factory_test.h"
+#    include "lemokey_common.h"
 #endif
 
 #ifdef LK_WIRELESS_ENABLE
