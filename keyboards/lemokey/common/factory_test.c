@@ -147,6 +147,7 @@ static inline void factory_reset_ind_timer_check(void) {
 }
 
 bool process_record_factory_test(uint16_t keycode, keyrecord_t *record) {
+#ifdef FACTORY_TEST_FNJZ_ENABLE
     switch (keycode) {
 #if defined(FN_KEY_1) || defined(FN_KEY_2)
 #    if defined(FN_KEY_1)
@@ -244,7 +245,7 @@ bool process_record_factory_test(uint16_t keycode, keyrecord_t *record) {
             break;
 #endif
     }
-
+#endif
     return true;
 }
 
