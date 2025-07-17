@@ -2259,11 +2259,11 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                     layer_lock_timer = timer_read();
                 }
                 if (is_layer_lock_led_on) {
-                    rgb_matrix_set_color(I_LLOCK, 0x77, 0x77, 0x77); // just make it white 
+                    rgb_matrix_set_color(I_LLOCK, RGB_WHITE); // just make it white
                 }
                 else if ((timer_elapsed(layer_lock_timer) > 200 && timer_elapsed(layer_lock_timer) < 400) || 
                          (timer_elapsed(layer_lock_timer) > 600)) {
-                    rgb_matrix_set_color(I_LLOCK, 0x77, 0x77, 0x77); // white alternate with layer color 
+                    rgb_matrix_set_color(I_LLOCK, RGB_WHITE); // white alternate with layer color
                 }
             }
         }
@@ -2325,8 +2325,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                   rgb_matrix_set_color(I_SEMI, RGB_GREEN); // ;
               }
               if (fj_light) {
-                  rgb_matrix_set_color(I_F, 0x77, 0x77, 0x77); // f
-                  rgb_matrix_set_color(I_J, 0x77, 0x77, 0x77); // j
+                  rgb_matrix_set_color(I_F, RGB_WHITE); // f
+                  rgb_matrix_set_color(I_J, RGB_WHITE); // j
               }
             }
         }
@@ -2350,7 +2350,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 key_lock_timer = timer_read();
             }
             if (is_key_lock_led_on) {
-                rgb_matrix_set_color(I_INDICATOR, 0x77, 0x77, 0x77);  // indicator
+                rgb_matrix_set_color(I_INDICATOR, RGB_WHITE);         // indicator
             }
             else {
                 rgb_matrix_set_color(I_INDICATOR, RGB_RED);           // indicator
@@ -2536,31 +2536,31 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         } 
         // track if mouse button is held on SFT_LAYR
         if (layer == SFT_LAYR && ms_btn_held) {
-            rgb_matrix_set_color(I_PGUP, 0x77, 0x77, 0x77);   // mouse btn1 hold key
+            rgb_matrix_set_color(I_PGUP, RGB_WHITE);   // mouse btn1 hold key
         }
         // track mode keys on WIDE_TEXT_LAYR
         if (layer == WIDE_TEXT_LAYR) {
             if (wide_bartext) {
-                rgb_matrix_set_color(I_BARTEXT, 0x77, 0x77, 0x77);  // bartext toggle
+                rgb_matrix_set_color(I_BARTEXT, RGB_WHITE);  // bartext toggle
             }
             else if (wide_sthru) {
-                rgb_matrix_set_color(I_STHRU, 0x77, 0x77, 0x77);    // sthru toggle
+                rgb_matrix_set_color(I_STHRU, RGB_WHITE);    // sthru toggle
             }
             else if (wide_underln) {
-                rgb_matrix_set_color(I_UNDERLN, 0x77, 0x77, 0x77);  // underln toggle
+                rgb_matrix_set_color(I_UNDERLN, RGB_WHITE);  // underln toggle
             }
         }
         // track caps_lock
         if (host_keyboard_led_state().caps_lock) {
-            rgb_matrix_set_color(I_CAPS, 0x77, 0x77, 0x77);  // caps
+            rgb_matrix_set_color(I_CAPS, RGB_WHITE);  // caps
         }
         // track num_lock
         if (layer == SFT_LAYR && host_keyboard_led_state().num_lock) {
-            rgb_matrix_set_color(I_NUMLOCK, 0x77, 0x77, 0x77);
+            rgb_matrix_set_color(I_NUMLOCK, RGB_WHITE);
         }
         // track scroll_lock
         if (layer == FN_LAYR && host_keyboard_led_state().scroll_lock) {
-            rgb_matrix_set_color(I_SLOCK, 0x77, 0x77, 0x77);
+            rgb_matrix_set_color(I_SLOCK, RGB_WHITE);
         }
             
         // show wireless connection on CTL_LAYR if in bt or 2.4g modes
