@@ -243,7 +243,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         MO(TMUX_LAYR),SECRET3,SECRET2,SECRET1,SECRET8,SECRET9,_______,_______,_______,_______,_______,DM_REC1, DM_REC2, _______, KC_HOME,
         _______,SECRET4,SECRET5, SECRET6, SECRET7, _______, _______, _______, _______, QK_LEAD, KC_SCRL, KC_PSCR,       _______,  KC_END,
         MO(SFT_LAYR),_______,SECRET10,SECRET11,_______,_______,_______,_______, DM_PLY1, DM_PLY2, KC_PAUS, MO(SFT_LAYR), _______,
-        _______,   WM_SYM, MO(CTL_LAYR),                _______,                  MO(CTL_LAYR),_______,_______, _______, _______, _______
+        _______,   WM_SYM, MO(CTL_LAYR),                _______,                 MO(CTL_LAYR),_______,_______, _______, _______, _______
     ),
 
 //  [SFT_LAYR] (yellow/orange)
@@ -2607,14 +2607,14 @@ bool key_should_fade(keytracker key, uint8_t layer) {
       (is_in_leader_sequence && key.index == I_L) ||                                                             // leader key
       (layer == SFT_LAYR && (key.index == I_NUMLOCK || key.index == I_PGUP)) ||                                  // num lock, mouse hold
       (layer == FN_LAYR && key.index == I_SLOCK) ||                                                              // scroll lock
-      (layer == WIDE_TEXT_LAYR && (key.index == I_BARTEXT || key.index == I_STHRU || key.index == I_UNDERLN)) || // wide-text mode toggles
+      (layer == WIDE_TEXT_LAYR && (key.index == I_BARTEXT || key.index == I_STHRU || key.index == I_UNDERLN)) || // wide-text toggles
       (layer == CTL_LAYR && (key.index == I_FJLIGHT || key.index == I_HROWLIGHT)) ||                             // hrow/fj indicators 
       (layer == CTL_LAYR && (key.index >= I_N1 && key.index <= I_N4)) ||                                         // wireless mode keys
-      (os_changed) ||                                                                                            // mac/win/lin base change
+      (os_changed) ||                                                                                            // mac/win/lin change
       (layer == SYMBOL_LAYR && (key.index == I_GRV || key.index == I_N1 || key.index == I_E ||
                                 key.index == I_I || key.index == I_U || key.index == I_N ||                      // accent keys
-                                key.index == I_RALT || key.index == I_LGUI)) ||                                  // sym_layr ralt and lgui 
-      (key.index == I_CAPS) || (key.index == I_FN || key.index == I_TAB)) {                                      // caps lock, fn, and tab
+                                key.index == I_RALT || key.index == I_LGUI)) ||                                  // sym_layr ralt, lgui
+      (key.index == I_CAPS) || (key.index == I_FN || key.index == I_TAB)) {                                      // caps lock, fn, tab
           should_fade = false;
       }
     return should_fade;
@@ -3822,7 +3822,7 @@ void leader_end_user(void) {
     else if (process_leader_secrets()) {
         // leader sequence failed, so blink the rgb red a few times
         is_leader_error = true;
-        leader_error_token = defer_exec(1500, leader_error_callback, NULL);  // Schedule callback.
+        leader_error_token = defer_exec(1500, leader_error_callback, NULL);  // schedule callback
     }
 
     is_in_leader_sequence = false;
