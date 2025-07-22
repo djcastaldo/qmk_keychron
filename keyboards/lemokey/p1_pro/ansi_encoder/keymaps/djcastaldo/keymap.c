@@ -126,6 +126,7 @@ enum custom_keycodes {
     SUP1,
     SUP2,
     SUP3,
+    CIRCLEI,
     NBSP,
     WM_SYM,
     STHRU,
@@ -327,7 +328,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  [SYMBOL_LAYR] (blue)
 //  ,-----------------------------------------------------------------------------------------------------------------------------------,
 //  :  ______    ______________________________    ______________________________    ______________________________    ______   .----.  :
-//  : |      |  | SUP1 || SUP2 || SUP3 ||      |  |SUITH ||SUITD ||SUITC ||SUITS |  |      ||      ||      || NBSP |  |LLock | : Vol  : :
+//  : |      |  | SUP1 || SUP2 || SUP3 ||      |  |SUITH ||SUITD ||SUITC ||SUITS |  |CIRCLI||      ||      || NBSP |  |LLock | : Vol  : :
 //  : |______|  |______||______||______||______|  |______||______||______||______|  |______||______||______||______|  |______| '.____.' :
 //  :  _______________________________________________________________________________________________________________________  ______  :
 //  : |TD(G) ||TD(1) ||OPT2  ||OPT3  ||OPT4  ||OPT5  ||OPT6  ||OPT7  ||OPT8  ||OPT9  ||OPT0  ||OPTMIN||OPTEQ ||              | |      | :
@@ -342,7 +343,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |_________||________||_________||______________________________________________||______||______|______|  |______||______||______| :
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
     [SYMBOL_LAYR] = LAYOUT_ansi_82(
-        _______,  SUP1,  SUP2,  SUP3, _______,    SUITH, SUITD, SUITC, SUITS,     _______, _______, _______, NBSP,     LLOCK,   KC_MUTE,
+        _______,  SUP1,  SUP2,  SUP3, _______,    SUITH, SUITD, SUITC, SUITS,     CIRCLEI, _______, _______, NBSP,     LLOCK,   KC_MUTE,
         TD(ACT_GRV), TD(ACT_1), OPT2, OPT3, OPT4, OPT5,  OPT6,   OPT7,  OPT8,   OPT9,  OPT0,   OPTMIN,  OPTEQ,       _______,   _______,
         _______,    OPTQ,  OPTW, TD(ACT_E), OPTR,  OPTT,   OPTY, TD(ACT_U), TD(ACT_I), OPTO, OPTP,  OPTLBR,  OPTRBR, OPTBSL,    _______,
         _______,        OPTA,  OPTS,  OPTD,  OPTF,   OPTG,     OPTH,   OPTJ,   OPTK,   OPTL,   OPTSEM, OPTAPO,      _______,    _______,
@@ -353,7 +354,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  [MAC_SYMBOL_LAYR] (blue)
 //  ,-----------------------------------------------------------------------------------------------------------------------------------,
 //  :  ______    ______________________________    ______________________________    ______________________________    ______   .----.  :
-//  : |      |  |      ||      ||      ||      |  |      ||      ||      ||      |  |      ||      ||      ||      |  |LLock | : Vol  : :
+//  : |      |  | SUP1 || SUP2 || SUP3 ||      |  |SUITH ||SUITD ||SUITC ||SUITS |  |CIRCLI||      ||      || NBSP |  |LLock | : Vol  : :
 //  : |______|  |______||______||______||______|  |______||______||______||______|  |______||______||______||______|  |______| '.____.' :
 //  :  _______________________________________________________________________________________________________________________  ______  :
 //  : |LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||              | |      | :
@@ -368,7 +369,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |_________||________||_________||______________________________________________||______||______|______|  |______||______||______| :
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
     [MAC_SYMBOL_LAYR] = LAYOUT_ansi_82(
-        _______, _______, _______,_______,_______, _______,_______,_______,_______, _______,_______,_______,_______,    LLOCK,  KC_MUTE,
+        _______,  SUP1,  SUP2,  SUP3, _______,    SUITH, SUITD, SUITC, SUITS,     CIRCLEI, _______, _______, NBSP,     LLOCK,   KC_MUTE,
         LTRANS,  LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,      _______,  _______,
         _______,     LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS ,LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,    _______,
         _______,         LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,     _______,   _______,
@@ -695,6 +696,8 @@ void dual_key(uint16_t std_keycode, uint16_t alt_keycode, uint8_t mod_mask);
 void symbol_key(const char *alt_code, const char *shift_alt_code);
 // function to send symbols normally requiring hex codes in linux
 void symbol_key_linux(const char *hex_code, const char *shift_hex_code);
+// function to send symbols normally requiring unicode input in macos
+void symbol_key_mac(const char *unicode, const char *shift_unicode);
 // and to type a string of numbers using the numpad (created for windows alt codes)
 void type_numpad_keys_from_string(const char *stringnum);
 
@@ -1842,8 +1845,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     case SUITH:
         if (record->event.pressed) {
-            if (user_config.is_linux_base) {
-                symbol_key_linux("2665","2665");
+            if (is_mac_base()) {
+                symbol_key_mac("2665","2661");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("2665","2661");
             }
             else {
                 symbol_key("3","3");
@@ -1852,8 +1858,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     case SUITD:
         if (record->event.pressed) {
-            if (user_config.is_linux_base) {
-                symbol_key_linux("2666","2666");
+            if (is_mac_base()) {
+                symbol_key_mac("2666","2662");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("2666","2662");
             }
             else {
                 symbol_key("4","4");
@@ -1862,8 +1871,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     case SUITC:
         if (record->event.pressed) {
-            if (user_config.is_linux_base) {
-                symbol_key_linux("2663","2663");
+            if (is_mac_base()) {
+                symbol_key_mac("2663","2667");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("2663","2667");
             }
             else {
                 symbol_key("5","5");
@@ -1872,8 +1884,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     case SUITS:
         if (record->event.pressed) {
-            if (user_config.is_linux_base) {
-                symbol_key_linux("2660","2660");
+            if (is_mac_base()) {
+                symbol_key_mac("2660","2664");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("2660","2664");
             }
             else {
                 symbol_key("6","6");
@@ -1882,8 +1897,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     case SUP1:
         if (record->event.pressed) {
-            if (user_config.is_linux_base) {
-                symbol_key_linux("00b9","00b9");
+            if (is_mac_base()) {
+                symbol_key_mac("00b9","2074");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("00b9","2074");
             }
             else {
                 symbol_key("0185","0185");
@@ -1892,8 +1910,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     case SUP2:
         if (record->event.pressed) {
-            if (user_config.is_linux_base) {
-                symbol_key_linux("00b2","00b2");
+            if (is_mac_base()) {
+                symbol_key_mac("00b2","2075");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("00b2","2075");
             }
             else {
                 symbol_key("0178","0178");
@@ -1902,17 +1923,36 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     case SUP3:
         if (record->event.pressed) {
-            if (user_config.is_linux_base) {
-                symbol_key_linux("00b3","00b3");
+            if (is_mac_base()) {
+                symbol_key_mac("00b3","2076");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("00b3","2076");
             }
             else {
                 symbol_key("0179","0179");
             }
         }
         break;
+    case CIRCLEI:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24d8","24be");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24d8","24be");
+            }
+            else {
+                symbol_key("9432","9406");
+            }
+        }
+        break;
     case NBSP:
         if (record->event.pressed) {
-            if (user_config.is_linux_base) {
+            if (is_mac_base()) {
+                symbol_key_mac("00a0","00a6");
+            }
+            else if (user_config.is_linux_base) {
                 symbol_key_linux("00a0","00a6");
             }
             else {
@@ -2070,6 +2110,28 @@ void symbol_key_linux(const char *hex_code, const char *shift_hex_code) {
     // finish sequence
     tap_code(KC_SPC);
     register_mods(mods); // add back mods
+}
+
+void symbol_key_mac(const char *unicode, const char *shift_unicode) {
+    // get current mod and one-shot mod states.
+    const uint8_t mods = get_mods();
+    const uint8_t oneshot_mods = get_oneshot_mods();
+    if ((mods | oneshot_mods) & MOD_MASK_SHIFT) { // if shift is being held
+        del_oneshot_mods(MOD_MASK_SHIFT); // delete oneshot shift mod
+        unregister_mods(MOD_MASK_SHIFT);  // temporarily delete shift mod
+        send_string(SS_LCTL(SS_LOPT(SS_LCMD(SS_TAP(X_SPC))))); // switch os keybaord input to unicode
+        add_mods(MOD_MASK_ALT); // hold down option
+        send_string(shift_unicode); // send shift_unicode
+        del_mods(MOD_MASK_ALT); // release option
+        send_string_with_delay(SS_LCTL(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_SPC))))),10); // switch os keyboard input back to language
+        register_mods(mods); // restore original mods
+    } else {
+        send_string(SS_LCTL(SS_LOPT(SS_LCMD(SS_TAP(X_SPC))))); // switch os keybaord input to unicode
+        add_mods(MOD_MASK_ALT); // hold down option
+        send_string(unicode); // send unicode
+        del_mods(MOD_MASK_ALT); // release option
+        send_string_with_delay(SS_LCTL(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_SPC))))),10); // switch os keyboard input back to language
+    }
 }
 
 // send_string doesn't use the numpad, so this fn was created to type numbers using the numpad

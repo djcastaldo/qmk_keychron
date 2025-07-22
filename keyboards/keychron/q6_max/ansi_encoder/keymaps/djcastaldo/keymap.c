@@ -151,6 +151,15 @@ enum custom_keycodes {
     E_OK,
     E_SGLASS,
     E_BOTTLE,
+    SUITH,
+    SUITD,
+    SUITC,
+    SUITS,
+    SUP1,
+    SUP2,
+    SUP3,
+    CIRCLEI,
+    NBSP,
     GNEWS,
     SSMENU,
     GIT_ADD,
@@ -414,7 +423,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  [SYMB_LAYER] 
 //,-------------------------------------------------------------------------------------------------------------------------------------,
 //: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
-//:|    | |    ||    ||    ||    | |    ||    ||    ||    | |    ||    ||    ||    | : Vol : |    ||    ||    | |    ||    ||    ||    |:
+//:|    | |SUP1||SUP2||SUP3||    | |SUTH||SUTD||SUTC||SUTS| |CRCI||    ||    ||NBSP| : Vol : |    ||    ||    | |    ||    ||    ||    |:
 //:|____| |____||____||____||____| |____||____||____||____| |____||____||____||____| `.___.  |____||____||____| |____||____||____||____|:
 //: _______________________________________________________________________________________   ________________   ______________________ :
 //:|LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||         | |LLck||    ||    | |    ||    ||    ||    |:
@@ -429,7 +438,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
 //`-------------------------------------------------------------------------------------------------------------------------------------`
     [SYMB_LAYER] = LAYOUT_109_ansi(
-        _______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______, KC_MUTE,
+        _______, SUP1, SUP2, SUP3, _______, SUITH, SUITD, SUITC, SUITS,  CIRCLEI, _______, _______, NBSP, KC_MUTE,
                                                                              _______,_______,_______,  _______, _______, _______,_______,
         LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,_______,
                                                                                   LLOCK,_______,_______, _______,_______,_______,_______,
@@ -737,6 +746,9 @@ bool key_should_fade(keytracker key, uint8_t layer);
 
 // funciton to send an alternate key if a modifier is being held
 void dual_key(uint16_t std_keycode, uint16_t alt_keycode, uint8_t mod_mask);
+
+// function to send symbols normally requiring unicode input in macos
+void symbol_key_mac(const char *unicode, const char *shift_unicode);
 
 // funciton to send emoji
 void send_emoji(const char *emoji_code, const char *alt_emoji_code);
@@ -1514,6 +1526,51 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             send_emoji("d83cdf7c","d83cdf7e");
     	}
     	break;
+    case SUITH:
+        if (record->event.pressed) {
+            symbol_key_mac("2665","2661");
+        }
+        break;
+    case SUITD:
+        if (record->event.pressed) {
+            symbol_key_mac("2666","2662");
+        }
+        break;
+    case SUITC:
+        if (record->event.pressed) {
+            symbol_key_mac("2663","2667");
+        }
+        break;
+    case SUITS:
+        if (record->event.pressed) {
+            symbol_key_mac("2660","2664");
+        }
+        break;
+    case SUP1:
+        if (record->event.pressed) {
+            symbol_key_mac("00b9","2074");
+        }
+        break;
+    case SUP2:
+        if (record->event.pressed) {
+            symbol_key_mac("00b2","2075");
+        }
+        break;
+    case SUP3:
+        if (record->event.pressed) {
+            symbol_key_mac("00b3","2076");
+        }
+        break;
+    case CIRCLEI:
+        if (record->event.pressed) {
+            symbol_key_mac("24d8","24be");
+        }
+        break;
+    case NBSP:
+        if (record->event.pressed) {
+            symbol_key_mac("00a0","00a6");
+        }
+        break;
     case SSMENU:
     	if (record->event.pressed) {
     	   // send shift + command + 5 (for screenshot with options menus) 
@@ -2002,6 +2059,29 @@ void send_emoji(const char *emoji_code, const char *alt_emoji_code) {
 	add_mods(MOD_MASK_ALT); // hold down option
 	send_string(emoji_code); // send emoji code
 	del_mods(MOD_MASK_ALT); // release option
+        send_string_with_delay(SS_LCTL(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_SPC))))),10); // switch os keyboard input back to language
+    }
+}
+
+// this should replace send_emojii, but can work that out later
+void symbol_key_mac(const char *unicode, const char *shift_unicode) {
+    // get current mod and one-shot mod states.
+    const uint8_t mods = get_mods();
+    const uint8_t oneshot_mods = get_oneshot_mods();
+    if ((mods | oneshot_mods) & MOD_MASK_SHIFT) { // if shift is being held
+        del_oneshot_mods(MOD_MASK_SHIFT); // delete oneshot shift mod
+        unregister_mods(MOD_MASK_SHIFT);  // temporarily delete shift mod
+        send_string(SS_LCTL(SS_LOPT(SS_LCMD(SS_TAP(X_SPC))))); // switch os keybaord input to unicode
+        add_mods(MOD_MASK_ALT); // hold down option
+        send_string(shift_unicode); // send shift_unicode
+        del_mods(MOD_MASK_ALT); // release option
+        send_string_with_delay(SS_LCTL(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_SPC))))),10); // switch os keyboard input back to language
+        register_mods(mods); // restore original mods
+    } else {
+        send_string(SS_LCTL(SS_LOPT(SS_LCMD(SS_TAP(X_SPC))))); // switch os keybaord input to unicode
+        add_mods(MOD_MASK_ALT); // hold down option
+        send_string(unicode); // send unicode
+        del_mods(MOD_MASK_ALT); // release option
         send_string_with_delay(SS_LCTL(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_SPC))))),10); // switch os keyboard input back to language
     }
 }
