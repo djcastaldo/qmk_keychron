@@ -1633,52 +1633,143 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     case CIRCL1:
         if (record->event.pressed) {
-            symbol_key_mac("2460","246a");
+            // check mods first so can do a double-cirled number if alt is held
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                symbol_key_mac("24f5","24f5");
+                register_mods(mods);
+            } else {
+                symbol_key_mac("2460","246a");
+            }
         }
         break;
     case CIRCL2:
         if (record->event.pressed) {
-            symbol_key_mac("2461","246b");
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                symbol_key_mac("24f6","24f6");
+                register_mods(mods);
+            } else {
+                symbol_key_mac("2461","246b");
+            }
         }
         break;
     case CIRCL3:
         if (record->event.pressed) {
-            symbol_key_mac("2462","246c");
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                symbol_key_mac("24f7","24f7");
+                register_mods(mods);
+            } else {
+                symbol_key_mac("2462","246c");
+            }
         }
         break;
     case CIRCL4:
         if (record->event.pressed) {
-            symbol_key_mac("2463","246d");
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                symbol_key_mac("24f8","24f8");
+                register_mods(mods);
+            } else {
+                symbol_key_mac("2463","246d");
+            }
         }
         break;
     case CIRCL5:
         if (record->event.pressed) {
-            symbol_key_mac("2464","246e");
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                symbol_key_mac("24f9","24f9");
+                register_mods(mods);
+            } else {
+                symbol_key_mac("2464","246e");
+            }
         }
         break;
     case CIRCL6:
         if (record->event.pressed) {
-            symbol_key_mac("2465","246f");
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                symbol_key_mac("24fa","24fa");
+                register_mods(mods);
+            } else {
+                symbol_key_mac("2465","246f");
+            }
         }
         break;
     case CIRCL7:
         if (record->event.pressed) {
-            symbol_key_mac("2466","2470");
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                symbol_key_mac("24fb","24fb");
+                register_mods(mods);
+            } else {
+                symbol_key_mac("2466","2470");
+            }
         }
         break;
     case CIRCL8:
         if (record->event.pressed) {
-            symbol_key_mac("2467","2471");
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                symbol_key_mac("24fc","24fc");
+                register_mods(mods);
+            } else {
+                symbol_key_mac("2467","2471");
+            }
         }
         break;
     case CIRCL9:
         if (record->event.pressed) {
-            symbol_key_mac("2468","2472");
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                symbol_key_mac("24fd","24fd");
+                register_mods(mods);
+            } else {
+                symbol_key_mac("2468","2472");
+            }
         }
         break;
     case CIRCL0:
         if (record->event.pressed) {
-            symbol_key_mac("24ea","2469");
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                symbol_key_mac("24fe","2473");
+                register_mods(mods);
+            } else {
+                symbol_key_mac("24ea","2469");
+            }
         }
         break;
     case CIRCLQ:
