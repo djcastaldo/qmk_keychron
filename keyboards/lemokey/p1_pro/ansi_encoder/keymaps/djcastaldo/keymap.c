@@ -168,6 +168,7 @@ enum custom_keycodes {
     STHRU,
     UNDERLN,
     BARTEXT,
+    BBRTEXT,
     JIGGLE,
     DUAL_ZOOMO,
     DUAL_ZOOMI,
@@ -416,10 +417,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  [WIDE_TEXT_LAYR] (purple)
 //  ,-----------------------------------------------------------------------------------------------------------------------------------,
 //  :  ______    ______________________________    ______________________________    ______________________________    ______   .----.  :
-//  : |      |  |      ||      ||      ||      |  |      ||      ||      ||      |  |      ||      ||      ||      |  |LLock | : Vol  : :
+//  : |      |  |      ||      ||      ||      |  |      ||      ||      ||      |  |      ||      ||      ||BBrTxt|  |LLock | : Vol  : :
 //  : |______|  |______||______||______||______|  |______||______||______||______|  |______||______||______||______|  |______| '.____.' :
 //  :  _______________________________________________________________________________________________________________________  ______  :
-//  : |LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||              | |BatTxt| :
+//  : |LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||              | |BarTxt| :
 //  : |______||______||______||______||______||______||______||______||______||______||______||______||______||______________| |______| :
 //  : |          ||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS    | |SThru | :
 //  : |__________||______||______||______||______||______||______||______||______||______||______||______||______||__________| |______| :
@@ -431,7 +432,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |_________||________||_________||______________________________________________||______||______|______|  |______||______||______| :
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
     [WIDE_TEXT_LAYR] = LAYOUT_ansi_82(
-        _______, _______,_______,_______,_______,  _______,_______,_______,_______, _______,_______,_______,_______,    LLOCK,  KC_MUTE,
+        _______, _______,_______,_______,_______,  _______,_______,_______,_______, _______,_______,_______,BBRTEXT,    LLOCK,  KC_MUTE,
         LTRANS,  LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,      _______,  BARTEXT,
         _______,     LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS ,LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,      STHRU,
         _______,         LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,     _______,   UNDERLN,
@@ -528,6 +529,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
 enum key_indexes {
     I_INDICATOR = 0,
     I_ESC = 0,
+    I_BBRTEXT = 12,
     I_LLOCK = 13,
     I_HOME = 13,
     I_GRV = 14,
@@ -799,9 +801,14 @@ int super_scut_altcolor_size = sizeof(super_scut_altcolor) / sizeof(super_scut_a
 bool ms_btn_held = false;
 
 // for tracking wide-text options for the WIDE_TEXT_LAYR
-bool wide_sthru = false;
-bool wide_underln = false;
-bool wide_bartext = false;
+enum {
+    WIDE_STANDARD,
+    WIDE_STHRU,
+    WIDE_UNDERLN,
+    WIDE_BARTEXT,
+    WIDE_BBRTEXT
+};
+uint8_t wide_text_mode = WIDE_STANDARD;
 bool wide_firstchar = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -893,14 +900,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // for some wide modes, should start with the spacing char
             if (layer == WIDE_TEXT_LAYR && wide_firstchar) {
                 unregister_mods(mods); // temp remove mods 
-                if (wide_bartext) {
-                    tap_code16(KC_PIPE);
-                }
-                else if (wide_sthru) {
+                switch (wide_text_mode) {
+                case WIDE_STHRU:
                     tap_code16(KC_MINS);
-                }
-                else if (wide_underln) {
+                    break;
+                case WIDE_UNDERLN:
                     tap_code16(KC_UNDS);
+                    break;
+                case WIDE_BARTEXT:
+                    tap_code16(KC_PIPE);
+                    break;
+                case WIDE_BBRTEXT:
+                    if (is_mac_base()) {
+                        symbol_key_mac("00a6","");
+                    }
+                    else if (user_config.is_linux_base) {
+                        symbol_key_linux("00a6","");
+                    }
+                    else {
+                        symbol_key("0166","");
+                    }
+                    break;
+                default:
+                    break;
                 }
                 register_mods(mods);   // reapply mods
                 wide_firstchar = false;
@@ -912,17 +934,30 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // if WIDE_TEXT_LAYER, add the extra spacing char
             if (layer == WIDE_TEXT_LAYR) {
                 unregister_mods(mods); // temp remove mods 
-                if (wide_bartext) {
-                    tap_code16(KC_PIPE);
-                }
-                else if (wide_sthru) {
+                switch (wide_text_mode) {
+                case WIDE_STHRU:
                     tap_code16(KC_MINS);
-                }
-                else if (wide_underln) {
+                    break;
+                case WIDE_UNDERLN:
                     tap_code16(KC_UNDS);
-                }
-                else {
+                    break;
+                case WIDE_BARTEXT:
+                    tap_code16(KC_PIPE);
+                    break;
+                case WIDE_BBRTEXT:
+                    if (is_mac_base()) {
+                        symbol_key_mac("00a6","");
+                    }
+                    else if (user_config.is_linux_base) {
+                        symbol_key_linux("00a6","");
+                    }
+                    else {
+                        symbol_key("0166","");
+                    }
+                    break;
+                default:
                     tap_code16(KC_SPC);
+                    break;
                 }
                 register_mods(mods);   // reapply mods
             }
@@ -2669,42 +2704,48 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     case STHRU:
         if (record->event.pressed) {
-            if (wide_sthru) {
-                wide_sthru = false;
+            if (wide_text_mode == WIDE_STHRU) {
+                wide_text_mode = WIDE_STANDARD;
                 wide_firstchar = false;
             }
             else {
-                wide_bartext = false;
-                wide_sthru = true;
-                wide_underln = false;
+                wide_text_mode = WIDE_STHRU;
                 wide_firstchar = true;
             }
         }
         break;
     case UNDERLN:
         if (record->event.pressed) {
-            if (wide_underln) {
-                wide_underln = false;
+            if (wide_text_mode == WIDE_UNDERLN) {
+                wide_text_mode = WIDE_STANDARD;
                 wide_firstchar = false;
             }
             else {
-                wide_bartext = false;
-                wide_sthru = false;
-                wide_underln = true;
+                wide_text_mode = WIDE_UNDERLN;
                 wide_firstchar = true;
             }
         }
         break;
     case BARTEXT:
         if (record->event.pressed) {
-            if (wide_bartext) {
-                wide_bartext = false;
+            if (wide_text_mode == WIDE_BARTEXT) {
+                wide_text_mode = WIDE_STANDARD;
                 wide_firstchar = false;
             }
             else {
-                wide_bartext = true;
-                wide_sthru = false;
-                wide_underln = false;
+                wide_text_mode = WIDE_BARTEXT;
+                wide_firstchar = true;
+            }
+        }
+        break;
+    case BBRTEXT:
+        if (record->event.pressed) {
+            if (wide_text_mode == WIDE_BBRTEXT) {
+                wide_text_mode = WIDE_STANDARD;
+                wide_firstchar = false;
+            }
+            else {
+                wide_text_mode = WIDE_BBRTEXT;
                 wide_firstchar = true;
             }
         }
@@ -3318,14 +3359,21 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
         // track mode keys on WIDE_TEXT_LAYR
         if (layer == WIDE_TEXT_LAYR) {
-            if (wide_bartext) {
-                rgb_matrix_set_color(I_BARTEXT, RGB_WHITE);  // bartext toggle
-            }
-            else if (wide_sthru) {
+            switch (wide_text_mode) {
+            case WIDE_STHRU:
                 rgb_matrix_set_color(I_STHRU, RGB_WHITE);    // sthru toggle
-            }
-            else if (wide_underln) {
+                break;
+            case WIDE_UNDERLN:
                 rgb_matrix_set_color(I_UNDERLN, RGB_WHITE);  // underln toggle
+                break;
+            case WIDE_BARTEXT:
+                rgb_matrix_set_color(I_BARTEXT, RGB_WHITE);  // bartext toggle
+                break;
+            case WIDE_BBRTEXT:
+                rgb_matrix_set_color(I_BBRTEXT, RGB_WHITE);  // bbrtext toggle
+                break;
+            default:
+                break;
             }
         }
         // track caps_lock
