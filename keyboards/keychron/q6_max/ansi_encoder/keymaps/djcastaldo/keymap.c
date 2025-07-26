@@ -241,6 +241,7 @@ enum custom_keycodes {
     STHRU,
     UNDERLN,
     BARTEXT,
+    BBRTEXT,
     COLORTEST,
     FLASH_KB,
     BOOTLDR
@@ -490,7 +491,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:|    | |    ||    ||    ||    | |    ||    ||    ||    | |    ||    ||    ||    | : Vol : |    ||    ||    | |    ||    ||    ||    |:
 //:|____| |____||____||____||____| |____||____||____||____| |____||____||____||____| `.___.  |____||____||____| |____||____||____||____|:
 //: _______________________________________________________________________________________   ________________   ______________________ :
-//:|LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||         | |LLck||    ||SThr| |    ||    ||    ||    |:
+//:|LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||         | |LLck||BBTx||SThr| |    ||    ||    ||    |:
 //:|____||____||____||____||____||____||____||____||____||____||____||____||____||_________| |____||____||____| |____||____||____||____|:
 //:|       ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN  | |    ||BTxt||ULin| |    ||    ||    ||    |:
 //:|_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____||    |:
@@ -505,7 +506,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______, KC_MUTE,
                                                                              _______,_______,_______,  _______, _______, _______,_______,
         LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,_______,
-                                                                                    LLOCK,_______,STHRU, _______,_______,_______,_______,
+                                                                                    LLOCK,BBRTEXT,STHRU, _______,_______,_______,_______,
         _______,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,
                                                                                          _______,BARTEXT,UNDERLN,_______,_______,_______,
         _______,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,_______,
@@ -638,6 +639,7 @@ enum key_indexes {
     I_INS = 33,
     I_HOME = 34,
     I_FJLIGHT = 34,
+    I_BBRTEXT = 34,
     I_PGUP = 35,
     I_STHRU = 35,
     I_NUMLOCK = 36,
@@ -757,9 +759,14 @@ bool ms_btn_held = false;
 bool is_lopt_held = false;
 
 // for tracking wide-text options for the WIDE_TEXT_LAYR
-bool wide_sthru = false;
-bool wide_underln = false;
-bool wide_bartext = false;
+enum {
+    WIDE_STANDARD,
+    WIDE_STHRU,
+    WIDE_UNDERLN,
+    WIDE_BARTEXT,
+    WIDE_BBRTEXT
+};
+uint8_t wide_text_mode = WIDE_STANDARD;
 bool wide_firstchar = false;
 
 // tap dance setup
@@ -946,16 +953,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 register_mods(mods);   // reapply mods
             }
             // for some wide modes, should start with the spacing char
-            else if (layer == WIDE_TEXT_LAYR && wide_firstchar) {
+            if (layer == WIDE_TEXT_LAYR && wide_firstchar) {
                 unregister_mods(mods); // temp remove mods
-                if (wide_bartext) {
-                    tap_code16(KC_PIPE);
-                }
-                else if (wide_sthru) {
+                switch (wide_text_mode) {
+                case WIDE_STHRU:
                     tap_code16(KC_MINS);
-                }
-                else if (wide_underln) {
+                    break;
+                case WIDE_UNDERLN:
                     tap_code16(KC_UNDS);
+                    break;
+                case WIDE_BARTEXT:
+                    tap_code16(KC_PIPE);
+                    break;
+                case WIDE_BBRTEXT:
+                    symbol_key_mac("00a6","");
+                    break;
+                default:
+                    break;
                 }
                 register_mods(mods);   // reapply mods
                 wide_firstchar = false;
@@ -965,17 +979,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // if WIDE_TEXT_LAYER, add the extra spacing char
             if (layer == WIDE_TEXT_LAYR) {
                 unregister_mods(mods); // temp remove mods
-                if (wide_bartext) {
-                    tap_code16(KC_PIPE);
-                }
-                else if (wide_sthru) {
+                switch (wide_text_mode) {
+                case WIDE_STHRU:
                     tap_code16(KC_MINS);
-                }
-                else if (wide_underln) {
+                    break;
+                case WIDE_UNDERLN:
                     tap_code16(KC_UNDS);
-                }
-                else {
+                    break;
+                case WIDE_BARTEXT:
+                    tap_code16(KC_PIPE);
+                    break;
+                case WIDE_BBRTEXT:
+                    symbol_key_mac("00a6","");
+                    break;
+                default:
                     tap_code16(KC_SPC);
+                    break;
                 }
                 register_mods(mods);   // reapply mods
             }
@@ -2269,42 +2288,48 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     case STHRU:
         if (record->event.pressed) {
-            if (wide_sthru) {
-                wide_sthru = false;
+            if (wide_text_mode == WIDE_STHRU) {
+                wide_text_mode = WIDE_STANDARD;
                 wide_firstchar = false;
             }
             else {
-                wide_bartext = false;
-                wide_sthru = true;
-                wide_underln = false;
+                wide_text_mode = WIDE_STHRU;
                 wide_firstchar = true;
             }
         }
         break;
     case UNDERLN:
         if (record->event.pressed) {
-            if (wide_underln) {
-                wide_underln = false;
+            if (wide_text_mode == WIDE_UNDERLN) {
+                wide_text_mode = WIDE_STANDARD;
                 wide_firstchar = false;
             }
             else {
-                wide_bartext = false;
-                wide_sthru = false;
-                wide_underln = true;
+                wide_text_mode = WIDE_UNDERLN;
                 wide_firstchar = true;
             }
         }
         break;
     case BARTEXT:
         if (record->event.pressed) {
-            if (wide_bartext) {
-                wide_bartext = false;
+            if (wide_text_mode == WIDE_BARTEXT) {
+                wide_text_mode = WIDE_STANDARD;
                 wide_firstchar = false;
             }
             else {
-                wide_bartext = true;
-                wide_sthru = false;
-                wide_underln = false;
+                wide_text_mode = WIDE_BARTEXT;
+                wide_firstchar = true;
+            }
+        }
+        break;
+    case BBRTEXT:
+        if (record->event.pressed) {
+            if (wide_text_mode == WIDE_BBRTEXT) {
+                wide_text_mode = WIDE_STANDARD;
+                wide_firstchar = false;
+            }
+            else {
+                wide_text_mode = WIDE_BBRTEXT;
                 wide_firstchar = true;
             }
         }
@@ -2993,14 +3018,21 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
         // track mode keys on WIDE_TEXT_LAYR
         if (layer == WIDE_TEXT_LAYR) {
-            if (wide_bartext) {
-                rgb_matrix_set_color(I_BARTEXT, RGB_WHITE);  // bartext toggle
-            }
-            else if (wide_sthru) {
+            switch (wide_text_mode) {
+            case WIDE_STHRU:
                 rgb_matrix_set_color(I_STHRU, RGB_WHITE);    // sthru toggle
-            }
-            else if (wide_underln) {
+                break;
+            case WIDE_UNDERLN:
                 rgb_matrix_set_color(I_UNDERLN, RGB_WHITE);  // underln toggle
+                break;
+            case WIDE_BARTEXT:
+                rgb_matrix_set_color(I_BARTEXT, RGB_WHITE);  // bartext toggle
+                break;
+            case WIDE_BBRTEXT:
+                rgb_matrix_set_color(I_BBRTEXT, RGB_WHITE);  // bbrtext toggle
+                break;
+            default:
+                break;
             }
         }
         // show wireless connection on CTL_LAYER if in bt or 2.4g modes
@@ -3025,7 +3057,8 @@ bool key_should_fade(keytracker key, uint8_t layer) {
        (key.index == I_INS || key.index == I_ENT) ||                                                                // ins, enter
        ((layer == 1 || layer == 3 || layer == WIDE_TEXT_LAYR || layer == CIRCLE_TEXT_LAYR || is_caps_word_on()) &&
          (key.index == I_LSFT || key.index == I_RSFT)) ||                                                           // shift
-       (layer == WIDE_TEXT_LAYR && (key.index == I_BARTEXT || key.index == I_STHRU || key.index == I_UNDERLN)) ||   // wide-text toggles
+       (layer == WIDE_TEXT_LAYR && (key.index == I_BARTEXT || key.index == I_STHRU ||
+         key.index == I_UNDERLN || key.index == I_BBRTEXT)) ||                                                      // wide-text toggles
        (layer == CTL_LAYER && (key.index >= I_N1 && key.index <= I_N4)) ||                                          // wireless mode keys
        (layer < 2 && key.index > 94 && key.index < 103) ||                                                          // bottom row mods
        (layer == 4 && (key.index == I_LCTL || key.index == I_RCTL || key.index == I_HOME || key.index == I_END ||

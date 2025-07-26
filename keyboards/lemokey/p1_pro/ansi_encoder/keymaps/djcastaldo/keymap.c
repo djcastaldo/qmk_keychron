@@ -3414,7 +3414,8 @@ bool key_should_fade(keytracker key, uint8_t layer) {
       (is_in_leader_sequence && key.index == I_L) ||                                                             // leader key
       (layer == SFT_LAYR && (key.index == I_NUMLOCK || key.index == I_PGUP)) ||                                  // num lock, mouse hold
       (layer == FN_LAYR && key.index == I_SLOCK) ||                                                              // scroll lock
-      (layer == WIDE_TEXT_LAYR && (key.index == I_BARTEXT || key.index == I_STHRU || key.index == I_UNDERLN)) || // wide-text toggles
+      (layer == WIDE_TEXT_LAYR && (key.index == I_BARTEXT || key.index == I_STHRU ||
+        key.index == I_UNDERLN || key.index == I_BBRTEXT)) ||                                                    // wide-text toggles
       (layer == CTL_LAYR && (key.index == I_FJLIGHT || key.index == I_HROWLIGHT)) ||                             // hrow/fj indicators 
       (layer == CTL_LAYR && (key.index >= I_N1 && key.index <= I_N4)) ||                                         // wireless mode keys
       (os_changed) ||                                                                                            // mac/win/lin change
