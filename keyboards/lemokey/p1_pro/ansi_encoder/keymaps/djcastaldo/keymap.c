@@ -756,7 +756,7 @@ uint32_t osl_macro_callback(uint32_t trigger_time, void *cb_arg) {
 void dual_key(uint16_t std_keycode, uint16_t alt_keycode, uint8_t mod_mask);
 
 // function to send symbols normally requiring alt codes in ms windows
-void symbol_key(const char *alt_code, const char *shift_alt_code);
+void symbol_key(const char *alt_code, const char *shift_alt_code, bool is_tap_dance);
 // function to send symbols normally requiring hex codes in linux
 void symbol_key_linux(const char *hex_code, const char *shift_hex_code);
 // function to send symbols normally requiring unicode input in macos
@@ -918,7 +918,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                         symbol_key_linux("00a6","");
                     }
                     else {
-                        symbol_key("0166","");
+                        symbol_key("0166","", false);
                     }
                     break;
                 default:
@@ -952,7 +952,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                         symbol_key_linux("00a6","");
                     }
                     else {
-                        symbol_key("0166","");
+                        symbol_key("0166","", false);
                     }
                     break;
                 default:
@@ -1535,7 +1535,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("2122","20ac");
             }
             else {
-                symbol_key("0153","0128");
+                symbol_key("0153","0128", false);
             }
         }   
         break;
@@ -1545,7 +1545,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00a3","2039");
             }
             else {
-                symbol_key("156","0139");
+                symbol_key("156","0139", false);
             }
         }   
         break;
@@ -1555,7 +1555,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00a2","203a");
             }
             else {
-                symbol_key("155","0155");
+                symbol_key("155","0155", false);
             }
         }   
         break;
@@ -1565,7 +1565,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("221e","fb01");
             }
             else {
-                symbol_key("236","64257");
+                symbol_key("236","64257", false);
             }
         }   
         break;
@@ -1575,7 +1575,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00a7","fb02");
             }
             else {
-                symbol_key("21","64258");
+                symbol_key("21","64258", false);
             }
         }   
         break;
@@ -1585,7 +1585,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00b6","2021");
             }
             else {
-                symbol_key("20","0135");
+                symbol_key("20","0135", false);
             }
         }   
         break;
@@ -1595,7 +1595,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("2022","00b0");
             }
             else {
-                symbol_key("7","248");
+                symbol_key("7","248", false);
             }
         }   
         break;
@@ -1605,7 +1605,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00aa","00b7");
             }
             else {
-                symbol_key("166","9");
+                symbol_key("166","9", false);
             }
         }   
         break;
@@ -1615,7 +1615,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00ba","201a");
             }
             else {
-                symbol_key("167","0164");
+                symbol_key("167","0164", false);
             }
         }   
         break;
@@ -1625,7 +1625,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("2013","2014");
             }
             else {
-                symbol_key("0151","22");
+                symbol_key("0151","22", false);
             }
         }   
         break;
@@ -1635,7 +1635,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("2260","00b1");
             }
             else {
-                symbol_key("8800","241");
+                symbol_key("8800","241", false);
             }
         }   
         break;
@@ -1645,7 +1645,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("0153","0152");
             }
             else {
-                symbol_key("0156","0140");
+                symbol_key("0156","0140", false);
             }
         }   
         break;
@@ -1655,7 +1655,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("2211","201e");
             }
             else {
-                symbol_key("228","0132");
+                symbol_key("228","0132", false);
             }
         }   
         break;
@@ -1665,7 +1665,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00ae","2030");
             }
             else {
-                symbol_key("0174","0137");
+                symbol_key("0174","0137", false);
             }
         }   
         break;
@@ -1675,7 +1675,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("2020","02c7");
             }
             else {
-                symbol_key("0134","259");
+                symbol_key("0134","259", false);
             }
         }   
         break;
@@ -1685,7 +1685,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00a5","00c1");
             }
             else {
-                symbol_key("157","0193");
+                symbol_key("157","0193", false);
             }
         }   
         break;
@@ -1695,7 +1695,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00f8","00d8");
             }
             else {
-                symbol_key("0248","0216");
+                symbol_key("0248","0216", false);
             }
         }   
         break;
@@ -1705,7 +1705,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("03c0","03a0");
             }
             else {
-                symbol_key("227","928");
+                symbol_key("227","928", false);
             }
         }   
         break;
@@ -1715,7 +1715,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("201c","201d");
             }
             else {
-                symbol_key("0147","0148");
+                symbol_key("0147","0148", false);
             }
         }   
         break;
@@ -1725,7 +1725,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("2018","2019");
             }
             else {
-                symbol_key("0145","0146");
+                symbol_key("0145","0146", false);
             }
         }   
         break;
@@ -1735,7 +1735,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00ab","00bb");
             }
             else {
-                symbol_key("174","175");
+                symbol_key("174","175", false);
             }
         }   
         break;
@@ -1745,7 +1745,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00e5","00c5");
             }
             else {
-                symbol_key("0229","0197");
+                symbol_key("0229","0197", false);
             }
         }   
         break;
@@ -1755,7 +1755,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00df","00cd");
             }
             else {
-                symbol_key("225","0205");
+                symbol_key("225","0205", false);
             }
         }   
         break;
@@ -1765,7 +1765,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("2202","00ce");
             }
             else {
-                symbol_key("8706","0206");
+                symbol_key("8706","0206", false);
             }
         }   
         break;
@@ -1775,7 +1775,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("0192","00cf");
             }
             else {
-                symbol_key("159","0207");
+                symbol_key("159","0207", false);
             }
         }   
         break;
@@ -1785,7 +1785,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00a9","02dd");
             }
             else {
-                symbol_key("0169","0180");
+                symbol_key("0169","0180", false);
             }
         }   
         break;
@@ -1795,7 +1795,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("02d9","00d3");
             }
             else {
-                symbol_key("0183","0211");
+                symbol_key("0183","0211", false);
             }
         }
         break;
@@ -1805,7 +1805,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("2206","00d4");
             }
             else {
-                symbol_key("30","0212");
+                symbol_key("30","0212", false);
             }
         }
         break;
@@ -1815,7 +1815,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("02da","03f0");
             }
             else {
-                symbol_key("0186","0208");
+                symbol_key("0186","0208", false);
             }
         }
         break;
@@ -1825,7 +1825,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00ac","00d2");
             }
             else {
-                symbol_key("170","0210");
+                symbol_key("170","0210", false);
             }
         }
         break;
@@ -1835,7 +1835,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("2026","00da");
             }
             else {
-                symbol_key("0133","0218");
+                symbol_key("0133","0218", false);
             }
         }
         break;
@@ -1845,7 +1845,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00e6","00c6");
             }
             else {
-                symbol_key("0230","0198");
+                symbol_key("0230","0198", false);
             }
         }
         break;
@@ -1855,7 +1855,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("03a9","00b8");
             }
             else {
-                symbol_key("234","0184");
+                symbol_key("234","0184", false);
             }
         }
         break;
@@ -1865,7 +1865,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("2248","02db");
             }
             else {
-                symbol_key("247","0215");
+                symbol_key("247","0215", false);
             }
         }
         break;
@@ -1875,7 +1875,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00e7","00c7");
             }
             else {
-                symbol_key("0231","0199");
+                symbol_key("0231","0199", false);
             }
         }
         break;
@@ -1885,7 +1885,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("221a","25ca");
             }
             else {
-                symbol_key("251","4");
+                symbol_key("251","4", false);
             }
         }
         break;
@@ -1895,7 +1895,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("222b","0131");
             }
             else {
-                symbol_key("8747","0305");
+                symbol_key("8747","0305", false);
             }
         }
         break;
@@ -1905,7 +1905,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("03bc","00c2");
             }
             else {
-                symbol_key("230","0194");
+                symbol_key("230","0194", false);
             }
         }
         break;
@@ -1915,7 +1915,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("2264","00af");
             }
             else {
-                symbol_key("243","0175");
+                symbol_key("243","0175", false);
             }
         }
         break;
@@ -1925,7 +1925,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("2265","02d8");
             }
             else {
-                symbol_key("242","0168");
+                symbol_key("242","0168", false);
             }
         }
         break;
@@ -1935,7 +1935,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00f7","00bf");
             }
             else {
-                symbol_key("0247","168");
+                symbol_key("0247","168", false);
             }
         }
         break;
@@ -1948,7 +1948,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("2665","2661");
             }
             else {
-                symbol_key("3","3");
+                symbol_key("3","3", false);
             }
         }
         break;
@@ -1961,7 +1961,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("2666","2662");
             }
             else {
-                symbol_key("4","4");
+                symbol_key("4","4", false);
             }
         }
         break;
@@ -1974,7 +1974,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("2663","2667");
             }
             else {
-                symbol_key("5","5");
+                symbol_key("5","5", false);
             }
         }
         break;
@@ -1987,7 +1987,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("2660","2664");
             }
             else {
-                symbol_key("6","6");
+                symbol_key("6","6", false);
             }
         }
         break;
@@ -2000,7 +2000,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00b9","2074");
             }
             else {
-                symbol_key("0185","0185");
+                symbol_key("0185","0185", false);
             }
         }
         break;
@@ -2013,7 +2013,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00b2","2075");
             }
             else {
-                symbol_key("0178","0178");
+                symbol_key("0178","0178", false);
             }
         }
         break;
@@ -2026,7 +2026,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00b3","2076");
             }
             else {
-                symbol_key("0179","0179");
+                symbol_key("0179","0179", false);
             }
         }
         break;
@@ -2039,7 +2039,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("00a0","00a6");
             }
             else {
-                symbol_key("0160","0166");
+                symbol_key("0160","0166", false);
             }
         }
         break;
@@ -2058,7 +2058,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("24f5","24f5");
                 }
                 else {
-                    symbol_key("9461","9461");
+                    symbol_key("9461","9461", false);
                 }
                 register_mods(mods);
             } else {
@@ -2069,7 +2069,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("2460","246a");
                 }
                 else {
-                    symbol_key("9312","9322");
+                    symbol_key("9312","9322", false);
                 }
             }
         }
@@ -2088,7 +2088,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("24f6","24f6");
                 }
                 else {
-                    symbol_key("9462","9462");
+                    symbol_key("9462","9462", false);
                 }
                 register_mods(mods);
             } else {
@@ -2099,7 +2099,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("2461","246b");
                 }
                 else {
-                    symbol_key("9313","9323");
+                    symbol_key("9313","9323", false);
                 }
             }
         }
@@ -2118,7 +2118,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("24f7","24f7");
                 }
                 else {
-                    symbol_key("9463","9463");
+                    symbol_key("9463","9463", false);
                 }
                 register_mods(mods);
             } else {
@@ -2129,7 +2129,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("2462","246c");
                 }
                 else {
-                    symbol_key("9314","9324");
+                    symbol_key("9314","9324", false);
                 }
             }
         }
@@ -2148,7 +2148,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("24f8","24f8");
                 }
                 else {
-                    symbol_key("9464","9464");
+                    symbol_key("9464","9464", false);
                 }
                 register_mods(mods);
             } else {
@@ -2159,7 +2159,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("2463","246d");
                 }
                 else {
-                    symbol_key("9315","9325");
+                    symbol_key("9315","9325", false);
                 }
             }
         }
@@ -2178,7 +2178,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("24f9","24f9");
                 }
                 else {
-                    symbol_key("9465","9465");
+                    symbol_key("9465","9465", false);
                 }
                 register_mods(mods);
             } else {
@@ -2189,7 +2189,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("2464","246e");
                 }
                 else {
-                    symbol_key("9316","9326");
+                    symbol_key("9316","9326", false);
                 }
             }
         }
@@ -2208,7 +2208,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("24fa","24fa");
                 }
                 else {
-                    symbol_key("9466","9466");
+                    symbol_key("9466","9466", false);
                 }
                 register_mods(mods);
             } else {
@@ -2219,7 +2219,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("2465","246f");
                 }
                 else {
-                    symbol_key("9317","9327");
+                    symbol_key("9317","9327", false);
                 }
             }
         }
@@ -2238,7 +2238,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("24fb","24fb");
                 }
                 else {
-                    symbol_key("9467","9467");
+                    symbol_key("9467","9467", false);
                 }
                 register_mods(mods);
             } else {
@@ -2249,7 +2249,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("2466","2470");
                 }
                 else {
-                    symbol_key("9318","9328");
+                    symbol_key("9318","9328", false);
                 }
             }
         }
@@ -2268,7 +2268,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("24fc","24fc");
                 }
                 else {
-                    symbol_key("9468","9468");
+                    symbol_key("9468","9468", false);
                 }
                 register_mods(mods);
             } else {
@@ -2279,7 +2279,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("2467","2471");
                 }
                 else {
-                    symbol_key("9319","9329");
+                    symbol_key("9319","9329", false);
                 }
             }
         }
@@ -2298,7 +2298,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("24fd","24fd");
                 }
                 else {
-                    symbol_key("9469","9469");
+                    symbol_key("9469","9469", false);
                 }
                 register_mods(mods);
             } else {
@@ -2309,7 +2309,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("2468","2472");
                 }
                 else {
-                    symbol_key("9320","9330");
+                    symbol_key("9320","9330", false);
                 }
             }
         }
@@ -2328,7 +2328,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("24fe","2473");
                 }
                 else {
-                    symbol_key("9470","9331");
+                    symbol_key("9470","9331", false);
                 }
                 register_mods(mods);
             } else {
@@ -2339,7 +2339,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     symbol_key_linux("24ea","2469");
                 }
                 else {
-                    symbol_key("9450","9321");
+                    symbol_key("9450","9321", false);
                 }
             }
         }
@@ -2353,7 +2353,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24e0","24c6");
             }
             else {
-                symbol_key("9440","9414");
+                symbol_key("9440","9414", false);
             }
         }
         break;
@@ -2366,7 +2366,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24e6","24cc");
             }
             else {
-                symbol_key("9446","9420");
+                symbol_key("9446","9420", false);
             }
         }
         break;
@@ -2379,7 +2379,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24d4","24ba");
             }
             else {
-                symbol_key("9428","9402");
+                symbol_key("9428","9402", false);
             }
         }
         break;
@@ -2392,7 +2392,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24e1","24c7");
             }
             else {
-                symbol_key("9441","9415");
+                symbol_key("9441","9415", false);
             }
         }
         break;
@@ -2405,7 +2405,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24e3","24c9");
             }
             else {
-                symbol_key("9443","9417");
+                symbol_key("9443","9417", false);
             }
         }
         break;
@@ -2418,7 +2418,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24e8","24ce");
             }
             else {
-                symbol_key("9448","9422");
+                symbol_key("9448","9422", false);
             }
         }
         break;
@@ -2431,7 +2431,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24e4","24ca");
             }
             else {
-                symbol_key("9444","9418");
+                symbol_key("9444","9418", false);
             }
         }
         break;
@@ -2444,7 +2444,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24d8","24be");
             }
             else {
-                symbol_key("9432","9406");
+                symbol_key("9432","9406", false);
             }
         }
         break;
@@ -2457,7 +2457,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24de","24c4");
             }
             else {
-                symbol_key("9438","9412");
+                symbol_key("9438","9412", false);
             }
         }
         break;
@@ -2470,7 +2470,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24df","24c5");
             }
             else {
-                symbol_key("9439","9413");
+                symbol_key("9439","9413", false);
             }
         }
         break;
@@ -2483,7 +2483,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24d0","24b6");
             }
             else {
-                symbol_key("9424","9398");
+                symbol_key("9424","9398", false);
             }
         }
         break;
@@ -2496,7 +2496,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24e2","24c8");
             }
             else {
-                symbol_key("9442","9416");
+                symbol_key("9442","9416", false);
             }
         }
         break;
@@ -2509,7 +2509,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24d3","24b9");
             }
             else {
-                symbol_key("9427","9401");
+                symbol_key("9427","9401", false);
             }
         }
         break;
@@ -2522,7 +2522,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24d5","24bb");
             }
             else {
-                symbol_key("9429","9403");
+                symbol_key("9429","9403", false);
             }
         }
         break;
@@ -2535,7 +2535,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24d6","24bc");
             }
             else {
-                symbol_key("9430","9404");
+                symbol_key("9430","9404", false);
             }
         }
         break;
@@ -2548,7 +2548,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24d7","24bd");
             }
             else {
-                symbol_key("9431","9405");
+                symbol_key("9431","9405", false);
             }
         }
         break;
@@ -2561,7 +2561,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24d9","24bf");
             }
             else {
-                symbol_key("9433","9407");
+                symbol_key("9433","9407", false);
             }
         }
         break;
@@ -2574,7 +2574,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24da","24c0");
             }
             else {
-                symbol_key("9434","9408");
+                symbol_key("9434","9408", false);
             }
         }
         break;
@@ -2587,7 +2587,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24db","24c1");
             }
             else {
-                symbol_key("9435","9409");
+                symbol_key("9435","9409", false);
             }
         }
         break;
@@ -2600,7 +2600,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24e9","24cf");
             }
             else {
-                symbol_key("9449","9423");
+                symbol_key("9449","9423", false);
             }
         }
         break;
@@ -2613,7 +2613,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24e7","24cd");
             }
             else {
-                symbol_key("9447","9421");
+                symbol_key("9447","9421", false);
             }
         }
         break;
@@ -2626,7 +2626,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24d2","24b8");
             }
             else {
-                symbol_key("9426","9400");
+                symbol_key("9426","9400", false);
             }
         }
         break;
@@ -2639,7 +2639,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24e5","24cb");
             }
             else {
-                symbol_key("9445","9419");
+                symbol_key("9445","9419", false);
             }
         }
         break;
@@ -2652,7 +2652,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24d1","24b7");
             }
             else {
-                symbol_key("9425","9399");
+                symbol_key("9425","9399", false);
             }
         }
         break;
@@ -2665,7 +2665,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24dd","24c3");
             }
             else {
-                symbol_key("9437","9411");
+                symbol_key("9437","9411", false);
             }
         }
         break;
@@ -2678,7 +2678,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 symbol_key_linux("24dc","24c2");
             }
             else {
-                symbol_key("9436","9410");
+                symbol_key("9436","9410", false);
             }
         }
         break;
@@ -2783,7 +2783,7 @@ void dual_key(uint16_t std_keycode, uint16_t alt_keycode, uint8_t mod_mask) {
     }
 }
 
-void symbol_key(const char *alt_code, const char *shift_alt_code) {
+void symbol_key(const char *alt_code, const char *shift_alt_code, bool is_tap_dance) {
     // get current mod and one-shot mod states.
     const uint8_t mods = get_mods();
     const uint8_t oneshot_mods = get_oneshot_mods();
@@ -2793,16 +2793,30 @@ void symbol_key(const char *alt_code, const char *shift_alt_code) {
         if (shift_alt_code == NULL || *shift_alt_code == '\0') { // null or empty string
             return;
         }
-        // this is needed because tap dances don't correctly unregister shift
-        if (host_keyboard_led_state().num_lock) {
-             tap_code(KC_NUM);
-             numlockChanged = true;
-        }
-        dprintf("alt hold\n");
-        register_code(KC_LALT); // hold down alt
-        type_numpad_keys_from_string(shift_alt_code); // send to fn to type numpad keys
-        dprintf("alt release\n");
-        unregister_code(KC_LALT); // release alt
+        if (is_tap_dance) {
+            // this is needed because tap dances don't correctly unregister shift
+            if (host_keyboard_led_state().num_lock) {
+                 tap_code(KC_NUM);
+                 numlockChanged = true;
+            }
+            dprintf("alt hold\n");
+            register_code(KC_LALT); // hold down alt
+            type_numpad_keys_from_string(shift_alt_code); // send to fn to type numpad keys
+            dprintf("alt release\n");
+            unregister_code(KC_LALT); // release alt
+        }   
+        else {
+            if (!host_keyboard_led_state().num_lock) {
+                 tap_code(KC_NUM);
+                 numlockChanged = true;
+            }
+            del_oneshot_mods(MOD_MASK_SHIFT); // delete oneshot shift mod
+            unregister_mods(MOD_MASK_SHIFT);  // temporarily delete shift mod
+            register_code(KC_LALT); // hold down alt
+            type_numpad_keys_from_string(shift_alt_code); // send to fn to type numpad keys
+            unregister_code(KC_LALT); // release alt
+            register_mods(mods);
+        } 
     } else {
         if (alt_code == NULL || *alt_code == '\0') { // null or empty string
             return;
@@ -3824,7 +3838,7 @@ void actgrv_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00e0","00c0");
       }
       else {
-        symbol_key("0224","0192"); // a
+        symbol_key("0224","0192", true); // a
       }
       break;
     case DOUBLE_TAP:
@@ -3832,7 +3846,7 @@ void actgrv_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00e8","00c8");
       }
       else {
-        symbol_key("0232","0200"); // e
+        symbol_key("0232","0200", true); // e
       }
       break;
     case TRIPLE_TAP:
@@ -3840,7 +3854,7 @@ void actgrv_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00ec","00cc");
       }
       else {
-        symbol_key("0236","0204"); // i
+        symbol_key("0236","0204", true); // i
       }
       break;
     case QUAD_TAP:
@@ -3848,7 +3862,7 @@ void actgrv_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00f2","00d2");
       }
       else {
-        symbol_key("0242","0210"); // o
+        symbol_key("0242","0210", true); // o
       }
       break;
     case PENT_TAP:
@@ -3856,7 +3870,7 @@ void actgrv_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00f9","00d9");
       }
       else {
-        symbol_key("0249","0217"); // u
+        symbol_key("0249","0217", true); // u
       }
       break;
     case HEXA_TAP:
@@ -3894,7 +3908,7 @@ void act1_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00a1","00bc");
       }
       else {
-        symbol_key("173","0188");  // inverted ! or 1/4 
+        symbol_key("173","0188", true);  // inverted ! or 1/4 
       }
       break;
     case DOUBLE_TAP:
@@ -3902,7 +3916,7 @@ void act1_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00bd","00bd");
       }
       else {
-        symbol_key("0189","0189"); // 1/2 
+        symbol_key("0189","0189", true); // 1/2 
       }
       break;
     case TRIPLE_TAP:
@@ -3910,7 +3924,7 @@ void act1_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00be","00be");
       }
       else {
-        symbol_key("0190","0190"); // 3/4
+        symbol_key("0190","0190", true); // 3/4
       }
       break;
     case QUAD_TAP:
@@ -3961,7 +3975,7 @@ void acte_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00e9","00c9");
       }
       else {
-        symbol_key("0233","0201"); // e 
+        symbol_key("0233","0201", true); // e 
       }
       break;
     case DOUBLE_TAP:
@@ -3969,7 +3983,7 @@ void acte_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00e1","00c1");
       }
       else {
-        symbol_key("0225","0193"); // a 
+        symbol_key("0225","0193", true); // a 
       }
       break;
     case TRIPLE_TAP:
@@ -3977,7 +3991,7 @@ void acte_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00ed","00cd");
       }
       else {
-        symbol_key("0237","0205"); // i 
+        symbol_key("0237","0205", true); // i 
       }
       break;
     case QUAD_TAP:
@@ -3985,7 +3999,7 @@ void acte_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00f3","00d3");
       }
       else {
-        symbol_key("0243","0211"); // o 
+        symbol_key("0243","0211", true); // o 
       }
       break;
     case PENT_TAP:
@@ -3993,7 +4007,7 @@ void acte_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00fa","00da");
       }
       else {
-        symbol_key("0250","0218"); // u 
+        symbol_key("0250","0218", true); // u 
       }
       break;
     case HEXA_TAP:
@@ -4001,7 +4015,7 @@ void acte_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00fd","00dd");
       }
       else {
-        symbol_key("0253","0221"); // y 
+        symbol_key("0253","0221", true); // y 
       }
       break;
   }
@@ -4046,7 +4060,7 @@ void actu_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00e4","00c4");
       }
       else {
-        symbol_key("0228","0196"); // a 
+        symbol_key("0228","0196", true); // a 
       }
       break;
     case DOUBLE_TAP:
@@ -4054,7 +4068,7 @@ void actu_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00eb","00cb");
       }
       else {
-        symbol_key("0235","0203"); // e 
+        symbol_key("0235","0203", true); // e 
       }
       break;
     case TRIPLE_TAP:
@@ -4062,7 +4076,7 @@ void actu_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00ef","00cf");
       }
       else {
-        symbol_key("0239","0207"); // i 
+        symbol_key("0239","0207", true); // i 
       }
       break;
     case QUAD_TAP:
@@ -4070,7 +4084,7 @@ void actu_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00f6","00d6");
       }
       else {
-        symbol_key("0246","0214"); // o 
+        symbol_key("0246","0214", true); // o 
       }
       break;
     case PENT_TAP:
@@ -4078,7 +4092,7 @@ void actu_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00fc","00dc");
       }
       else {
-        symbol_key("0252","0220"); // u 
+        symbol_key("0252","0220", true); // u 
       }
       break;
     case HEXA_TAP:
@@ -4086,7 +4100,7 @@ void actu_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00ff","0178");
       }
       else {
-        symbol_key("0255","0159"); // y 
+        symbol_key("0255","0159", true); // y 
       }
       break;
   }
@@ -4128,7 +4142,7 @@ void acti_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00ee","00ce");
       }
       else {
-        symbol_key("0238","0206"); // i 
+        symbol_key("0238","0206", true); // i 
       }
       break;
     case DOUBLE_TAP:
@@ -4136,7 +4150,7 @@ void acti_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00e2","00c2");
       }
       else {
-        symbol_key("0226","0194"); // a 
+        symbol_key("0226","0194", true); // a 
       }
       break;
     case TRIPLE_TAP:
@@ -4144,7 +4158,7 @@ void acti_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00ea","00ca");
       }
       else {
-        symbol_key("0234","0202"); // e 
+        symbol_key("0234","0202", true); // e 
       }
       break;
     case QUAD_TAP:
@@ -4152,7 +4166,7 @@ void acti_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00f4","00d4");
       }
       else {
-        symbol_key("0244","0212"); // o 
+        symbol_key("0244","0212", true); // o 
       }
       break;
     case PENT_TAP:
@@ -4160,7 +4174,7 @@ void acti_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00fb","00db");
       }
       else {
-        symbol_key("0251","0219"); // u 
+        symbol_key("0251","0219", true); // u 
       }
       break;
     case HEXA_TAP:
@@ -4198,7 +4212,7 @@ void actn_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00f1","00d1");
       }
       else {
-        symbol_key("164","165");   // n 
+        symbol_key("164","165", true);   // n 
       }
       break;
     case DOUBLE_TAP:
@@ -4206,7 +4220,7 @@ void actn_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00e3","00c3");
       }
       else {
-        symbol_key("0227","0195"); // a 
+        symbol_key("0227","0195", true); // a 
       }
       break;
     case TRIPLE_TAP:
@@ -4214,7 +4228,7 @@ void actn_finished (tap_dance_state_t *state, void *user_data) {
         symbol_key_linux("00f5","00d5");
       }
       else {
-        symbol_key("0245","0213"); // o 
+        symbol_key("0245","0213", true); // o 
       }
       break;
   }
