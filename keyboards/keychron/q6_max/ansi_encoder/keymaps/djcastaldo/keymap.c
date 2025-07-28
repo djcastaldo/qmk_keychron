@@ -2421,24 +2421,15 @@ void send_emoji(const char *emoji_code, const char *alt_emoji_code) {
 
 // this should replace send_emojii, but can work that out later
 void symbol_key_mac(const char *unicode, const char *shift_unicode) {
-    // get current mod and one-shot mod states.
     const uint8_t mods = get_mods();
     const uint8_t oneshot_mods = get_oneshot_mods();
     clear_mods();
-    if ((mods | oneshot_mods) & MOD_MASK_SHIFT) { // if shift is being held
-        tap_code16(C(A(G(KC_SPC)))); // switch os keybaord to unicode
-        add_mods(MOD_MASK_ALT);
-        send_string(shift_unicode);  // send shift_unicode
-        del_mods(MOD_MASK_ALT);
-        tap_code16(C(A(G(KC_SPC)))); // switch os keyboard back from unicode
-    } else {
-        tap_code16(C(A(G(KC_SPC)))); // unicode kb
-        add_mods(MOD_MASK_ALT);
-        send_string(unicode);        // send unicode
-        del_mods(MOD_MASK_ALT);
-        tap_code16(C(A(G(KC_SPC)))); // back from unicode kb
-    }
-    register_mods(mods); // restore original mods
+    tap_code16(C(A(G(KC_SPC)))); // switch os keybaord to unicode
+    add_mods(MOD_MASK_ALT);
+    send_string(((mods | oneshot_mods) & MOD_MASK_SHIFT) ? shift_unicode : unicode);
+    del_mods(MOD_MASK_ALT);
+    tap_code16(C(A(G(KC_SPC)))); // switch back from unicode
+    register_mods(mods);
 }
 
 void oneshot_layer_changed_user(uint8_t layer) {
