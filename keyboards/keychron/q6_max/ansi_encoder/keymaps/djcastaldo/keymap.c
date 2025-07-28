@@ -2424,22 +2424,21 @@ void symbol_key_mac(const char *unicode, const char *shift_unicode) {
     // get current mod and one-shot mod states.
     const uint8_t mods = get_mods();
     const uint8_t oneshot_mods = get_oneshot_mods();
+    clear_mods();
     if ((mods | oneshot_mods) & MOD_MASK_SHIFT) { // if shift is being held
-        del_oneshot_mods(MOD_MASK_SHIFT); // delete oneshot shift mod
-        unregister_mods(MOD_MASK_SHIFT);  // temporarily delete shift mod
-        send_string(SS_LCTL(SS_LOPT(SS_LCMD(SS_TAP(X_SPC))))); // switch os keybaord input to unicode
-        add_mods(MOD_MASK_ALT); // hold down option
-        send_string(shift_unicode); // send shift_unicode
-        del_mods(MOD_MASK_ALT); // release option
-        send_string_with_delay(SS_LCTL(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_SPC))))),10); // switch os keyboard input back to language
-        register_mods(mods); // restore original mods
+        tap_code16(C(A(G(KC_SPC)))); // switch os keybaord to unicode
+        add_mods(MOD_MASK_ALT);
+        send_string(shift_unicode);  // send shift_unicode
+        del_mods(MOD_MASK_ALT);
+        tap_code16(C(A(G(KC_SPC)))); // switch os keyboard back from unicode
     } else {
-        send_string(SS_LCTL(SS_LOPT(SS_LCMD(SS_TAP(X_SPC))))); // switch os keybaord input to unicode
-        add_mods(MOD_MASK_ALT); // hold down option
-        send_string(unicode); // send unicode
-        del_mods(MOD_MASK_ALT); // release option
-        send_string_with_delay(SS_LCTL(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_SPC))))),10); // switch os keyboard input back to language
+        tap_code16(C(A(G(KC_SPC)))); // unicode kb
+        add_mods(MOD_MASK_ALT);
+        send_string(unicode);        // send unicode
+        del_mods(MOD_MASK_ALT);
+        tap_code16(C(A(G(KC_SPC)))); // back from unicode kb
     }
+    register_mods(mods); // restore original mods
 }
 
 void oneshot_layer_changed_user(uint8_t layer) {
