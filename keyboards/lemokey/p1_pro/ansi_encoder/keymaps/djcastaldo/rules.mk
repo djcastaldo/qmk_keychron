@@ -1,3 +1,5 @@
+USER_PATH := users/djcastaldo
+include users/djcastaldo/rules.mk
 CONSOLE_ENABLE = no
 KEYBOARD_SHARED_EP = no
 FACTORY_TEST_FNJZ_ENABLE = no
@@ -9,13 +11,8 @@ CAPS_WORD_ENABLE = yes
 DYNAMIC_MACRO_ENABLE = yes
 KEY_LOCK_ENABLE = yes
 LEADER_ENABLE = yes
+EXTRAFLAGS += -DKEYBOARD_IS_LEMOKEY
 SRC += features/layer_lock.c
-ifneq ("$(wildcard keyboards/lemokey/p1_pro/ansi_encoder/keymaps/djcastaldo/secrets.c)","")
-  SRC += secrets.c
-endif
-ifeq ($(strip $(NO_SECRETS)), yes)
-    OPT_DEFS += -DNO_SECRETS
-endif
 ifeq ($(strip $(FACTORY_TEST_FNJZ_ENABLE)), yes)
     OPT_DEFS += -DFACTORY_TEST_FNJZ_ENABLE
 endif

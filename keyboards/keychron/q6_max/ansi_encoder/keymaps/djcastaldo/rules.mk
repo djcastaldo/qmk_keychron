@@ -1,3 +1,5 @@
+USER_PATH := users/djcastaldo
+include users/djcastaldo/rules.mk
 CONSOLE_ENBALE = no 
 KEYBOARD_SHARED_EP = yes
 EXTRAKEY_ENABLE = yes 
@@ -8,10 +10,5 @@ CAPS_WORD_ENABLE = yes
 DYNAMIC_MACRO_ENABLE = yes 
 KEY_LOCK_ENABLE = yes
 LEADER_ENABLE = yes
+EXTRAFLAGS += -DKEYBOARD_IS_KEYCHRON
 SRC += features/layer_lock.c
-ifneq ("$(wildcard keyboards/keychron/q6_max/ansi_encoder/keymaps/djcastaldo/secrets.c)","")
-  SRC += secrets.c
-endif
-ifeq ($(strip $(NO_SECRETS)), yes)
-    OPT_DEFS += -DNO_SECRETS
-endif
