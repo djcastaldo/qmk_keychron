@@ -20,7 +20,7 @@
  * <https://getreuer.info/posts/keyboards/layer-lock>
  */
 
-#include "users/djcastaldo/features/layer_lock.h"
+#include "layer_lock.h"
 
 #pragma message \
     "Custom Layer Lock loaded"

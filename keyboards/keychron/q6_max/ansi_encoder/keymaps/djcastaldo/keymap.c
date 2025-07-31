@@ -21,7 +21,6 @@
 #include "wireless/bat_level_animation.h"
 #include "wireless/wireless.h"
 #include "users/djcastaldo/features/layer_lock.h"
-#include "users/djcastaldo/process_record_userspace.h"
 
 #define NEWFINDER LOPT(LCMD(KC_SPC))            // open new Finder search window
 #define FHOME LCMD(LSFT(KC_H))                  // open new Finder home dir 
@@ -65,6 +64,14 @@ bool process_record_secrets(uint16_t keycode, keyrecord_t *record) {
 __attribute__ ((weak))
 bool process_leader_secrets(void) {
   return true;
+}
+__attribute__ ((weak))
+bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
+    return true;
+}
+__attribute__ ((weak))
+void jiggle_mouse(void) {
+    return;
 }
 
 enum layers {
