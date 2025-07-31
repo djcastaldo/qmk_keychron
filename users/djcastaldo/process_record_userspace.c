@@ -75,3 +75,16 @@ void jiggle_mouse(void) {
     }
     jiggler_token = defer_exec(1, jiggler_callback, NULL);  // schedule callback
 }
+
+// send mac unicode
+void symbol_key_mac(const char *unicode, const char *shift_unicode) {
+    const uint8_t mods = get_mods();
+    const uint8_t oneshot_mods = get_oneshot_mods();
+    clear_mods();
+    tap_code16(C(A(G(KC_SPC)))); // switch os keyboard to unicode
+    add_mods(MOD_MASK_ALT);
+    send_string(((mods | oneshot_mods) & (MOD_MASK_SHIFT | MOD_MASK_GUI)) ? shift_unicode : unicode);
+    del_mods(MOD_MASK_ALT);
+    tap_code16(C(A(G(KC_SPC)))); // switch back from unicode
+    register_mods(mods);
+}

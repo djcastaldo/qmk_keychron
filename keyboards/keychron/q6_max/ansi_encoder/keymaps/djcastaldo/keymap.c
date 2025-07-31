@@ -810,9 +810,6 @@ bool key_should_fade(keytracker key, uint8_t layer);
 // funciton to send an alternate key if a modifier is being held
 void dual_key(uint16_t std_keycode, uint16_t alt_keycode, uint8_t mod_mask);
 
-// function to send symbols normally requiring unicode input in macos
-void symbol_key_mac(const char *unicode, const char *shift_unicode);
-
 // setup cmd-tab app switching 
 static deferred_token cmd_tab_token = INVALID_DEFERRED_TOKEN;
 uint32_t cmd_tab_callback(uint32_t trigger_time, void* cb_arg) {
@@ -2344,19 +2341,6 @@ void dual_key(uint16_t std_keycode, uint16_t alt_keycode, uint8_t mod_mask) {
     else {
         tap_code16(std_keycode);
     }
-}
-
-// send mac unicode
-void symbol_key_mac(const char *unicode, const char *shift_unicode) {
-    const uint8_t mods = get_mods();
-    const uint8_t oneshot_mods = get_oneshot_mods();
-    clear_mods();
-    tap_code16(C(A(G(KC_SPC)))); // switch os keyboard to unicode
-    add_mods(MOD_MASK_ALT);
-    send_string(((mods | oneshot_mods) & (MOD_MASK_SHIFT | MOD_MASK_GUI)) ? shift_unicode : unicode);
-    del_mods(MOD_MASK_ALT);
-    tap_code16(C(A(G(KC_SPC)))); // switch back from unicode
-    register_mods(mods);
 }
 
 void oneshot_layer_changed_user(uint8_t layer) {

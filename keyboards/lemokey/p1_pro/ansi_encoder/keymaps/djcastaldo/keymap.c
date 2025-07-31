@@ -745,8 +745,6 @@ void dual_key(uint16_t std_keycode, uint16_t alt_keycode, uint8_t mod_mask);
 void symbol_key_win(const char *alt_code, const char *shift_alt_code);
 // function to send symbols normally requiring hex codes in linux
 void symbol_key_linux(const char *hex_code, const char *shift_hex_code);
-// function to send symbols normally requiring unicode input in macos
-void symbol_key_mac(const char *unicode, const char *shift_unicode);
 // and to type a string of numbers using the numpad (created for windows alt codes)
 void type_numpad_keys_from_string(const char *stringnum);
 
@@ -2772,18 +2770,6 @@ void symbol_key_linux(const char *hex_code, const char *shift_hex_code) {
     // finish sequence
     tap_code(KC_SPC);
     register_mods(mods); // add back mods
-}
-
-void symbol_key_mac(const char *unicode, const char *shift_unicode) {
-    const uint8_t mods = get_mods();
-    const uint8_t oneshot_mods = get_oneshot_mods();
-    clear_mods();
-    tap_code16(C(A(G(KC_SPC)))); // switch os keybaord to unicode
-    add_mods(MOD_MASK_ALT);
-    send_string(((mods | oneshot_mods) & MOD_MASK_SHIFT) ? shift_unicode : unicode);
-    del_mods(MOD_MASK_ALT);
-    tap_code16(C(A(G(KC_SPC)))); // switch back from unicode
-    register_mods(mods);
 }
 
 // send_string doesn't use the numpad, so this fn was created to type numbers using the numpad

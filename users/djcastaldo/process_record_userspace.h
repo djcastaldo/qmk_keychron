@@ -13,3 +13,4 @@ extern bool enable_keytracker;
 
 bool process_record_userspace(uint16_t keycode, keyrecord_t *record);
 void jiggle_mouse(void);
+void symbol_key_mac(const char *unicode, const char *shift_unicode);
