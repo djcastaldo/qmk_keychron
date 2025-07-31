@@ -813,9 +813,6 @@ void dual_key(uint16_t std_keycode, uint16_t alt_keycode, uint8_t mod_mask);
 // function to send symbols normally requiring unicode input in macos
 void symbol_key_mac(const char *unicode, const char *shift_unicode);
 
-// funciton to send emoji
-void send_emoji(const char *emoji_code, const char *alt_emoji_code);
-
 // setup cmd-tab app switching 
 static deferred_token cmd_tab_token = INVALID_DEFERRED_TOKEN;
 uint32_t cmd_tab_callback(uint32_t trigger_time, void* cb_arg) {
@@ -1307,273 +1304,272 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     	break;
     case E_SMILE:
     	if (record->event.pressed) {
-            //send_emoji("d83dde00","d83dde0e");
-            send_emoji("d83dde00","d83dde06");
+            symbol_key_mac("d83dde00","d83dde06");
     	}
     	break;
     case E_SMIRK:
     	if (record->event.pressed) {
-            send_emoji("d83dde0f","d83dde09");
+            symbol_key_mac("d83dde0f","d83dde09");
     	}
     	break;
     case E_ASTON:
     	if (record->event.pressed) {
-            send_emoji("d83dde32","d83dde27");
+            symbol_key_mac("d83dde32","d83dde27");
     	}
     	break;
     case E_SAD:
     	if (record->event.pressed) {
-            send_emoji("d83dde1f","d83dde1e");
+            symbol_key_mac("d83dde1f","d83dde1e");
     	}
     	break;
     case E_CAR:
     	if (record->event.pressed) {
-            send_emoji("d83dde99","d83ddea2");
+            symbol_key_mac("d83dde99","d83ddea2");
     	}
     	break;
     case E_BUS:
     	if (record->event.pressed) {
-            send_emoji("d83dde8e","d83ddee9");
+            symbol_key_mac("d83dde8e","d83ddee9");
     	}
     	break;
     case E_TRAIN:
     	if (record->event.pressed) {
-            send_emoji("d83dde8a","d83ddeb2");
+            symbol_key_mac("d83dde8a","d83ddeb2");
     	}
     	break;
     case E_TAXI:
     	if (record->event.pressed) {
-            send_emoji("d83dde95","d83ddef4");
+            symbol_key_mac("d83dde95","d83ddef4");
     	}
     	break;
     case E_FLAGUS:
     	if (record->event.pressed) {
-            send_emoji("d83cddfad83cddf8","d83cddeed83cddf9");
+            symbol_key_mac("d83cddfad83cddf8","d83cddeed83cddf9");
     	}
     	break;
     case E_FLAGPI:
     	if (record->event.pressed) {
-            send_emoji("d83cddf5d83cdded","d83cdde8d83cddf3");
+            symbol_key_mac("d83cddf5d83cdded","d83cdde8d83cddf3");
     	}
     	break;
     case E_GLOBE:
     	if (record->event.pressed) {
-            send_emoji("d83cdf0e","d83cdf10");
+            symbol_key_mac("d83cdf0e","d83cdf10");
     	}
     	break;
     case E_PIZZA:
     	if (record->event.pressed) {
-            send_emoji("d83cdf55","d83cdf69");
+            symbol_key_mac("d83cdf55","d83cdf69");
     	}
     	break;
     case E_BURGER:
     	if (record->event.pressed) {
-            send_emoji("d83cdf54","d83cdf5f");
+            symbol_key_mac("d83cdf54","d83cdf5f");
     	}
     	break;
     case E_CHICKEN:
     	if (record->event.pressed) {
-            send_emoji("d83cdf57","d83cdf2d");
+            symbol_key_mac("d83cdf57","d83cdf2d");
     	}
     	break;
     case E_TACO:
     	if (record->event.pressed) {
-            send_emoji("d83cdf2e","d83cdf66");
+            symbol_key_mac("d83cdf2e","d83cdf66");
     	}
     	break;
     case E_SNAIL:
     	if (record->event.pressed) {
-            send_emoji("d83ddc0c","26a1");
+            symbol_key_mac("d83ddc0c","26a1");
     	}
     	break;
     case E_NINJA:
     	if (record->event.pressed) {
-            send_emoji("d83edd77","d83ddc88");
+            symbol_key_mac("d83edd77","d83ddc88");
     	}
     	break;
     case E_STOP:
     	if (record->event.pressed) {
-            send_emoji("d83dded1","270a");
+            symbol_key_mac("d83dded1","270a");
     	}
     	break;
     case E_HAND:
     	if (record->event.pressed) {
-            send_emoji("d83ddd90","270c");
+            symbol_key_mac("d83ddd90","270c");
     	}
     	break;
     case E_SHH:
     	if (record->event.pressed) {
-            send_emoji("d83edd2b","d83dde34");
+            symbol_key_mac("d83edd2b","d83dde34");
     	}
     	break;
     case E_PACKAGE:
     	if (record->event.pressed) {
-            send_emoji("d83ddce6","d83ddcec");
+            symbol_key_mac("d83ddce6","d83ddcec");
     	}
     	break;
     case E_POINTU:
     	if (record->event.pressed) {
-            send_emoji("d83ddc46","2b06fe0f");
+            symbol_key_mac("d83ddc46","2b06fe0f");
     	}
     	break;
     case E_POINTD:
     	if (record->event.pressed) {
-            send_emoji("d83ddc47","2b07fe0f");
+            symbol_key_mac("d83ddc47","2b07fe0f");
     	}
     	break;
     case E_POINTL:
     	if (record->event.pressed) {
-            send_emoji("d83ddc48","2b05fe0f");
+            symbol_key_mac("d83ddc48","2b05fe0f");
     	}
     	break;
     case E_POINTR:
     	if (record->event.pressed) {
-            send_emoji("d83ddc49","27a1fe0f");
+            symbol_key_mac("d83ddc49","27a1fe0f");
     	}
     	break;
     case E_DRINK:
     	if (record->event.pressed) {
-            send_emoji("2615","d83cdf7a");
+            symbol_key_mac("2615","d83cdf7a");
     	}
     	break;
     case E_CMARK:
     	if (record->event.pressed) {
-            send_emoji("2705","2714");
+            symbol_key_mac("2705","2714");
     	}
     	break;
     case E_EMARK:
     	if (record->event.pressed) {
-            send_emoji("2757","2755");
+            symbol_key_mac("2757","2755");
     	}
     	break;
     case E_QMARK:
     	if (record->event.pressed) {
-            send_emoji("2753","2754");
+            symbol_key_mac("2753","2754");
     	}
     	break;
     case E_BULB:
     	if (record->event.pressed) {
-            send_emoji("d83ddca1","d83edeab");
+            symbol_key_mac("d83ddca1","d83edeab");
     	}
     	break;
     case E_SSHOT:
     	if (record->event.pressed) {
-            send_emoji("d83dddbc","d83ddcf8");
+            symbol_key_mac("d83dddbc","d83ddcf8");
     	}
     	break;
     case E_MIC:
     	if (record->event.pressed) {
-            send_emoji("d83cdf99","d83cdfa4");
+            symbol_key_mac("d83cdf99","d83cdfa4");
     	}
     	break;
     case E_TRASH:
     	if (record->event.pressed) {
-            send_emoji("d83dddd1","267bfe0f");
+            symbol_key_mac("d83dddd1","267bfe0f");
     	}
     	break;
     case E_I:
     	if (record->event.pressed) {
-            send_emoji("2139fe0f","2139");
+            symbol_key_mac("2139fe0f","2139");
     	}
     	break;
     case E_K0:
     	if (record->event.pressed) {
-            send_emoji("0030fe0f20e3","D83DDD59");
+            symbol_key_mac("0030fe0f20e3","D83DDD59");
     	}
     	break;
     case E_K1:
     	if (record->event.pressed) {
-            send_emoji("0031fe0f20e3","D83DDD50");
+            symbol_key_mac("0031fe0f20e3","D83DDD50");
     	}
     	break;
     case E_K2:
     	if (record->event.pressed) {
-            send_emoji("0032FE0F20E3","D83DDD51");
+            symbol_key_mac("0032FE0F20E3","D83DDD51");
     	}
     	break;
     case E_K3:
     	if (record->event.pressed) {
-            send_emoji("0033FE0F20E3","D83DDD52");
+            symbol_key_mac("0033FE0F20E3","D83DDD52");
     	}
     	break;
     case E_K4:
     	if (record->event.pressed) {
-            send_emoji("0034FE0F20E3","D83DDD53");
+            symbol_key_mac("0034FE0F20E3","D83DDD53");
     	}
     	break;
     case E_K5:
     	if (record->event.pressed) {
-            send_emoji("0035FE0F20E3","D83DDD54");
+            symbol_key_mac("0035FE0F20E3","D83DDD54");
     	}
     	break;
     case E_K6:
     	if (record->event.pressed) {
-            send_emoji("0036FE0F20E3","D83DDD55");
+            symbol_key_mac("0036FE0F20E3","D83DDD55");
     	}
     	break;
     case E_K7:
     	if (record->event.pressed) {
-            send_emoji("0037FE0F20E3","D83DDD56");
+            symbol_key_mac("0037FE0F20E3","D83DDD56");
     	}
     	break;
     case E_K8:
     	if (record->event.pressed) {
-            send_emoji("0038FE0F20E3","D83DDD57");
+            symbol_key_mac("0038FE0F20E3","D83DDD57");
     	}
     	break;
     case E_K9:
     	if (record->event.pressed) {
-            send_emoji("0039FE0F20E3","D83DDD58");
+            symbol_key_mac("0039FE0F20E3","D83DDD58");
     	}
     	break;
     case E_STAR:
     	if (record->event.pressed) {
-            send_emoji("002AFE0F20E3","2731");
+            symbol_key_mac("002AFE0F20E3","2731");
     	}
     	break;
     case E_HASH:
     	if (record->event.pressed) {
-            send_emoji("0023FE0F20E3","d83ddcf1");
+            symbol_key_mac("0023FE0F20E3","d83ddcf1");
     	}
     	break;
     case E_MINS:
     	if (record->event.pressed) {
-            send_emoji("2796","D83DDD5A");
+            symbol_key_mac("2796","D83DDD5A");
     	}
     	break;
     case E_PLUS:
     	if (record->event.pressed) {
-            send_emoji("2795","D83DDD5B");
+            symbol_key_mac("2795","D83DDD5B");
     	}
     	break;
     case E_DIV:
     	if (record->event.pressed) {
-            send_emoji("2797","2716FE0F");
+            symbol_key_mac("2797","2716FE0F");
     	}
     	break;
     case E_GRIM:
     	if (record->event.pressed) {
-            send_emoji("d83dde2c","d83dde16");
+            symbol_key_mac("d83dde2c","d83dde16");
     	}
     	break;
     case E_KB:
     	if (record->event.pressed) {
-            send_emoji("2328FE0F","D83DDDA5FE0F");
+            symbol_key_mac("2328FE0F","D83DDDA5FE0F");
     	}
     	break;
     case E_OK:
     	if (record->event.pressed) {
-            send_emoji("d83ddc4c","d83ddc4d");
+            symbol_key_mac("d83ddc4c","d83ddc4d");
     	}
     	break;
     case E_SGLASS:
     	if (record->event.pressed) {
-            send_emoji("d83dde0e","D83DDD76FE0F");
+            symbol_key_mac("d83dde0e","D83DDD76FE0F");
     	}
     	break;
     case E_BOTTLE:
     	if (record->event.pressed) {
-            send_emoji("d83cdf7c","d83cdf7e");
+            symbol_key_mac("d83cdf7c","d83cdf7e");
     	}
     	break;
     case SUITH:
@@ -2350,36 +2346,14 @@ void dual_key(uint16_t std_keycode, uint16_t alt_keycode, uint8_t mod_mask) {
     }
 }
 
-void send_emoji(const char *emoji_code, const char *alt_emoji_code) {
-    // get current mod and one-shot mod states.
-    const uint8_t mods = get_mods();
-    const uint8_t oneshot_mods = get_oneshot_mods();
-    if ((mods | oneshot_mods) & MOD_MASK_GUI) { // if command is being held
-        del_oneshot_mods(MOD_MASK_GUI); // temporarily delete command mod
-        unregister_mods(MOD_MASK_GUI);  // temporarily delete command mod
-        send_string(SS_LCTL(SS_LOPT(SS_LCMD(SS_TAP(X_SPC))))); // switch os keybaord input to unicode
-	add_mods(MOD_MASK_ALT); // hold down option
-	send_string(alt_emoji_code); // send alt emoji code
-	del_mods(MOD_MASK_ALT); // release option
-        send_string_with_delay(SS_LCTL(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_SPC))))),10); // switch os keyboard input back to language
-        register_mods(mods); // restore original mods
-    } else {
-        send_string(SS_LCTL(SS_LOPT(SS_LCMD(SS_TAP(X_SPC))))); // switch os keybaord input to unicode
-	add_mods(MOD_MASK_ALT); // hold down option
-	send_string(emoji_code); // send emoji code
-	del_mods(MOD_MASK_ALT); // release option
-        send_string_with_delay(SS_LCTL(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_SPC))))),10); // switch os keyboard input back to language
-    }
-}
-
-// this should replace send_emojii, but can work that out later
+// send mac unicode
 void symbol_key_mac(const char *unicode, const char *shift_unicode) {
     const uint8_t mods = get_mods();
     const uint8_t oneshot_mods = get_oneshot_mods();
     clear_mods();
-    tap_code16(C(A(G(KC_SPC)))); // switch os keybaord to unicode
+    tap_code16(C(A(G(KC_SPC)))); // switch os keyboard to unicode
     add_mods(MOD_MASK_ALT);
-    send_string(((mods | oneshot_mods) & MOD_MASK_SHIFT) ? shift_unicode : unicode);
+    send_string(((mods | oneshot_mods) & (MOD_MASK_SHIFT | MOD_MASK_GUI)) ? shift_unicode : unicode);
     del_mods(MOD_MASK_ALT);
     tap_code16(C(A(G(KC_SPC)))); // switch back from unicode
     register_mods(mods);
