@@ -13,6 +13,13 @@
 // setup mouse jiggler
 deferred_token jiggler_token = INVALID_DEFERRED_TOKEN;
 report_mouse_t jiggler_report = {0};
+// for tracking whether to highlight home row keys f and j
+bool fj_light;
+// and for tracking if the full home row light is on
+bool hrow_light;
+// for disabling the keytracker, which will also disable key-reactive fade
+bool enable_keytracker = true;
+
 
 bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
     // stop mouse jiggler
@@ -27,6 +34,24 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
     case JIGGLE:
         if (record->event.pressed) {
             jiggle_mouse();
+        }
+        return false;
+    case FJLIGHT:
+        if (record->event.pressed) {
+	   // update the var used for f and j home key highlighting
+	   fj_light = !fj_light;
+	}
+        return false;
+    case HROWLIGHT:
+        if (record->event.pressed) {
+	   // update the var used for full home row keys highlighting
+	   hrow_light = !hrow_light;
+	}
+        return false;
+    case KTRACK:
+        if (record->event.pressed) {
+           // update the var used to enable/disable keytracker and per-key fade
+           enable_keytracker = !enable_keytracker;
         }
         return false;
     }

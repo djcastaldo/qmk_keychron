@@ -7,5 +7,9 @@
 
 extern deferred_token jiggler_token;
 extern report_mouse_t jiggler_report;
+extern bool fj_light;
+extern bool hrow_light;
+extern bool enable_keytracker;
+
 bool process_record_userspace(uint16_t keycode, keyrecord_t *record);
 void jiggle_mouse(void);

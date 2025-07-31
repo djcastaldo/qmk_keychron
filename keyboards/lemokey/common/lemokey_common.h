@@ -73,6 +73,9 @@ enum {
     SECRET26,
     SECRET27,
     JIGGLE,
+    FJLIGHT,
+    HROWLIGHT,
+    KTRACK,
     NEW_SAFE_RANGE,
 };
 

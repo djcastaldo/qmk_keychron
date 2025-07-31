@@ -90,9 +90,6 @@ enum custom_keycodes {
     LLOCK,
     FNLAYER,
     SFTLAYER,
-    FJLIGHT,
-    HROWLIGHT,
-    KTRACK,
     WAVE,
     ARROW,
     BSPCFAST,
@@ -707,13 +704,6 @@ bool is_capsword_shifted(uint8_t i) {
     return false;
 }
 
-// for tracking whether to highlight home row keys f and j
-bool fj_light;
-// and for tracking if the full home row light is on
-bool hrow_light;
-// for disabling the keytracker, which will also disable key-reactive fade
-bool enable_keytracker = true;
-
 // for tracking whether to blink an led as an indicator
 bool is_led_on;
 static uint16_t layer_timer;
@@ -1188,24 +1178,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            layer_off(SFT_LAYER);
         }
     	break;
-    case FJLIGHT:
-    	if (record->event.pressed) {
-	   // update the var used for f and j home key highlighting 
-	   fj_light = !fj_light;
-	}
-    	break;
-    case HROWLIGHT:
-    	if (record->event.pressed) {
-	   // update the var used for full home row keys highlighting 
-	   hrow_light = !hrow_light;
-	}
-    	break;
-    case KTRACK:
-        if (record->event.pressed) {
-           // update the var used to enable/disable keytracker and per-key fade
-           enable_keytracker = !enable_keytracker;
-        }
-        break;
     case WAVE:  // Types ~=~=~=~=~=~ or <~>~<~>~<~>~<~>
         static deferred_token wave_token = INVALID_DEFERRED_TOKEN;
         static uint8_t wave_phase = 0;

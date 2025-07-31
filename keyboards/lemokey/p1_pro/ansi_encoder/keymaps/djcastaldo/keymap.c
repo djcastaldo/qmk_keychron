@@ -61,9 +61,6 @@ enum custom_keycodes {
     GIT_PUSH,
     GIT_CHKOUT,
     GIT_LOG,
-    FJLIGHT,
-    HROWLIGHT,
-    KTRACK,
     MK_HOLD,
     MK_ACCEL0,
     MK_ACCEL2,
@@ -715,13 +712,6 @@ uint32_t leader_error_callback(uint32_t trigger_time, void* cb_arg) {
     is_leader_error_led_on = false;
     return 0;
 }
-
-// for tracking whether to highlight home row keys f and j
-bool fj_light;
-// and for tracking if the full home row light is on
-bool hrow_light;
-// for disabling the keytracker, which will also disable key-reactive fade
-bool enable_keytracker = true;
 
 // for tracking whether to blink an led as an indicator, used to show which layer is active
 bool is_led_on;
@@ -1429,24 +1419,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               // this turns off the layer if further volume controls are not used within 500ms
               sim_osl_token = defer_exec(500, sim_osl_callback, NULL);
           }
-        }
-        break;
-    case FJLIGHT:
-    	if (record->event.pressed) {
-	   // update the var used for f and j home key highlighting 
-	   fj_light = !fj_light;
-	}
-    	break;
-    case HROWLIGHT:
-    	if (record->event.pressed) {
-	   // update the var used for full home row keys highlighting 
-	   hrow_light = !hrow_light;
-	}
-    	break;
-    case KTRACK:
-        if (record->event.pressed) {
-           // update the var used to enable/disable keytracker and per-key fade
-           enable_keytracker = !enable_keytracker;
         }
         break;
     case MK_HOLD:
