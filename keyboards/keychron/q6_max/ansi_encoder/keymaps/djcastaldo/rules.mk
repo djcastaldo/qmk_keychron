@@ -1,9 +1,10 @@
-USER_PATH := users/djcastaldo
-include users/djcastaldo/rules.mk
-CONSOLE_ENBALE = no 
+USER_NAME := djcastaldo
+USER_PATH := users/$(USER_NAME)
+include $(USER_PATH)/rules.mk
+CONSOLE_ENABLE = no
 KEYBOARD_SHARED_EP = yes
 EXTRAKEY_ENABLE = yes 
-MOUSEKEY_ENBALE = yes 
+MOUSEKEY_ENABLE = yes
 DEFERRED_EXEC_ENABLE = yes 
 TAP_DANCE_ENABLE = yes
 CAPS_WORD_ENABLE = yes 

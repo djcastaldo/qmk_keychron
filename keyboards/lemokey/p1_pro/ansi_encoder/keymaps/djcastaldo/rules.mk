@@ -1,5 +1,6 @@
-USER_PATH := users/djcastaldo
-include users/djcastaldo/rules.mk
+USER_NAME := djcastaldo
+USER_PATH := users/$(USER_NAME)
+include $(USER_PATH)/rules.mk
 CONSOLE_ENABLE = no
 KEYBOARD_SHARED_EP = no
 FACTORY_TEST_FNJZ_ENABLE = no
