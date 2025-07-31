@@ -21,6 +21,7 @@
 #include "wireless/bat_level_animation.h"
 #include "wireless/wireless.h"
 #include "users/djcastaldo/features/layer_lock.h"
+#include "users/djcastaldo/process_record_userspace.h"
 
 #define NEWFINDER LOPT(LCMD(KC_SPC))            // open new Finder search window
 #define FHOME LCMD(LSFT(KC_H))                  // open new Finder home dir 
@@ -64,6 +65,10 @@ bool process_record_secrets(uint16_t keycode, keyrecord_t *record) {
 __attribute__ ((weak))
 bool process_leader_secrets(void) {
   return true;
+}
+__attribute__ ((weak))
+bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
+    return true;
 }
 
 enum layers {
@@ -825,10 +830,6 @@ void symbol_key_mac(const char *unicode, const char *shift_unicode);
 // funciton to send emoji
 void send_emoji(const char *emoji_code, const char *alt_emoji_code);
 
-// setup mouse jiggler
-static deferred_token jiggler_token = INVALID_DEFERRED_TOKEN;
-static report_mouse_t jiggler_report = {0};
-
 // setup cmd-tab app switching 
 static deferred_token cmd_tab_token = INVALID_DEFERRED_TOKEN;
 uint32_t cmd_tab_callback(uint32_t trigger_time, void* cb_arg) {
@@ -872,14 +873,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     }
 
-    // stop mouse jiggler
-    if (jiggler_token && record->event.pressed) {
-	// If jiggler is currently running, stop when any key is pressed.
-        cancel_deferred_exec(jiggler_token);
-        jiggler_token = INVALID_DEFERRED_TOKEN;
-        jiggler_report = (report_mouse_t){};  // Clear the mouse.
-        host_mouse_send(&jiggler_report);
-    }
     // record key index pressed for rgb reactive changes
     if (enable_keytracker && !is_macro_playing && keycode != QK_LEAD) {
         int key_idx = g_led_config.matrix_co[record->event.key.row][record->event.key.col];
@@ -929,6 +922,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     // keychron common
     if (!process_record_keychron_common(keycode, record)) {
+        return false;
+    }
+
+    // userspace
+    if (!process_record_userspace(keycode,record)) {
         return false;
     }
 

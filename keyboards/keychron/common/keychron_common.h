@@ -81,6 +81,9 @@ enum {
     SECRET23,
     SECRET24,
     SECRET25,
+    SECRET26,
+    SECRET27,
+    JIGGLE,
     NEW_SAFE_RANGE,
 };
 

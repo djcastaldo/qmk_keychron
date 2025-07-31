@@ -17,6 +17,10 @@ __attribute__ ((weak))
 bool process_leader_secrets(void) {
     return true;
 }
+__attribute__ ((weak))
+bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
+    return true;
+}
 
 // set up something for eeprom persistent storage if the BASE/BASE2 layers should be for linux os
 // this saves duplicating 2 entire keymap layouts (windows/linux will use the same keys)
@@ -169,7 +173,6 @@ enum custom_keycodes {
     UNDERLN,
     BARTEXT,
     BBRTEXT,
-    JIGGLE,
     DUAL_ZOOMO,
     DUAL_ZOOMI,
     ENC_DUALPUSH,
@@ -685,10 +688,6 @@ static deferred_token key_token = INVALID_DEFERRED_TOKEN;
 static keytracker tracked_keys[20];
 static int tk_length = sizeof(tracked_keys) / sizeof(tracked_keys[0]);
 
-// setup mouse jiggler
-static deferred_token jiggler_token = INVALID_DEFERRED_TOKEN;
-static report_mouse_t jiggler_report = {0};
-
 // for tracking if leader sequence is started
 bool is_in_leader_sequence;
 bool is_leader_led_on;
@@ -818,14 +817,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         color_test = false;
         return false;
     }
-    // stop mouse jiggler
-    if (jiggler_token && record->event.pressed) {
-        // if jiggler is currently running, stop when key is pressed
-        cancel_deferred_exec(jiggler_token);
-        jiggler_token = INVALID_DEFERRED_TOKEN;
-        jiggler_report = (report_mouse_t){};  // clear the mouse
-        host_mouse_send(&jiggler_report);
-    }
 
     // record key index pressed for rgb reactive changes
     if (enable_keytracker && !is_macro_playing && keycode != QK_LEAD) {
@@ -875,6 +866,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     // lemokey common
     if (!process_record_lemokey_common(keycode,record)) {
+        return false;
+    }
+
+    // userspace
+    if (!process_record_userspace(keycode,record)) {
         return false;
     }
 
@@ -966,25 +962,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             unregister_code(keymap_key_to_keycode(biton32(default_layer_state), record->event.key));
         }
         return false;
-        break;
-    // jiggler to keep from screen timeout without adjusting power settings
-    case JIGGLE:
-        if (record->event.pressed) {
-            uint32_t jiggler_callback(uint32_t trigger_time, void* cb_arg) {
-                // deltas to move in a circle of radius 20 pixels over 32 frames
-                static const int8_t deltas[32] = {
-                  0, -1, -2, -2, -3, -3, -4, -4, -4, -4, -3, -3, -2, -2, -1, 0,
-                  0, 1, 2, 2, 3, 3, 4, 4, 4, 4, 3, 3, 2, 2, 1, 0};
-                static uint8_t phase = 0;
-                // get x delta from table and y delta by rotating a quarter cycle
-                jiggler_report.x = deltas[phase];
-                jiggler_report.y = deltas[(phase + 8) & 31];
-                phase = (phase + 1) & 31;
-                host_mouse_send(&jiggler_report);
-                return 16;  // call the callback every 16 ms
-            }
-            jiggler_token = defer_exec(1, jiggler_callback, NULL);  // schedule callback
-        }
         break;
     // form zoom reset
     case F_ZOOMR:
