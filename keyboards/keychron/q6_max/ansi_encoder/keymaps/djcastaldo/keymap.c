@@ -66,10 +66,6 @@ __attribute__ ((weak))
 bool process_leader_secrets(void) {
   return true;
 }
-__attribute__ ((weak))
-bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
-    return true;
-}
 
 enum layers {
     MAC_BASE,
@@ -2062,20 +2058,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             const uint8_t mods = get_mods();
             const uint8_t oneshot_mods = get_oneshot_mods();
             if (((mods | oneshot_mods) & MOD_MASK_GUI) && !app_switch_active()) {
-	       uint32_t jiggler_callback(uint32_t trigger_time, void* cb_arg) {
-                 // Deltas to move in a circle of radius 20 pixels over 32 frames.
-                 static const int8_t deltas[32] = {
-                   0, -1, -2, -2, -3, -3, -4, -4, -4, -4, -3, -3, -2, -2, -1, 0,
-                   0, 1, 2, 2, 3, 3, 4, 4, 4, 4, 3, 3, 2, 2, 1, 0};
-                 static uint8_t phase = 0;
-                 // Get x delta from table and y delta by rotating a quarter cycle.
-                 jiggler_report.x = deltas[phase];
-                 jiggler_report.y = deltas[(phase + 8) & 31];
-                 phase = (phase + 1) & 31;
-                 host_mouse_send(&jiggler_report);
-                 return 16;  // Call the callback every 16 ms.
-               }
-	       jiggler_token = defer_exec(1, jiggler_callback, NULL);  // Schedule callback.
+                jiggle_mouse();
 	    }
             else {
 	        // If token is already waiting to exec, cancel it.

@@ -5,7 +5,7 @@ SECRETS_PATH := $(USER_PATH)/secrets.c
 SRC += $(LLOCK_PATH)
 SRC += $(PROCESS_RECORD_PATH)
 ifneq ("$(wildcard $(SECRETS_PATH))","")
-  SRC += $(SECRETS_PATH)
+    SRC += $(SECRETS_PATH)
 endif
 ifeq ($(strip $(NO_SECRETS)), yes)
     OPT_DEFS += -DNO_SECRETS
