@@ -20,7 +20,7 @@
 #include "wireless/battery.h"
 #include "wireless/bat_level_animation.h"
 #include "wireless/wireless.h"
-#include "features/layer_lock.h"
+#include "users/djcastaldo/features/layer_lock.h"
 
 #define NEWFINDER LOPT(LCMD(KC_SPC))            // open new Finder search window
 #define FHOME LCMD(LSFT(KC_H))                  // open new Finder home dir 

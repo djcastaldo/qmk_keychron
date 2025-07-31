@@ -7,7 +7,7 @@
 #include "wireless/battery.h"
 #include "wireless/bat_level_animation.h"
 #include "wireless/wireless.h"
-#include "features/layer_lock.h"
+#include "users/djcastaldo/features/layer_lock.h"
 
 __attribute__ ((weak))
 bool process_record_secrets(uint16_t keycode, keyrecord_t *record) {
