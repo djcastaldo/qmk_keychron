@@ -8,6 +8,7 @@
 #include "wireless/bat_level_animation.h"
 #include "wireless/wireless.h"
 #include "users/djcastaldo/features/layer_lock.h"
+#include "users/djcastaldo/process_record_userspace.h"
 
 __attribute__ ((weak))
 bool process_record_secrets(uint16_t keycode, keyrecord_t *record) {
@@ -15,10 +16,6 @@ bool process_record_secrets(uint16_t keycode, keyrecord_t *record) {
 }
 __attribute__ ((weak))
 bool process_leader_secrets(void) {
-    return true;
-}
-__attribute__ ((weak))
-bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
