@@ -47,10 +47,7 @@ enum layers {
 
 // custom keycodes
 enum custom_keycodes {
-    BSPCFAST = NEW_SAFE_RANGE,
-    ARROW,
-    WAVE,
-    LLOCK,
+    LLOCK = NEW_SAFE_RANGE,
     DUAL_PLUSMIN,
     DUAL_MULTDIV,
     DUAL_F12,
@@ -1016,93 +1013,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
            send_string_with_delay(SS_LCTL("b") ":",35);
            send_string("join-pane -t" SS_TAP(X_SPACE));
-        }
-        break;
-    case WAVE:  // Types ~=~=~=~=~=~ or <~>~<~>~<~>~<~>
-        static deferred_token wave_token = INVALID_DEFERRED_TOKEN;
-        static uint8_t wave_phase = 0;
-        if (!record->event.pressed) {  // On release.
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            cancel_deferred_exec(wave_token);
-            wave_token = INVALID_DEFERRED_TOKEN;
-            // ensure the pattern always ends on a ">"
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {  // is ctl held?
-                unregister_mods(MOD_MASK_CTRL); // temp remove ctl
-                if ((wave_phase & 1) == 0) {
-                    send_string("<~>");
-                }
-                else {
-                    tap_code16(KC_RABK);
-                }
-                register_mods(mods);           // restore mods
-            }
-            else {
-                if ((wave_phase & 1) == 0) { tap_code16(KC_TILD); }
-            }
-            wave_phase = 0;
-        }
-        else if (!wave_token) {  // on press
-            uint32_t wave_callback(uint32_t trigger_time, void* cb_arg) {
-                const uint8_t mods = get_mods();
-                const uint8_t oneshot_mods = get_oneshot_mods();
-                if ((mods | oneshot_mods) & MOD_MASK_CTRL) {  // is ctl held?
-                    del_oneshot_mods(MOD_MASK_CTRL); // remove ctl
-                    unregister_mods(MOD_MASK_CTRL);  // remove ctl
-                    tap_code16((++wave_phase & 1) ? KC_LABK : KC_RABK);
-                    tap_code16(KC_TILD);
-                    register_mods(mods);            // restore mods
-                }
-                else {
-                    tap_code16((++wave_phase & 1) ? KC_TILD : KC_EQL);
-                }
-                return 16;  // call the callback every 16 ms
-            }
-            wave_token = defer_exec(1, wave_callback, NULL);
-        }
-        return false;
-        break;
-    case ARROW:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {  // is ctl held?
-                // Temporarily delete cmd.
-                del_oneshot_mods(MOD_MASK_CTRL);
-                unregister_mods(MOD_MASK_CTRL);
-                SEND_STRING("=>");
-                register_mods(mods);            // restore mods
-                return false;
-            } else {
-                SEND_STRING("->");
-            }
-        }
-        break;
-
-    case BSPCFAST:  // backspace with exponential repeating
-        // initial delay before the first repeat
-        static const uint8_t INIT_DELAY_MS = 250;
-        // This array customizes the rate at which the Backspace key
-        // repeats. The delay after the ith repeat is REP_DELAY_MS[i].
-        // Values must be between 1 and 255.
-        static const uint8_t REP_DELAY_MS[] PROGMEM = {
-            99, 79, 65, 57, 49, 43, 40, 35, 33, 30, 28, 26, 25, 23, 22, 20,
-            20, 19, 18, 17, 16, 15, 15, 14, 14, 13, 13, 12, 12, 11, 11, 10};
-        static deferred_token bspc_token = INVALID_DEFERRED_TOKEN;
-        static uint8_t rep_count = 0;
-        if (!record->event.pressed) {  // Backspace released: stop repeating
-            cancel_deferred_exec(bspc_token);
-            bspc_token = INVALID_DEFERRED_TOKEN;
-        }
-        else if (!bspc_token) {  // Backspace pressed: start repeating
-            tap_code(KC_BSPC);  // Initial tap of Backspace key
-            rep_count = 0;
-            uint32_t bspc_callback(uint32_t trigger_time, void* cb_arg) {
-              tap_code(KC_BSPC);
-              if (rep_count < sizeof(REP_DELAY_MS)) { ++rep_count; }
-              return pgm_read_byte(REP_DELAY_MS - 1 + rep_count);
-            }
-            bspc_token = defer_exec(INIT_DELAY_MS, bspc_callback, NULL);
         }
         break;
     // get dynamic macros to work even with oneshot layers

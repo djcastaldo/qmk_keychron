@@ -76,6 +76,9 @@ enum {
     FJLIGHT,
     HROWLIGHT,
     KTRACK,
+    WAVE,
+    ARROW,
+    BSPCFAST,
     NEW_SAFE_RANGE,
 };
 
