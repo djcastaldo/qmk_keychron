@@ -90,6 +90,16 @@ enum {
     WAVE,
     ARROW,
     BSPCFAST,
+    TMUXLKEY,
+    TMUXLCMD,
+    TMONON,
+    TMONOF,
+    TVISON,
+    TVISOF,
+    TWINLFT,
+    TWINRGT,
+    TJPANE,
+    ENC_TMON,
     NEW_SAFE_RANGE,
 };
 

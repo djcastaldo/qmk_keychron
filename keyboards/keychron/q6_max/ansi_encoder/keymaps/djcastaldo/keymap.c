@@ -220,18 +220,8 @@ enum custom_keycodes {
     DUAL_SNAP,
     AP_GLOB,
     KB_RESET,
-    TMUXLKEY,
-    TMUXLCMD,
-    TMONON,
-    TMONOF,
-    TVISON,
-    TVISOF,
-    TWINLFT,
-    TWINRGT,
-    TJPANE,
     ENC_TSIZEL,
     ENC_TSIZER,
-    ENC_TMON,
     LTRANS,
     STHRU,
     UNDERLN,
@@ -979,69 +969,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         return false;
         break;
-    // tmux bound key list
-    case TMUXLKEY:
-        if (record->event.pressed) {
-           send_string(SS_LCTL("b") "?");
-        }
-        break;
-    // tmux command list
-    case TMUXLCMD:
-        if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",25);
-           send_string("list-commands\n");
-        }
-        break;
-    // tmux monitor window activity on
-    case TMONON:
-        if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",25);
-           send_string("setw monitor-activity on\n");
-        }
-        break;
-    // tmux monitor window activity off
-    case TMONOF:
-        if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",25);
-           send_string("setw monitor-activity off\n");
-        }
-        break;
-    // tmux visual activity alerts on
-    case TVISON:
-        if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",25);
-           send_string("setw -g visual-activity on\n");
-        }
-        break;
-    // tmux visual activity alerts off
-    case TVISOF:
-        if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",25);
-           send_string("setw -g visual-activity off\n");
-        }
-        break;
-    // tmux move window left 1 position
-    case TWINLFT:
-        if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",25);
-           send_string("swap-window -t -1\n");
-           send_string_with_delay(SS_LCTL("b") "p",10);
-        }
-        break;
-    // tmux move window right 1 position
-    case TWINRGT:
-        if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",25);
-           send_string("swap-window -t +1\n");
-           send_string_with_delay(SS_LCTL("b") "n",10);
-        }
-        break;
-    case TJPANE:
-        if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",25);
-           send_string("join-pane -t ");
-        }
-        break;
     // tmux encoder control
     // set this up to do resize l/r or u/d if control is held
     // on mac, control arrow conflicts with mission control, so using alt resizing instead
@@ -1098,24 +1025,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 else {
                     send_string_with_delay(SS_LCTL("b") SS_LALT(SS_TAP(X_RIGHT)),10); // size right
                 }
-            }
-        }
-        break;
-    // when encoder is pushed, either enable or disable window activity monitor
-    case ENC_TMON:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            if (mods & MOD_MASK_CTRL) {
-                unregister_mods(MOD_MASK_CTRL);             // remove control
-                // turn on window actiivty monitor
-                send_string_with_delay(SS_LCTL("b") ":",25);
-                send_string("setw monitor-activity on\n");
-                register_mods(mods);                        // add back mods
-            }
-            else {
-                // turn off window actiivty monitor
-                send_string_with_delay(SS_LCTL("b") ":",25);
-                send_string("setw monitor-activity off\n");
             }
         }
         break;

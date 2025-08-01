@@ -91,3 +91,6 @@
 #    define LEADER_TIMEOUT 200
 #    define LEADER_PER_KEY_TIMING
 #    define LEADER_NO_TIMEOUT
+
+/* for tmux send_string delays */
+#    define TMUX_DELAY 35

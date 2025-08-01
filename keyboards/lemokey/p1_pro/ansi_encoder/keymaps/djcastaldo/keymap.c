@@ -61,15 +61,6 @@ enum custom_keycodes {
     MK_HOLD,
     MK_ACCEL0,
     MK_ACCEL2,
-    TMUXLKEY,
-    TMUXLCMD,
-    TMONON,
-    TMONOF,
-    TVISON,
-    TVISOF,
-    TWINLFT,
-    TWINRGT,
-    TJPANE,
     LTRANS,
     F_ZOOMR,
     SCROLL_UP,
@@ -170,7 +161,6 @@ enum custom_keycodes {
     ENC_MAINL,
     ENC_MAINR,
     ENC_RGBRESET,
-    ENC_TMON,
     ENC_TSIZEL,
     ENC_TSIZER,
     COLORTEST,
@@ -951,70 +941,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             tap_code16(is_mac_base() ? LCMD(KC_0) : LCTL(KC_0));
         }
         break;
-    // tmux bound key list
-    case TMUXLKEY:
-        if (record->event.pressed) {
-           //send_string(SS_LCTL("b") ":list-keys" SS_TAP(X_ENT));
-           send_string(SS_LCTL("b") "?");
-        }
-        break;
-    // tmux command list
-    case TMUXLCMD:
-        if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",35);
-           send_string("list-commands\n");
-        }
-        break;
-    // tmux monitor window activity on 
-    case TMONON:
-        if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",35);
-           send_string("setw monitor-activity on\n");
-        }
-        break;
-    // tmux monitor window activity off
-    case TMONOF:
-        if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",35);
-           send_string("setw monitor-activity off\n");
-        }
-        break;
-    // tmux visual activity alerts on
-    case TVISON:
-        if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",35);
-           send_string("setw -g visual-activity on\n");
-        }
-        break;
-    // tmux visual activity alerts off
-    case TVISOF:
-        if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",35);
-           send_string("setw -g visual-activity off\n");
-        }
-        break;
-    // tmux move window left 1 position
-    case TWINLFT:
-        if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",35);
-           send_string("swap-window -t -1\n");
-           send_string_with_delay(SS_LCTL("b") "p",35);
-        }
-        break;
-    // tmux move window right 1 position
-    case TWINRGT:
-        if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",35);
-           send_string("swap-window -t +1\n");
-           send_string_with_delay(SS_LCTL("b") "n",35);
-        }
-        break;
-    case TJPANE:
-        if (record->event.pressed) {
-           send_string_with_delay(SS_LCTL("b") ":",35);
-           send_string("join-pane -t" SS_TAP(X_SPACE));
-        }
-        break;
     // get dynamic macros to work even with oneshot layers
     case DM_REC1:
     case DM_REC2:
@@ -1205,25 +1131,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 else {
                     send_string_with_delay(SS_LCTL("b") SS_LCTL(SS_TAP(X_RIGHT)),5);     // size right
                 }
-            }
-        }
-        break;
-    // when encoder is pushed, either enable or disable window activity monitor
-    case ENC_TMON:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                unregister_mods(MOD_MASK_CTRL);             // remove control
-                // turn on window actiivty monitor
-                send_string_with_delay(SS_LCTL("b") ":",35);
-                send_string("setw monitor-activity on\n");
-                register_mods(mods);                        // add back mods
-            }
-            else {
-                // turn off window actiivty monitor
-                send_string_with_delay(SS_LCTL("b") ":",35);
-                send_string("setw monitor-activity off\n");
             }
         }
         break;
