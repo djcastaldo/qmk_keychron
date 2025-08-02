@@ -9,6 +9,23 @@
 #include "lemokey_common.h"
 #endif
 #include "process_record_userspace.h"
+#include "config.h"
+#include "layers.h"
+
+const uint8_t monitored_macos_base_layers[] = MONITORED_MACOS_BASE_LAYERS;
+const uint8_t monitored_macos_base_count = MONITORED_MACOS_BASE_COUNT;
+
+user_config_t user_config;
+
+// for tracking if base is mac
+bool is_mac_base(void) {
+    for (uint8_t i = 0; i < monitored_macos_base_count; i++) {
+        if (IS_LAYER_ON(monitored_macos_base_layers[i])) {
+            return true;
+        }
+    }
+    return false;
+}
 
 // setup mouse jiggler
 deferred_token jiggler_token = INVALID_DEFERRED_TOKEN;
@@ -240,6 +257,22 @@ void jiggle_mouse(void) {
     jiggler_token = defer_exec(1, jiggler_callback, NULL);  // schedule callback
 }
 
+void dual_key(uint16_t std_keycode, uint16_t alt_keycode, uint8_t mod_mask) {
+    // if mod is being held, send mod_keycode
+    // get current mod states
+    const uint8_t mods = get_mods();
+    const uint8_t oneshot_mods = get_oneshot_mods();
+    if ((mods | oneshot_mods) & mod_mask) {
+        unregister_mods(mod_mask);  // remove mod
+        tap_code16(alt_keycode);
+        register_mods(mods); // restore original mods
+    }
+    // otherwise send std_keycode
+    else {
+        tap_code16(std_keycode);
+    }
+}
+
 // send mac unicode
 void symbol_key_mac(const char *unicode, const char *shift_unicode) {
     const uint8_t mods = get_mods();
@@ -251,4 +284,103 @@ void symbol_key_mac(const char *unicode, const char *shift_unicode) {
     del_mods(MOD_MASK_ALT);
     tap_code16(C(A(G(KC_SPC)))); // switch back from unicode
     register_mods(mods);
+}
+
+void symbol_key_win(const char *alt_code, const char *shift_alt_code) {
+    // get current mod states
+    const uint8_t mods = get_mods();
+    const uint8_t weak_mods = get_weak_mods();
+    const uint8_t oneshot_mods = get_oneshot_mods();
+    const char *ucode = ((mods | weak_mods | oneshot_mods) & MOD_MASK_SHIFT) ? shift_alt_code : alt_code;
+    bool numlockChanged; // this numlock stuff lets this work in all scenarios
+    numlockChanged = false;
+    clear_mods();
+    clear_weak_mods();
+    if (ucode == NULL || *ucode == '\0') { // null or empty string
+        return;
+    }
+    if (!host_keyboard_led_state().num_lock) {
+         tap_code(KC_NUM);
+         numlockChanged = true;
+    }
+    register_code(KC_LALT); // hold down alt
+    type_numpad_keys_from_string(ucode); // send to fn to type numpad keys
+    unregister_code(KC_LALT); // release alt
+    if (numlockChanged) {
+        tap_code(KC_NUM);
+    }
+    register_mods(mods);
+}
+
+void symbol_key_linux(const char *hex_code, const char *shift_hex_code) {
+    // get current mod states
+    const uint8_t mods = get_mods();
+    const uint8_t weak_mods = get_weak_mods();
+    const uint8_t oneshot_mods = get_oneshot_mods();
+    const char *ucode = ((mods | weak_mods | oneshot_mods) & MOD_MASK_SHIFT) ? shift_hex_code : hex_code;
+    if (ucode == NULL || *ucode == '\0') { // null or empty string
+        return;
+    }
+    clear_mods();
+    clear_weak_mods();
+    tap_code16(C(S(KC_U))); // start the unicode sequence
+    // type the hex chars
+    send_string_with_delay(ucode,5);
+    // finish sequence
+    tap_code(KC_SPC);
+    register_mods(mods); // add back mods
+}
+
+// send_string doesn't use the numpad, so this fn was created to type numbers using the numpad
+void type_numpad_keys_from_string(const char *stringnum) {
+    // now need to loop through each char in the char pointer until a null terminator
+    const char *ptr = stringnum;
+    while (*ptr != '\0') {
+        switch (*ptr) {
+        case '0':
+            dprintf("0 tap\n");
+            tap_code(KC_P0);
+            break;
+        case '1':
+            dprintf("1 tap\n");
+            tap_code(KC_P1);
+            break;
+        case '2':
+            dprintf("2 tap\n");
+            tap_code(KC_P2);
+            break;
+        case '3':
+            dprintf("3 tap\n");
+            tap_code(KC_P3);
+            break;
+        case '4':
+            dprintf("4 tap\n");
+            tap_code(KC_P4);
+            break;
+        case '5':
+            dprintf("5 tap\n");
+            tap_code(KC_P5);
+            break;
+        case '6':
+            dprintf("6 tap\n");
+            tap_code(KC_P6);
+            break;
+        case '7':
+            dprintf("7 tap\n");
+            tap_code(KC_P7);
+            break;
+        case '8':
+            dprintf("8 tap\n");
+            tap_code(KC_P8);
+            break;
+        case '9':
+            dprintf("9 tap\n");
+            tap_code(KC_P9);
+            break;
+        default:
+            dprintf("no number\n");
+            break;
+        }
+    ptr++;
+    }
 }

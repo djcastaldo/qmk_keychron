@@ -17,6 +17,7 @@
 
 #include QMK_KEYBOARD_H
 #include "keychron_common.h"
+#include "layers.h"
 #include "wireless/battery.h"
 #include "wireless/bat_level_animation.h"
 #include "wireless/wireless.h"
@@ -67,6 +68,8 @@ bool process_leader_secrets(void) {
   return true;
 }
 
+//  these layers are setup up layers.h
+/*  ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 enum layers {
     MAC_BASE,
     FN_LAYER,
@@ -80,6 +83,7 @@ enum layers {
     CIRCLE_TEXT_LAYR,
     LOCK_LAYER
 };
+//  ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~ */
 
 enum custom_keycodes {
     CALCPRO = NEW_SAFE_RANGE,
@@ -793,9 +797,6 @@ static int tk_length = sizeof(tracked_keys) / sizeof(tracked_keys[0]);
 
 // function for determining if a key should fade
 bool key_should_fade(keytracker key, uint8_t layer);
-
-// funciton to send an alternate key if a modifier is being held
-void dual_key(uint16_t std_keycode, uint16_t alt_keycode, uint8_t mod_mask);
 
 // setup cmd-tab app switching 
 static deferred_token cmd_tab_token = INVALID_DEFERRED_TOKEN;
@@ -2148,22 +2149,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     }
     return process_record_secrets(keycode, record);
-}
-
-
-void dual_key(uint16_t std_keycode, uint16_t alt_keycode, uint8_t mod_mask) {
-    // if mod is being held, send mod_keycode 
-    // get current mod states
-    const uint8_t mods = get_mods();
-    if (mods & mod_mask) {
-        unregister_mods(mod_mask);  // remove mod
-        tap_code16(alt_keycode);
-        register_mods(mods); // restore original mods
-    }
-    // otherwise send std_keycode 
-    else {
-        tap_code16(std_keycode);
-    }
 }
 
 void oneshot_layer_changed_user(uint8_t layer) {

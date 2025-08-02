@@ -82,3 +82,7 @@
 
 /* for tmux send_string delays */
 #    define TMUX_DELAY 25
+
+/* monitored base layers for macos */
+#    define MONITORED_MACOS_BASE_LAYERS { MAC_BASE }
+#    define MONITORED_MACOS_BASE_COUNT 1

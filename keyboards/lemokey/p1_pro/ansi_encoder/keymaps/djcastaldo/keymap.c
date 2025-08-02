@@ -4,9 +4,10 @@
 #include QMK_KEYBOARD_H
 #include "lemokey_common.h"
 #include "print.h"
+#include "layers.h"
 #include "wireless/battery.h"
-#include "wireless/bat_level_animation.h"
 #include "wireless/wireless.h"
+#include "wireless/bat_level_animation.h"
 #include "users/djcastaldo/features/layer_lock.h"
 #include "users/djcastaldo/process_record_userspace.h"
 
@@ -19,17 +20,8 @@ bool process_leader_secrets(void) {
     return true;
 }
 
-// set up something for eeprom persistent storage if the BASE/BASE2 layers should be for linux os
-// this saves duplicating 2 entire keymap layouts (windows/linux will use the same keys)
-typedef union {
-    uint32_t raw;
-    struct {
-        bool is_linux_base :1;
-    };
-} user_config_t;
-user_config_t user_config;
-
-// layer identifiers
+/* layer identifiers defined in layers.h
+// ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 enum layers {
     BASE_LAYR,
     MAC_BASE_LAYR,
@@ -43,6 +35,8 @@ enum layers {
     CIRCLE_TEXT_LAYR,
     LOCK_LAYR
 };
+// ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
+*/
 
 
 // custom keycodes
@@ -725,16 +719,6 @@ uint32_t osl_macro_callback(uint32_t trigger_time, void *cb_arg) {
     return 0;
 }
 
-// funciton to send an alternate key if a modifier is being held
-void dual_key(uint16_t std_keycode, uint16_t alt_keycode, uint8_t mod_mask);
-
-// function to send symbols normally requiring alt codes in ms windows
-void symbol_key_win(const char *alt_code, const char *shift_alt_code);
-// function to send symbols normally requiring hex codes in linux
-void symbol_key_linux(const char *hex_code, const char *shift_hex_code);
-// and to type a string of numbers using the numpad (created for windows alt codes)
-void type_numpad_keys_from_string(const char *stringnum);
-
 // for tracking if oneshot layer is active
 bool oneshot_layer_active;
 
@@ -750,10 +734,6 @@ static uint16_t os_change_timer;
 // for tracking if an accent char tap dance should light up a particular key to show what the tap will send
 int act_char_led_index = 0;
 
-// for tracking if base is mac
-bool is_mac_base(void) {
-    return (IS_LAYER_ON(MAC_BASE_LAYR)); 
-}
 // use this to highlight keyboard shortcuts with rgb when winkey (or linux super) is held
 // split some of these into another color since they are used rarely
 bool is_winkey_held;
@@ -2526,121 +2506,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     }
     return process_record_secrets(keycode, record);
-}
-
-void dual_key(uint16_t std_keycode, uint16_t alt_keycode, uint8_t mod_mask) {
-    // if mod is being held, send mod_keycode
-    // get current mod states
-    const uint8_t mods = get_mods();
-    const uint8_t oneshot_mods = get_oneshot_mods();
-    if ((mods | oneshot_mods) & mod_mask) {
-        unregister_mods(mod_mask);  // remove mod
-        tap_code16(alt_keycode);
-        register_mods(mods); // restore original mods
-    }
-    // otherwise send std_keycode
-    else {
-        tap_code16(std_keycode);
-    }
-}
-
-void symbol_key_win(const char *alt_code, const char *shift_alt_code) {
-    // get current mod states
-    const uint8_t mods = get_mods();
-    const uint8_t weak_mods = get_weak_mods();
-    const uint8_t oneshot_mods = get_oneshot_mods();
-    const char *ucode = ((mods | weak_mods | oneshot_mods) & MOD_MASK_SHIFT) ? shift_alt_code : alt_code;
-    bool numlockChanged; // this numlock stuff lets this work in all scenarios
-    numlockChanged = false;
-    clear_mods();
-    clear_weak_mods();
-    if (ucode == NULL || *ucode == '\0') { // null or empty string
-        return;
-    }
-    if (!host_keyboard_led_state().num_lock) {
-         tap_code(KC_NUM);
-         numlockChanged = true;
-    }
-    register_code(KC_LALT); // hold down alt
-    type_numpad_keys_from_string(ucode); // send to fn to type numpad keys
-    unregister_code(KC_LALT); // release alt
-    if (numlockChanged) {
-        tap_code(KC_NUM);
-    }
-    register_mods(mods);
-}
-
-void symbol_key_linux(const char *hex_code, const char *shift_hex_code) {
-    // get current mod states
-    const uint8_t mods = get_mods();
-    const uint8_t weak_mods = get_weak_mods();
-    const uint8_t oneshot_mods = get_oneshot_mods();
-    const char *ucode = ((mods | weak_mods | oneshot_mods) & MOD_MASK_SHIFT) ? shift_hex_code : hex_code;
-    if (ucode == NULL || *ucode == '\0') { // null or empty string
-        return;
-    }
-    clear_mods();
-    clear_weak_mods();
-    tap_code16(C(S(KC_U))); // start the unicode sequence
-    // type the hex chars
-    send_string_with_delay(ucode,5);
-    // finish sequence
-    tap_code(KC_SPC);
-    register_mods(mods); // add back mods
-}
-
-// send_string doesn't use the numpad, so this fn was created to type numbers using the numpad
-void type_numpad_keys_from_string(const char *stringnum) {
-    // now need to loop through each char in the char pointer until a null terminator
-    const char *ptr = stringnum;
-    while (*ptr != '\0') {
-        switch (*ptr) {
-        case '0':
-            dprintf("0 tap\n");
-            tap_code(KC_P0);
-            break;
-        case '1':
-            dprintf("1 tap\n");
-            tap_code(KC_P1);
-            break;
-        case '2':
-            dprintf("2 tap\n");
-            tap_code(KC_P2);
-            break;
-        case '3':
-            dprintf("3 tap\n");
-            tap_code(KC_P3);
-            break;
-        case '4':
-            dprintf("4 tap\n");
-            tap_code(KC_P4);
-            break;
-        case '5':
-            dprintf("5 tap\n");
-            tap_code(KC_P5);
-            break;
-        case '6':
-            dprintf("6 tap\n");
-            tap_code(KC_P6);
-            break;
-        case '7':
-            dprintf("7 tap\n");
-            tap_code(KC_P7);
-            break;
-        case '8':
-            dprintf("8 tap\n");
-            tap_code(KC_P8);
-            break;
-        case '9':
-            dprintf("9 tap\n");
-            tap_code(KC_P9);
-            break;
-        default:
-            dprintf("no number\n");
-            break;
-        }
-    ptr++;
-    }   
 }
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
