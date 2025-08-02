@@ -36,9 +36,17 @@ bool fj_light;
 bool hrow_light;
 // for disabling the keytracker, which will also disable key-reactive fade
 bool enable_keytracker = true;
-
+// if rgb color-test is requested, set this bool
+bool color_test;
+// and use a timer so that it can be turned off after a delay even if no further key is pressed
+uint16_t color_test_timer;
 
 bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
+    // stop color test if active and a key is pressed
+    if (color_test && record->event.pressed) {
+        color_test = false;
+        return false;
+    }
     // stop mouse jiggler
     if (jiggler_token && record->event.pressed) {
         // if jiggler is currently running, stop when key is pressed
@@ -237,6 +245,175 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
         return false;
     }
     return true;
+}
+
+bool process_leader_userspace(void) {
+    bool continue_leader_process = false;
+    if (leader_sequence_five_keys(KC_C, KC_O, KC_L, KC_O, KC_R)) { // start the color test
+        color_test_timer = timer_read();
+        color_test = true;
+    }
+    else if (leader_sequence_two_keys(KC_R, KC_T)) {          // rpi temp monitor
+        SEND_STRING("rpi/temperature.sh" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_two_keys(KC_R, KC_U)) {          // rpi uptime monitor
+        SEND_STRING("rpi/uptime.sh" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_two_keys(KC_P, KC_R)) {          // restart pi-hole
+        SEND_STRING("sudo service pihole-FTL restart" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_two_keys(KC_M, KC_A)) {          // sudo mount -a
+        SEND_STRING("sudo mount -a" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_three_keys(KC_P, KC_O, KC_C)) {  // insert test POC data for template
+        send_string_with_delay("Firstname" SS_TAP(X_TAB) "Lastname" SS_TAP(X_TAB) "123-456-7890" SS_TAP(X_TAB) "first.last@mail.mil" SS_TAP(X_TAB),10);
+    }
+    else if (leader_sequence_two_keys(KC_N, KC_1)) {          // mac mini start nut upsdrvctl
+        SEND_STRING("sudo /usr/local/opt/nut/sbin/upsdrvctl start" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_two_keys(KC_N, KC_2)) {          // mac mini start nut upsd
+        SEND_STRING("sudo /usr/local/opt/nut/sbin/upsd" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_two_keys(KC_N, KC_R)) {          // restart nut
+        SEND_STRING("sudo service nut-server restart" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_two_keys(KC_U, KC_R)) {          // restart unifi
+        SEND_STRING("sudo service unifi restart" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_two_keys(KC_U, KC_U)) {          // update unifi
+        if (is_mac_base()) {
+          SEND_STRING("wget https://get.glennr.nl/unifi/update/unifi-update.sh && sudo bash unifi-update.sh --custom-url " SS_LCMD(SS_TAP(X_V)) SS_TAP(X_ENT));
+        }
+        else {
+          SEND_STRING("wget https://get.glennr.nl/unifi/update/unifi-update.sh && sudo bash unifi-update.sh --custom-url " SS_LCTL(SS_TAP(X_V)) SS_TAP(X_ENT));
+        }
+    }
+    else if (leader_sequence_two_keys(KC_V, KC_H)) {          // open hosts file in vi
+        SEND_STRING("sudo vi /etc/hosts" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_two_keys(KC_V, KC_A)) {          // open tb authorized in vi
+        SEND_STRING("sudo vi /sys/bus/thunderbolt/devices/0-3/authorized" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_two_keys(KC_W, KC_C)) {          // automator script to get word count for selected text
+        if (is_mac_base()) {
+            SEND_STRING(SS_LCTL(SS_LSFT(SS_TAP(X_W))));
+        }
+        else {
+            continue_leader_process = true;
+        }
+    }
+    else if (leader_sequence_two_keys(KC_M, KC_R)) {          // numbers move cell contents right (and 0 current cell)
+        if (is_mac_base()) {
+            SEND_STRING(SS_LCMD(SS_TAP(X_C)) SS_TAP(X_0) SS_TAP(X_RIGHT) SS_LCMD(SS_TAP(X_V)));
+        }
+        else {
+            continue_leader_process = true;
+        }
+    }
+    else if (leader_sequence_two_keys(KC_M, KC_L)) {          // numbers move cell contents left (and 0 current cell)
+        if (is_mac_base()) {
+            SEND_STRING(SS_LCMD(SS_TAP(X_C)) SS_TAP(X_0) SS_TAP(X_LEFT) SS_LCMD(SS_TAP(X_V)));
+        }
+        else {
+            continue_leader_process = true;
+        }
+    }
+    else if (leader_sequence_two_keys(KC_S, KC_W)) {          // select word
+        if (is_mac_base()) {
+            SEND_STRING(SS_LOPT(SS_TAP(X_LEFT) SS_LSFT(SS_TAP(X_RIGHT))));
+        }
+        else {
+            SEND_STRING(SS_LCTL(SS_TAP(X_LEFT) SS_LSFT(SS_TAP(X_RIGHT))));
+        }
+    }
+    else if (leader_sequence_two_keys(KC_S, KC_L)) {          // select line
+        SEND_STRING(SS_TAP(X_HOME) SS_LSFT(SS_TAP(X_END)));
+    }
+    else if (leader_sequence_two_keys(KC_T, KC_Y)) {          // thank you
+        SEND_STRING("thank you");
+    }
+    else if (leader_sequence_two_keys(KC_N, KC_P)) {          // no problem
+        SEND_STRING("no problem");
+    }
+    else if (leader_sequence_three_keys(KC_O, KC_M, KC_W)) {  // on my way
+        SEND_STRING("on my way");
+    }
+    else if (leader_sequence_three_keys(KC_B, KC_R, KC_B)) {  // be right back
+        SEND_STRING("be right back");
+    }
+    else if (leader_sequence_three_keys(KC_H, KC_G, KC_E)) {  // have a good evening
+        SEND_STRING("have a good evening");
+    }
+    else if (leader_sequence_three_keys(KC_H, KC_G, KC_N)) {  // have a good night
+        SEND_STRING("have a good night");
+    }
+    else if (leader_sequence_four_keys(KC_T, KC_T, KC_Y, KC_L)) {  // talk to you later
+        SEND_STRING("talk to you later");
+    }
+    else if (leader_sequence_four_keys(KC_G, KC_I, KC_T, KC_L)) {        // git log
+        SEND_STRING("git log\n");
+    }
+    else if (leader_sequence_four_keys(KC_G, KC_I, KC_T, KC_A)) {        // git add
+        SEND_STRING("git add -A\n");
+    }
+    else if (leader_sequence_four_keys(KC_G, KC_I, KC_T, KC_C)) {        // git commit
+        SEND_STRING("git commit -m \"\"" SS_TAP(X_LEFT));
+    }
+    else if (leader_sequence_four_keys(KC_G, KC_I, KC_T, KC_P)) {        // git push
+        SEND_STRING("git push\n");
+    }
+    else if (leader_sequence_five_keys(KC_G, KC_I, KC_T, KC_C, KC_O)) {  // git checkout .
+        SEND_STRING("git checkout .\n");
+    }
+    else if (leader_sequence_three_keys(KC_Q, KC_C, KC_B)) {  // qmk compile shortcutstudio bridge75 firmware
+        SEND_STRING("qmk compile -j 0 -kb shortcut/bridge75 -km djcastaldo" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_three_keys(KC_Q, KC_F, KC_B)) {  // qmk flash shortcutstudio bridge75 firmware
+        SEND_STRING("qmk flash -j 0 -kb shortcut/bridge75 -km djcastaldo" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_three_keys(KC_Q, KC_C, KC_Y)) {  // qmk compile yunzii firmware
+        SEND_STRING("qmk compile -j 0 -kb yunzii/al68 -km djcastaldo" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_three_keys(KC_Q, KC_F, KC_Y)) {  // qmk flash yunzii firmware
+        SEND_STRING("qmk flash -j 0 -kb yunzii/al68 -km djcastaldo" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_three_keys(KC_Q, KC_C, KC_L)) {  // qmk compile lemokey p1 firmware
+        SEND_STRING("qmk compile -j 0 -kb lemokey/p1_pro/ansi_encoder -km djcastaldo" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_three_keys(KC_Q, KC_F, KC_L)) {  // qmk flash lemokey p1 firmware
+        SEND_STRING("qmk flash -j 0 -kb lemokey/p1_pro/ansi_encoder -km djcastaldo" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_four_keys(KC_Q, KC_C, KC_K, KC_V)) {  // qmk compile keychron V6 firmware
+        SEND_STRING("qmk compile -j 0 -kb keychron/v6_max/ansi_encoder -km djcastaldo" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_four_keys(KC_Q, KC_F, KC_K, KC_V)) {  // qmk flash keychron V6 firmware
+        SEND_STRING("qmk flash -j 0 -kb keychron/v6_max/ansi_encoder -km djcastaldo" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_four_keys(KC_Q, KC_C, KC_K, KC_Q)) {  // qmk compile keychron Q6 firmware
+        SEND_STRING("qmk compile -j 0 -kb keychron/q6_max/ansi_encoder -km djcastaldo" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_four_keys(KC_Q, KC_F, KC_K, KC_Q)) {  // qmk flash keychron Q6 firmware
+        SEND_STRING("qmk flash -j 0 -kb keychron/q6_max/ansi_encoder -km djcastaldo" SS_TAP(X_ENT));
+    }
+    else if (leader_sequence_five_keys(KC_A, KC_S, KC_P, KC_D, KC_C)) {  // asp.net decrypt connectionStrings path from clipboard
+        send_string_with_delay("C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\aspnet_regiis -pdf connectionStrings " SS_LCTL(SS_TAP(X_V)) SS_TAP(X_ENT),9);
+    }
+    else if (leader_sequence_five_keys(KC_A, KC_S, KC_P, KC_E, KC_C)) {  // asp.net encrypt connectionStrings path from clipboard
+        send_string_with_delay("C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\aspnet_regiis -pef connectionStrings " SS_LCTL(SS_TAP(X_V)) SS_TAP(X_ENT),9);
+    }
+    else if (leader_sequence_five_keys(KC_A, KC_S, KC_P, KC_D, KC_S)) {  // asp.net decrypt sessionState path from clipboard
+        send_string_with_delay("C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\aspnet_regiis -pdf system.web/sessionState " SS_LCTL(SS_TAP(X_V)) SS_TAP(X_ENT),9);
+    }
+    else if (leader_sequence_five_keys(KC_A, KC_S, KC_P, KC_E, KC_S)) {  // asp.net encrypt sessionState path from clipboard
+        send_string_with_delay("C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\aspnet_regiis -pef system.web/sessionState " SS_LCTL(SS_TAP(X_V)) SS_TAP(X_ENT),9);
+    }
+    else if (leader_sequence_four_keys(KC_B, KC_O, KC_O, KC_T)) {  // reset to bootloader
+        reset_keyboard();
+    }
+    else {
+        continue_leader_process = true;
+    }
+    return continue_leader_process;
 }
 
 // jiggler to keep from screen timeout without adjusting power settings

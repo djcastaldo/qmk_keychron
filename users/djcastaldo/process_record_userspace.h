@@ -19,10 +19,13 @@ extern report_mouse_t jiggler_report;
 extern bool fj_light;
 extern bool hrow_light;
 extern bool enable_keytracker;
+extern bool color_test;
+extern uint16_t color_test_timer;
 extern const uint8_t monitored_macos_base_layers[];
 extern const uint8_t monitored_macos_base_count;
 
 bool process_record_userspace(uint16_t keycode, keyrecord_t *record);
+bool process_leader_userspace(void);
 bool is_mac_base(void);
 void jiggle_mouse(void);
 void dual_key(uint16_t std_keycode, uint16_t alt_keycode, uint8_t mod_mask);
