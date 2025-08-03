@@ -27,6 +27,9 @@ bool is_mac_base(void) {
     return false;
 }
 
+uint8_t wide_text_mode = WIDE_STANDARD;
+bool wide_firstchar = false;
+
 // setup mouse jiggler
 deferred_token jiggler_token = INVALID_DEFERRED_TOKEN;
 report_mouse_t jiggler_report = {0};
@@ -56,6 +59,136 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
         host_mouse_send(&jiggler_report);
     }
     switch (keycode) {
+    // this is a custom version of KC_TRANS to press a key on default layer
+    // setup so that I can use LTRANS in the keymap to denote which fallthrough keys get lit up on the layer
+    case LTRANS:
+        if (record->event.pressed) {
+            uint8_t layer = get_highest_layer(layer_state);
+            const uint8_t mods = get_mods();
+            // prefix to send for the TMUX_LAYR
+            if (layer == TMUX_LAYR) {
+                unregister_mods(mods); // temp remove mods
+                tap_code16(C(KC_B));   // send ctrl-b before keycode processing
+                register_mods(mods);   // reapply mods
+            }
+
+            // for some wide modes, should start with the spacing char
+            if (layer == WIDE_TEXT_LAYR && wide_firstchar) {
+                unregister_mods(mods); // temp remove mods
+                switch (wide_text_mode) {
+                case WIDE_STHRU:
+                    tap_code16(KC_MINS);
+                    break;
+                case WIDE_UNDERLN:
+                    tap_code16(KC_UNDS);
+                    break;
+                case WIDE_BARTEXT:
+                    tap_code16(KC_PIPE);
+                    break;
+                case WIDE_BBRTEXT:
+                    if (is_mac_base()) {
+                        symbol_key_mac("00a6","");
+                    }
+                    else if (user_config.is_linux_base) {
+                        symbol_key_linux("00a6","");
+                    }
+                    else {
+                        symbol_key_win("0166","");
+                    }
+                    break;
+                default:
+                    break;
+                }
+                register_mods(mods);   // reapply mods
+                wide_firstchar = false;
+            }
+
+            // send keydown from the default layer
+            register_code(keymap_key_to_keycode(biton32(default_layer_state), record->event.key));
+
+            // if WIDE_TEXT_LAYER, add the extra spacing char
+            if (layer == WIDE_TEXT_LAYR) {
+                unregister_mods(mods); // temp remove mods
+                switch (wide_text_mode) {
+                case WIDE_STHRU:
+                    tap_code16(KC_MINS);
+                    break;
+                case WIDE_UNDERLN:
+                    tap_code16(KC_UNDS);
+                    break;
+                case WIDE_BARTEXT:
+                    tap_code16(KC_PIPE);
+                    break;
+                case WIDE_BBRTEXT:
+                    if (is_mac_base()) {
+                        symbol_key_mac("00a6","");
+                    }
+                    else if (user_config.is_linux_base) {
+                        symbol_key_linux("00a6","");
+                    }
+                    else {
+                        symbol_key_win("0166","");
+                    }
+                    break;
+                default:
+                    tap_code16(KC_SPC);
+                    break;
+                }
+                register_mods(mods);   // reapply mods
+            }
+        }
+        else {
+            unregister_code(keymap_key_to_keycode(biton32(default_layer_state), record->event.key));
+        }
+        return false;
+    case STHRU:
+        if (record->event.pressed) {
+            if (wide_text_mode == WIDE_STHRU) {
+                wide_text_mode = WIDE_STANDARD;
+                wide_firstchar = false;
+            }
+            else {
+                wide_text_mode = WIDE_STHRU;
+                wide_firstchar = true;
+            }
+        }
+        return false;
+    case UNDERLN:
+        if (record->event.pressed) {
+            if (wide_text_mode == WIDE_UNDERLN) {
+                wide_text_mode = WIDE_STANDARD;
+                wide_firstchar = false;
+            }
+            else {
+                wide_text_mode = WIDE_UNDERLN;
+                wide_firstchar = true;
+            }
+        }
+        return false;
+    case BARTEXT:
+        if (record->event.pressed) {
+            if (wide_text_mode == WIDE_BARTEXT) {
+                wide_text_mode = WIDE_STANDARD;
+                wide_firstchar = false;
+            }
+            else {
+                wide_text_mode = WIDE_BARTEXT;
+                wide_firstchar = true;
+            }
+        }
+        return false;
+    case BBRTEXT:
+        if (record->event.pressed) {
+            if (wide_text_mode == WIDE_BBRTEXT) {
+                wide_text_mode = WIDE_STANDARD;
+                wide_firstchar = false;
+            }
+            else {
+                wide_text_mode = WIDE_BBRTEXT;
+                wide_firstchar = true;
+            }
+        }
+        return false;
     case JIGGLE:
         if (record->event.pressed) {
             jiggle_mouse();

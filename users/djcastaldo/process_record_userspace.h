@@ -14,6 +14,17 @@ typedef union {
 
 extern user_config_t user_config;
 
+// for tracking wide-text options for the WIDE_TEXT_LAYR
+enum {
+    WIDE_STANDARD,
+    WIDE_STHRU,
+    WIDE_UNDERLN,
+    WIDE_BARTEXT,
+    WIDE_BBRTEXT
+};
+extern uint8_t wide_text_mode;
+extern bool wide_firstchar;
+
 extern deferred_token jiggler_token;
 extern report_mouse_t jiggler_report;
 extern bool fj_light;

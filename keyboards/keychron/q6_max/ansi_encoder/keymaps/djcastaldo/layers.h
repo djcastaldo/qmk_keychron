@@ -4,14 +4,14 @@
 
 enum layers {
     MAC_BASE,
-    FN_LAYER,
+    FN_LAYR,
     WIN_BASE,
-    SFT_LAYER,
-    CTL_LAYER,
-    OPT_LAYER,
-    TMUX_LAYER,
-    SYMB_LAYER,
+    SFT_LAYR,
+    CTL_LAYR,
+    OPT_LAYR,
+    TMUX_LAYR,
+    SYMB_LAYR,
     WIDE_TEXT_LAYR,
     CIRCLE_TEXT_LAYR,
-    LOCK_LAYER
+    LOCK_LAYR
 };
