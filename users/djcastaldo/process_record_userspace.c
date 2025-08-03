@@ -1586,6 +1586,276 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             }
         }
         return false;
+    case E_SMILE:
+	if (record->event.pressed) {
+            symbol_key_mac("d83dde00","d83dde06");
+	}
+	return false;
+    case E_SMIRK:
+	if (record->event.pressed) {
+            symbol_key_mac("d83dde0f","d83dde09");
+	}
+	return false;
+    case E_ASTON:
+	if (record->event.pressed) {
+            symbol_key_mac("d83dde32","d83dde27");
+	}
+	return false;
+    case E_SAD:
+	if (record->event.pressed) {
+            symbol_key_mac("d83dde1f","d83dde1e");
+	}
+	return false;
+    case E_CAR:
+	if (record->event.pressed) {
+            symbol_key_mac("d83dde99","d83ddea2");
+	}
+	return false;
+    case E_BUS:
+	if (record->event.pressed) {
+            symbol_key_mac("d83dde8e","d83ddee9");
+	}
+	return false;
+    case E_TRAIN:
+	if (record->event.pressed) {
+            symbol_key_mac("d83dde8a","d83ddeb2");
+	}
+	return false;
+    case E_TAXI:
+	if (record->event.pressed) {
+            symbol_key_mac("d83dde95","d83ddef4");
+	}
+	return false;
+    case E_FLAGUS:
+	if (record->event.pressed) {
+            symbol_key_mac("d83cddfad83cddf8","d83cddeed83cddf9");
+	}
+	return false;
+    case E_FLAGPI:
+	if (record->event.pressed) {
+            symbol_key_mac("d83cddf5d83cdded","d83cdde8d83cddf3");
+	}
+	return false;
+    case E_GLOBE:
+	if (record->event.pressed) {
+            symbol_key_mac("d83cdf0e","d83cdf10");
+	}
+	return false;
+    case E_PIZZA:
+	if (record->event.pressed) {
+            symbol_key_mac("d83cdf55","d83cdf69");
+	}
+	return false;
+    case E_BURGER:
+	if (record->event.pressed) {
+            symbol_key_mac("d83cdf54","d83cdf5f");
+	}
+	return false;
+    case E_CHICKEN:
+	if (record->event.pressed) {
+            symbol_key_mac("d83cdf57","d83cdf2d");
+	}
+	return false;
+    case E_TACO:
+	if (record->event.pressed) {
+            symbol_key_mac("d83cdf2e","d83cdf66");
+	}
+	return false;
+    case E_SNAIL:
+	if (record->event.pressed) {
+            symbol_key_mac("d83ddc0c","26a1");
+	}
+	return false;
+    case E_NINJA:
+	if (record->event.pressed) {
+            symbol_key_mac("d83edd77","d83ddc88");
+	}
+	return false;
+    case E_STOP:
+	if (record->event.pressed) {
+            symbol_key_mac("d83dded1","270a");
+	}
+	return false;
+    case E_HAND:
+	if (record->event.pressed) {
+            symbol_key_mac("d83ddd90","270c");
+	}
+	return false;
+    case E_SHH:
+	if (record->event.pressed) {
+            symbol_key_mac("d83edd2b","d83dde34");
+	}
+	return false;
+    case E_PACKAGE:
+	if (record->event.pressed) {
+            symbol_key_mac("d83ddce6","d83ddcec");
+	}
+	return false;
+    case E_POINTU:
+	if (record->event.pressed) {
+            symbol_key_mac("d83ddc46","2b06fe0f");
+	}
+	return false;
+    case E_POINTD:
+	if (record->event.pressed) {
+            symbol_key_mac("d83ddc47","2b07fe0f");
+	}
+	return false;
+    case E_POINTL:
+	if (record->event.pressed) {
+            symbol_key_mac("d83ddc48","2b05fe0f");
+	}
+	return false;
+    case E_POINTR:
+	if (record->event.pressed) {
+            symbol_key_mac("d83ddc49","27a1fe0f");
+	}
+	return false;
+    case E_DRINK:
+	if (record->event.pressed) {
+            symbol_key_mac("2615","d83cdf7a");
+	}
+	return false;
+    case E_CMARK:
+	if (record->event.pressed) {
+            symbol_key_mac("2705","2714");
+	}
+	return false;
+    case E_EMARK:
+	if (record->event.pressed) {
+            symbol_key_mac("2757","2755");
+	}
+	return false;
+    case E_QMARK:
+	if (record->event.pressed) {
+            symbol_key_mac("2753","2754");
+	}
+	return false;
+    case E_BULB:
+	if (record->event.pressed) {
+            symbol_key_mac("d83ddca1","d83edeab");
+	}
+	return false;
+    case E_SSHOT:
+	if (record->event.pressed) {
+            symbol_key_mac("d83dddbc","d83ddcf8");
+	}
+	return false;
+    case E_MIC:
+	if (record->event.pressed) {
+            symbol_key_mac("d83cdf99","d83cdfa4");
+	}
+	return false;
+    case E_TRASH:
+	if (record->event.pressed) {
+            symbol_key_mac("d83dddd1","267bfe0f");
+	}
+	return false;
+    case E_I:
+	if (record->event.pressed) {
+            symbol_key_mac("2139fe0f","2139");
+	}
+	return false;
+    case E_K0:
+	if (record->event.pressed) {
+            symbol_key_mac("0030fe0f20e3","D83DDD59");
+	}
+	return false;
+    case E_K1:
+	if (record->event.pressed) {
+            symbol_key_mac("0031fe0f20e3","D83DDD50");
+	}
+	return false;
+    case E_K2:
+	if (record->event.pressed) {
+            symbol_key_mac("0032FE0F20E3","D83DDD51");
+	}
+	return false;
+    case E_K3:
+	if (record->event.pressed) {
+            symbol_key_mac("0033FE0F20E3","D83DDD52");
+	}
+	return false;
+    case E_K4:
+	if (record->event.pressed) {
+            symbol_key_mac("0034FE0F20E3","D83DDD53");
+	}
+	return false;
+    case E_K5:
+	if (record->event.pressed) {
+            symbol_key_mac("0035FE0F20E3","D83DDD54");
+	}
+	return false;
+    case E_K6:
+	if (record->event.pressed) {
+            symbol_key_mac("0036FE0F20E3","D83DDD55");
+	}
+	return false;
+    case E_K7:
+	if (record->event.pressed) {
+            symbol_key_mac("0037FE0F20E3","D83DDD56");
+	}
+	return false;
+    case E_K8:
+	if (record->event.pressed) {
+            symbol_key_mac("0038FE0F20E3","D83DDD57");
+	}
+	return false;
+    case E_K9:
+	if (record->event.pressed) {
+            symbol_key_mac("0039FE0F20E3","D83DDD58");
+	}
+	return false;
+    case E_STAR:
+	if (record->event.pressed) {
+            symbol_key_mac("002AFE0F20E3","2731");
+	}
+	return false;
+    case E_HASH:
+	if (record->event.pressed) {
+            symbol_key_mac("0023FE0F20E3","d83ddcf1");
+	}
+	return false;
+    case E_MINS:
+	if (record->event.pressed) {
+            symbol_key_mac("2796","D83DDD5A");
+	}
+	return false;
+    case E_PLUS:
+	if (record->event.pressed) {
+            symbol_key_mac("2795","D83DDD5B");
+	}
+	return false;
+    case E_DIV:
+	if (record->event.pressed) {
+            symbol_key_mac("2797","2716FE0F");
+	}
+	return false;
+    case E_GRIM:
+	if (record->event.pressed) {
+            symbol_key_mac("d83dde2c","d83dde16");
+	}
+	return false;
+    case E_KB:
+	if (record->event.pressed) {
+            symbol_key_mac("2328FE0F","D83DDDA5FE0F");
+	}
+	return false;
+    case E_OK:
+	if (record->event.pressed) {
+            symbol_key_mac("d83ddc4c","d83ddc4d");
+	}
+	return false;
+    case E_SGLASS:
+	if (record->event.pressed) {
+            symbol_key_mac("d83dde0e","D83DDD76FE0F");
+	}
+	return false;
+    case E_BOTTLE:
+	if (record->event.pressed) {
+            symbol_key_mac("d83cdf7c","d83cdf7e");
+	}
+	return false;
     }
     return true;
 }
