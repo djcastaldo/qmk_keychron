@@ -243,6 +243,1216 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             }
         }
         return false;
+    case DUAL_PLUSMIN:
+        if (record->event.pressed) {
+            // standard: plus symbol, while control is held: minus
+            dual_key(KC_PPLS, KC_PMNS, MOD_MASK_CTRL);
+        }
+        return false;
+    case DUAL_MULTDIV:
+        if (record->event.pressed) {
+            // standard: asterisk, while control is held: divide
+            dual_key(KC_PAST, KC_PSLS, MOD_MASK_CTRL);
+        }
+        return false;
+    case VI_REPLACE:
+        if (record->event.pressed) {
+           // start syntax for vi search and replace
+           send_string(":%s///g" SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT));
+        }
+        return false;
+    case GIT_ADD:
+        if (record->event.pressed) {
+           // add updates to git commit
+           send_string("git add -A" SS_TAP(X_ENT));
+        }
+        return false;
+    case GIT_COMMIT:
+        if (record->event.pressed) {
+           // commit changes
+           send_string("git commit -m \"\"" SS_TAP(X_LEFT));
+        }
+        return false;
+    case GIT_PUSH:
+        if (record->event.pressed) {
+           // push commit to git repo
+           send_string("git push" SS_TAP(X_ENT));
+        }
+        return false;
+    case GIT_CHKOUT:
+        if (record->event.pressed) {
+           // checkout last commit from git repo
+           send_string("git checkout ." SS_TAP(X_ENT));
+        }
+        return false;
+    case GIT_LOG:
+        if (record->event.pressed) {
+           // show the git log
+           send_string("git log" SS_TAP(X_ENT));
+        }
+        return false;
+    case COLORTEST:
+        if (record->event.pressed) {
+            color_test_timer = timer_read();
+            color_test = true;
+        }
+        return false;
+    // the following OPT keycodes mimic a macos option os layer for symbols and accents
+    // symbol_key_win() is a fn to type a windows alt code on the numpad
+    // symbol_key_linux() uses hex codes to type the same symbols on linux
+    case OPT2:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("2122","20ac");
+            }
+            else {
+                symbol_key_win("0153","0128");
+            }
+        }
+        return false;
+    case OPT3:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00a3","2039");
+            }
+            else {
+                symbol_key_win("156","0139");
+            }
+        }
+        return false;
+    case OPT4:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00a2","203a");
+            }
+            else {
+                symbol_key_win("155","0155");
+            }
+        }
+        return false;
+    case OPT5:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("221e","fb01");
+            }
+            else {
+                symbol_key_win("236","64257");
+            }
+        }
+        return false;
+    case OPT6:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00a7","fb02");
+            }
+            else {
+                symbol_key_win("21","64258");
+            }
+        }
+        return false;
+    case OPT7:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00b6","2021");
+            }
+            else {
+                symbol_key_win("20","0135");
+            }
+        }
+        return false;
+    case OPT8:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("2022","00b0");
+            }
+            else {
+                symbol_key_win("7","248");
+            }
+        }
+        return false;
+    case OPT9:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00aa","00b7");
+            }
+            else {
+                symbol_key_win("166","9");
+            }
+        }
+        return false;
+    case OPT0:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00ba","201a");
+            }
+            else {
+                symbol_key_win("167","0164");
+            }
+        }
+        return false;
+    case OPTMIN:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("2013","2014");
+            }
+            else {
+                symbol_key_win("0151","22");
+            }
+        }
+        return false;
+    case OPTEQ:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("2260","00b1");
+            }
+            else {
+                symbol_key_win("8800","241");
+            }
+        }
+        return false;
+    case OPTQ:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("0153","0152");
+            }
+            else {
+                symbol_key_win("0156","0140");
+            }
+        }
+        return false;
+    case OPTW:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("2211","201e");
+            }
+            else {
+                symbol_key_win("228","0132");
+            }
+        }
+        return false;
+    case OPTR:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00ae","2030");
+            }
+            else {
+                symbol_key_win("0174","0137");
+            }
+        }
+        return false;
+    case OPTT:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("2020","02c7");
+            }
+            else {
+                symbol_key_win("0134","259");
+            }
+        }
+        return false;
+    case OPTY:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00a5","00c1");
+            }
+            else {
+                symbol_key_win("157","0193");
+            }
+        }
+        return false;
+    case OPTO:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00f8","00d8");
+            }
+            else {
+                symbol_key_win("0248","0216");
+            }
+        }
+        return false;
+    case OPTP:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("03c0","03a0");
+            }
+            else {
+                symbol_key_win("227","928");
+            }
+        }
+        return false;
+    case OPTLBR:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("201c","201d");
+            }
+            else {
+                symbol_key_win("0147","0148");
+            }
+        }
+        return false;
+    case OPTRBR:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("2018","2019");
+            }
+            else {
+                symbol_key_win("0145","0146");
+            }
+        }
+        return false;
+    case OPTBSL:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00ab","00bb");
+            }
+            else {
+                symbol_key_win("174","175");
+            }
+        }
+        return false;
+    case OPTA:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00e5","00c5");
+            }
+            else {
+                symbol_key_win("0229","0197");
+            }
+        }
+        return false;
+    case OPTS:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00df","00cd");
+            }
+            else {
+                symbol_key_win("225","0205");
+            }
+        }
+        return false;
+    case OPTD:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("2202","00ce");
+            }
+            else {
+                symbol_key_win("8706","0206");
+            }
+        }
+        return false;
+    case OPTF:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("0192","00cf");
+            }
+            else {
+                symbol_key_win("159","0207");
+            }
+        }
+        return false;
+    case OPTG:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00a9","02dd");
+            }
+            else {
+                symbol_key_win("0169","0180");
+            }
+        }
+        return false;
+    case OPTH:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("02d9","00d3");
+            }
+            else {
+                symbol_key_win("0183","0211");
+            }
+        }
+        return false;
+    case OPTJ:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("2206","00d4");
+            }
+            else {
+                symbol_key_win("30","0212");
+            }
+        }
+        return false;
+    case OPTK:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("02da","03f0");
+            }
+            else {
+                symbol_key_win("0186","0208");
+            }
+        }
+        return false;
+    case OPTL:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00ac","00d2");
+            }
+            else {
+                symbol_key_win("170","0210");
+            }
+        }
+        return false;
+    case OPTSEM:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("2026","00da");
+            }
+            else {
+                symbol_key_win("0133","0218");
+            }
+        }
+        return false;
+    case OPTAPO:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00e6","00c6");
+            }
+            else {
+                symbol_key_win("0230","0198");
+            }
+        }
+        return false;
+    case OPTZ:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("03a9","00b8");
+            }
+            else {
+                symbol_key_win("234","0184");
+            }
+        }
+        return false;
+    case OPTX:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("2248","02db");
+            }
+            else {
+                symbol_key_win("247","0215");
+            }
+        }
+        return false;
+    case OPTC:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00e7","00c7");
+            }
+            else {
+                symbol_key_win("0231","0199");
+            }
+        }
+        return false;
+    case OPTV:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("221a","25ca");
+            }
+            else {
+                symbol_key_win("251","4");
+            }
+        }
+        return false;
+    case OPTB:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("222b","0131");
+            }
+            else {
+                symbol_key_win("8747","0305");
+            }
+        }
+        return false;
+    case OPTM:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("03bc","00c2");
+            }
+            else {
+                symbol_key_win("230","0194");
+            }
+        }
+        return false;
+    case OPTCOM:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("2264","00af");
+            }
+            else {
+                symbol_key_win("243","0175");
+            }
+        }
+        return false;
+    case OPTDOT:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("2265","02d8");
+            }
+            else {
+                symbol_key_win("242","0168");
+            }
+        }
+        return false;
+    case OPTSLS:
+        if (record->event.pressed) {
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00f7","00bf");
+            }
+            else {
+                symbol_key_win("0247","168");
+            }
+        }
+        return false;
+    case SUITH:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("2665","2661");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("2665","2661");
+            }
+            else {
+                symbol_key_win("3","3");
+            }
+        }
+        return false;
+    case SUITD:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("2666","2662");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("2666","2662");
+            }
+            else {
+                symbol_key_win("4","4");
+            }
+        }
+        return false;
+    case SUITC:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("2663","2667");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("2663","2667");
+            }
+            else {
+                symbol_key_win("5","5");
+            }
+        }
+        return false;
+    case SUITS:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("2660","2664");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("2660","2664");
+            }
+            else {
+                symbol_key_win("6","6");
+            }
+        }
+        return false;
+    case SUP1:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("00b9","2074");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("00b9","2074");
+            }
+            else {
+                symbol_key_win("0185","0185");
+            }
+        }
+        return false;
+    case SUP2:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("00b2","2075");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("00b2","2075");
+            }
+            else {
+                symbol_key_win("0178","0178");
+            }
+        }
+        return false;
+    case SUP3:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("00b3","2076");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("00b3","2076");
+            }
+            else {
+                symbol_key_win("0179","0179");
+            }
+        }
+        return false;
+    case NBSP:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("00a0","00a6");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("00a0","00a6");
+            }
+            else {
+                symbol_key_win("0160","0166");
+            }
+        }
+        return false;
+    case CIRCL1:
+        if (record->event.pressed) {
+            // check mods first so can do a double-cirled number if alt is held
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                if (is_mac_base()) {
+                    symbol_key_mac("24f5","24f5");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("24f5","24f5");
+                }
+                else {
+                    symbol_key_win("9461","9461");
+                }
+                register_mods(mods);
+            } else {
+                if (is_mac_base()) {
+                    symbol_key_mac("2460","246a");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("2460","246a");
+                }
+                else {
+                    symbol_key_win("9312","9322");
+                }
+            }
+        }
+        return false;
+    case CIRCL2:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                if (is_mac_base()) {
+                    symbol_key_mac("24f6","24f6");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("24f6","24f6");
+                }
+                else {
+                    symbol_key_win("9462","9462");
+                }
+                register_mods(mods);
+            } else {
+                if (is_mac_base()) {
+                    symbol_key_mac("2461","246b");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("2461","246b");
+                }
+                else {
+                    symbol_key_win("9313","9323");
+                }
+            }
+        }
+        return false;
+    case CIRCL3:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                if (is_mac_base()) {
+                    symbol_key_mac("24f7","24f7");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("24f7","24f7");
+                }
+                else {
+                    symbol_key_win("9463","9463");
+                }
+                register_mods(mods);
+            } else {
+                if (is_mac_base()) {
+                    symbol_key_mac("2462","246c");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("2462","246c");
+                }
+                else {
+                    symbol_key_win("9314","9324");
+                }
+            }
+        }
+        return false;
+    case CIRCL4:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                if (is_mac_base()) {
+                    symbol_key_mac("24f8","24f8");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("24f8","24f8");
+                }
+                else {
+                    symbol_key_win("9464","9464");
+                }
+                register_mods(mods);
+            } else {
+                if (is_mac_base()) {
+                    symbol_key_mac("2463","246d");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("2463","246d");
+                }
+                else {
+                    symbol_key_win("9315","9325");
+                }
+            }
+        }
+        return false;
+    case CIRCL5:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                if (is_mac_base()) {
+                    symbol_key_mac("24f9","24f9");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("24f9","24f9");
+                }
+                else {
+                    symbol_key_win("9465","9465");
+                }
+                register_mods(mods);
+            } else {
+                if (is_mac_base()) {
+                    symbol_key_mac("2464","246e");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("2464","246e");
+                }
+                else {
+                    symbol_key_win("9316","9326");
+                }
+            }
+        }
+        return false;
+    case CIRCL6:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                if (is_mac_base()) {
+                    symbol_key_mac("24fa","24fa");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("24fa","24fa");
+                }
+                else {
+                    symbol_key_win("9466","9466");
+                }
+                register_mods(mods);
+            } else {
+                if (is_mac_base()) {
+                    symbol_key_mac("2465","246f");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("2465","246f");
+                }
+                else {
+                    symbol_key_win("9317","9327");
+                }
+            }
+        }
+        return false;
+    case CIRCL7:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                if (is_mac_base()) {
+                    symbol_key_mac("24fb","24fb");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("24fb","24fb");
+                }
+                else {
+                    symbol_key_win("9467","9467");
+                }
+                register_mods(mods);
+            } else {
+                if (is_mac_base()) {
+                    symbol_key_mac("2466","2470");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("2466","2470");
+                }
+                else {
+                    symbol_key_win("9318","9328");
+                }
+            }
+        }
+        return false;
+    case CIRCL8:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                if (is_mac_base()) {
+                    symbol_key_mac("24fc","24fc");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("24fc","24fc");
+                }
+                else {
+                    symbol_key_win("9468","9468");
+                }
+                register_mods(mods);
+            } else {
+                if (is_mac_base()) {
+                    symbol_key_mac("2467","2471");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("2467","2471");
+                }
+                else {
+                    symbol_key_win("9319","9329");
+                }
+            }
+        }
+        return false;
+    case CIRCL9:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                if (is_mac_base()) {
+                    symbol_key_mac("24fd","24fd");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("24fd","24fd");
+                }
+                else {
+                    symbol_key_win("9469","9469");
+                }
+                register_mods(mods);
+            } else {
+                if (is_mac_base()) {
+                    symbol_key_mac("2468","2472");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("2468","2472");
+                }
+                else {
+                    symbol_key_win("9320","9330");
+                }
+            }
+        }
+        return false;
+    case CIRCL0:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                del_oneshot_mods(MOD_MASK_CTRL);
+                unregister_mods(MOD_MASK_CTRL);
+                if (is_mac_base()) { // this one can do both double circle 10 and a circle 20
+                    symbol_key_mac("24fe","2473");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("24fe","2473");
+                }
+                else {
+                    symbol_key_win("9470","9331");
+                }
+                register_mods(mods);
+            } else {
+                if (is_mac_base()) {
+                    symbol_key_mac("24ea","2469");
+                }
+                else if (user_config.is_linux_base) {
+                    symbol_key_linux("24ea","2469");
+                }
+                else {
+                    symbol_key_win("9450","9321");
+                }
+            }
+        }
+        return false;
+    case CIRCLQ:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24e0","24c6");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24e0","24c6");
+            }
+            else {
+                symbol_key_win("9440","9414");
+            }
+        }
+        return false;
+    case CIRCLW:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24e6","24cc");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24e6","24cc");
+            }
+            else {
+                symbol_key_win("9446","9420");
+            }
+        }
+        return false;
+    case CIRCLE:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24d4","24ba");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24d4","24ba");
+            }
+            else {
+                symbol_key_win("9428","9402");
+            }
+        }
+        return false;
+    case CIRCLR:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24e1","24c7");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24e1","24c7");
+            }
+            else {
+                symbol_key_win("9441","9415");
+            }
+        }
+        return false;
+    case CIRCLT:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24e3","24c9");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24e3","24c9");
+            }
+            else {
+                symbol_key_win("9443","9417");
+            }
+        }
+        return false;
+    case CIRCLY:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24e8","24ce");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24e8","24ce");
+            }
+            else {
+                symbol_key_win("9448","9422");
+            }
+        }
+        return false;
+    case CIRCLU:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24e4","24ca");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24e4","24ca");
+            }
+            else {
+                symbol_key_win("9444","9418");
+            }
+        }
+        return false;
+    case CIRCLI:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24d8","24be");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24d8","24be");
+            }
+            else {
+                symbol_key_win("9432","9406");
+            }
+        }
+        return false;
+    case CIRCLO:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24de","24c4");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24de","24c4");
+            }
+            else {
+                symbol_key_win("9438","9412");
+            }
+        }
+        return false;
+    case CIRCLP:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24df","24c5");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24df","24c5");
+            }
+            else {
+                symbol_key_win("9439","9413");
+            }
+        }
+        return false;
+    case CIRCLA:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24d0","24b6");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24d0","24b6");
+            }
+            else {
+                symbol_key_win("9424","9398");
+            }
+        }
+        return false;
+    case CIRCLS:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24e2","24c8");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24e2","24c8");
+            }
+            else {
+                symbol_key_win("9442","9416");
+            }
+        }
+        return false;
+    case CIRCLD:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24d3","24b9");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24d3","24b9");
+            }
+            else {
+                symbol_key_win("9427","9401");
+            }
+        }
+        return false;
+    case CIRCLF:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24d5","24bb");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24d5","24bb");
+            }
+            else {
+                symbol_key_win("9429","9403");
+            }
+        }
+        return false;
+    case CIRCLG:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24d6","24bc");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24d6","24bc");
+            }
+            else {
+                symbol_key_win("9430","9404");
+            }
+        }
+        return false;
+    case CIRCLH:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24d7","24bd");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24d7","24bd");
+            }
+            else {
+                symbol_key_win("9431","9405");
+            }
+        }
+        return false;
+    case CIRCLJ:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24d9","24bf");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24d9","24bf");
+            }
+            else {
+                symbol_key_win("9433","9407");
+            }
+        }
+        return false;
+    case CIRCLK:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24da","24c0");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24da","24c0");
+            }
+            else {
+                symbol_key_win("9434","9408");
+            }
+        }
+        return false;
+    case CIRCLL:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24db","24c1");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24db","24c1");
+            }
+            else {
+                symbol_key_win("9435","9409");
+            }
+        }
+        return false;
+    case CIRCLZ:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24e9","24cf");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24e9","24cf");
+            }
+            else {
+                symbol_key_win("9449","9423");
+            }
+        }
+        return false;
+    case CIRCLX:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24e7","24cd");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24e7","24cd");
+            }
+            else {
+                symbol_key_win("9447","9421");
+            }
+        }
+        return false;
+    case CIRCLC:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24d2","24b8");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24d2","24b8");
+            }
+            else {
+                symbol_key_win("9426","9400");
+            }
+        }
+        return false;
+    case CIRCLV:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24e5","24cb");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24e5","24cb");
+            }
+            else {
+                symbol_key_win("9445","9419");
+            }
+        }
+        return false;
+    case CIRCLB:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24d1","24b7");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24d1","24b7");
+            }
+            else {
+                symbol_key_win("9425","9399");
+            }
+        }
+        return false;
+    case CIRCLN:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24dd","24c3");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24dd","24c3");
+            }
+            else {
+                symbol_key_win("9437","9411");
+            }
+        }
+        return false;
+    case CIRCLM:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                symbol_key_mac("24dc","24c2");
+            }
+            else if (user_config.is_linux_base) {
+                symbol_key_linux("24dc","24c2");
+            }
+            else {
+                symbol_key_win("9436","9410");
+            }
+        }
+        return false;
     }
     return true;
 }

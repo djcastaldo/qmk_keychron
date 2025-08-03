@@ -151,57 +151,8 @@ enum custom_keycodes {
     E_OK,
     E_SGLASS,
     E_BOTTLE,
-    SUITH,
-    SUITD,
-    SUITC,
-    SUITS,
-    SUP1,
-    SUP2,
-    SUP3,
-    NBSP,
-    CIRCL1,
-    CIRCL2,
-    CIRCL3,
-    CIRCL4,
-    CIRCL5,
-    CIRCL6,
-    CIRCL7,
-    CIRCL8,
-    CIRCL9,
-    CIRCL0,
-    CIRCLQ,
-    CIRCLW,
-    CIRCLE,
-    CIRCLR,
-    CIRCLT,
-    CIRCLY,
-    CIRCLU,
-    CIRCLI,
-    CIRCLO,
-    CIRCLP,
-    CIRCLA,
-    CIRCLS,
-    CIRCLD,
-    CIRCLF,
-    CIRCLG,
-    CIRCLH,
-    CIRCLJ,
-    CIRCLK,
-    CIRCLL,
-    CIRCLZ,
-    CIRCLX,
-    CIRCLC,
-    CIRCLV,
-    CIRCLB,
-    CIRCLN,
-    CIRCLM,
     GNEWS,
     SSMENU,
-    GIT_ADD,
-    GIT_COMMIT,
-    GIT_PUSH,
-    GIT_CHKOUT,
-    GIT_LOG,
     CURSORL,
     CURSORR,
     MK_HOLD,
@@ -220,7 +171,6 @@ enum custom_keycodes {
     PENT_ENCPUSH,
     PENT_ENCL,
     PENT_ENCR,
-    VI_REPLACE,
     DUAL_SNAP,
     AP_GLOB,
     KB_RESET,
@@ -231,7 +181,6 @@ enum custom_keycodes {
     UNDERLN,
     BARTEXT,
     BBRTEXT,
-    COLORTEST,
     FLASH_KB,
     BOOTLDR
 };
@@ -1423,277 +1372,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             symbol_key_mac("00a0","00a6");
         }
         break;
-    case CIRCL1:
-        if (record->event.pressed) {
-            // check mods first so can do a double-cirled number if alt is held
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                del_oneshot_mods(MOD_MASK_CTRL);
-                unregister_mods(MOD_MASK_CTRL);
-                symbol_key_mac("24f5","24f5");
-                register_mods(mods);
-            } else {
-                symbol_key_mac("2460","246a");
-            }
-        }
-        break;
-    case CIRCL2:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                del_oneshot_mods(MOD_MASK_CTRL);
-                unregister_mods(MOD_MASK_CTRL);
-                symbol_key_mac("24f6","24f6");
-                register_mods(mods);
-            } else {
-                symbol_key_mac("2461","246b");
-            }
-        }
-        break;
-    case CIRCL3:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                del_oneshot_mods(MOD_MASK_CTRL);
-                unregister_mods(MOD_MASK_CTRL);
-                symbol_key_mac("24f7","24f7");
-                register_mods(mods);
-            } else {
-                symbol_key_mac("2462","246c");
-            }
-        }
-        break;
-    case CIRCL4:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                del_oneshot_mods(MOD_MASK_CTRL);
-                unregister_mods(MOD_MASK_CTRL);
-                symbol_key_mac("24f8","24f8");
-                register_mods(mods);
-            } else {
-                symbol_key_mac("2463","246d");
-            }
-        }
-        break;
-    case CIRCL5:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                del_oneshot_mods(MOD_MASK_CTRL);
-                unregister_mods(MOD_MASK_CTRL);
-                symbol_key_mac("24f9","24f9");
-                register_mods(mods);
-            } else {
-                symbol_key_mac("2464","246e");
-            }
-        }
-        break;
-    case CIRCL6:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                del_oneshot_mods(MOD_MASK_CTRL);
-                unregister_mods(MOD_MASK_CTRL);
-                symbol_key_mac("24fa","24fa");
-                register_mods(mods);
-            } else {
-                symbol_key_mac("2465","246f");
-            }
-        }
-        break;
-    case CIRCL7:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                del_oneshot_mods(MOD_MASK_CTRL);
-                unregister_mods(MOD_MASK_CTRL);
-                symbol_key_mac("24fb","24fb");
-                register_mods(mods);
-            } else {
-                symbol_key_mac("2466","2470");
-            }
-        }
-        break;
-    case CIRCL8:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                del_oneshot_mods(MOD_MASK_CTRL);
-                unregister_mods(MOD_MASK_CTRL);
-                symbol_key_mac("24fc","24fc");
-                register_mods(mods);
-            } else {
-                symbol_key_mac("2467","2471");
-            }
-        }
-        break;
-    case CIRCL9:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                del_oneshot_mods(MOD_MASK_CTRL);
-                unregister_mods(MOD_MASK_CTRL);
-                symbol_key_mac("24fd","24fd");
-                register_mods(mods);
-            } else {
-                symbol_key_mac("2468","2472");
-            }
-        }
-        break;
-    case CIRCL0:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                del_oneshot_mods(MOD_MASK_CTRL);
-                unregister_mods(MOD_MASK_CTRL);
-                symbol_key_mac("24fe","2473");
-                register_mods(mods);
-            } else {
-                symbol_key_mac("24ea","2469");
-            }
-        }
-        break;
-    case CIRCLQ:
-        if (record->event.pressed) {
-            symbol_key_mac("24e0","24c6");
-        }
-        break;
-    case CIRCLW:
-        if (record->event.pressed) {
-            symbol_key_mac("24e6","24cc");
-        }
-        break;
-    case CIRCLE:
-        if (record->event.pressed) {
-            symbol_key_mac("24d4","24ba");
-        }
-        break;
-    case CIRCLR:
-        if (record->event.pressed) {
-            symbol_key_mac("24e1","24c7");
-        }
-        break;
-    case CIRCLT:
-        if (record->event.pressed) {
-            symbol_key_mac("24e3","24c9");
-        }
-        break;
-    case CIRCLY:
-        if (record->event.pressed) {
-            symbol_key_mac("24e8","24ce");
-        }
-        break;
-    case CIRCLU:
-        if (record->event.pressed) {
-            symbol_key_mac("24e4","24ca");
-        }
-        break;
-    case CIRCLI:
-        if (record->event.pressed) {
-            symbol_key_mac("24d8","24be");
-        }
-        break;
-    case CIRCLO:
-        if (record->event.pressed) {
-            symbol_key_mac("24de","24c4");
-        }
-        break;
-    case CIRCLP:
-        if (record->event.pressed) {
-            symbol_key_mac("24df","24c5");
-        }
-        break;
-    case CIRCLA:
-        if (record->event.pressed) {
-            symbol_key_mac("24d0","24b6");
-        }
-        break;
-    case CIRCLS:
-        if (record->event.pressed) {
-            symbol_key_mac("24e2","24c8");
-        }
-        break;
-    case CIRCLD:
-        if (record->event.pressed) {
-            symbol_key_mac("24d3","24b9");
-        }
-        break;
-    case CIRCLF:
-        if (record->event.pressed) {
-            symbol_key_mac("24d5","24bb");
-        }
-        break;
-    case CIRCLG:
-        if (record->event.pressed) {
-            symbol_key_mac("24d6","24bc");
-        }
-        break;
-    case CIRCLH:
-        if (record->event.pressed) {
-            symbol_key_mac("24d7","24bd");
-        }
-        break;
-    case CIRCLJ:
-        if (record->event.pressed) {
-            symbol_key_mac("24d9","24bf");
-        }
-        break;
-    case CIRCLK:
-        if (record->event.pressed) {
-            symbol_key_mac("24da","24c0");
-        }
-        break;
-    case CIRCLL:
-        if (record->event.pressed) {
-            symbol_key_mac("24db","24c1");
-        }
-        break;
-    case CIRCLZ:
-        if (record->event.pressed) {
-            symbol_key_mac("24e9","24cf");
-        }
-        break;
-    case CIRCLX:
-        if (record->event.pressed) {
-            symbol_key_mac("24e7","24cd");
-        }
-        break;
-    case CIRCLC:
-        if (record->event.pressed) {
-            symbol_key_mac("24d2","24b8");
-        }
-        break;
-    case CIRCLV:
-        if (record->event.pressed) {
-            symbol_key_mac("24e5","24cb");
-        }
-        break;
-    case CIRCLB:
-        if (record->event.pressed) {
-            symbol_key_mac("24d1","24b7");
-        }
-        break;
-    case CIRCLN:
-        if (record->event.pressed) {
-            symbol_key_mac("24dd","24c3");
-        }
-        break;
-    case CIRCLM:
-        if (record->event.pressed) {
-            symbol_key_mac("24dc","24c2");
-        }
-        break;
     case SSMENU:
     	if (record->event.pressed) {
     	   // send shift + command + 5 (for screenshot with options menus) 
@@ -1705,36 +1383,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	   // open browser tab to google news 
     	   send_string_with_delay(SS_LCMD(SS_TAP(X_L)) SS_DELAY(150) "news.google.com" SS_DELAY(50) SS_LOPT(SS_TAP(X_ENT)),5);
 	}
-    	break;
-    case GIT_ADD:
-    	if (record->event.pressed) {
-    	   // add updates to git commit 
-    	   send_string("git add -A" SS_TAP(X_ENT));
-    	}
-    	break;
-    case GIT_COMMIT:
-    	if (record->event.pressed) {
-    	   // commit changes 
-    	   send_string("git commit -m \"\"" SS_TAP(X_LEFT));
-    	}
-    	break;
-    case GIT_PUSH:
-    	if (record->event.pressed) {
-    	   // push commit to git repo 
-           send_string("git push" SS_TAP(X_ENT));
-    	}
-    	break;
-    case GIT_CHKOUT:
-    	if (record->event.pressed) {
-    	   // checkout last commit from git repo 
-    	   send_string("git checkout ." SS_TAP(X_ENT));
-    	}
-    	break;
-    case GIT_LOG:
-    	if (record->event.pressed) {
-    	   // show the git log 
-    	   send_string("git log" SS_TAP(X_ENT));
-    	}
     	break;
     // move mouse cursor for per-monitor mission control
     case KC_UP:
@@ -1989,12 +1637,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     	if (record->event.pressed)
             rgblight_sethsv(rgblight_get_hue(), rgblight_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
         break;
-    case VI_REPLACE:
-    	if (record->event.pressed) {
-    	   // start syntax for vi search and replace 
-    	   send_string(":%s///g" SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT));
-    	}
-    	break;
     // use cmd + esc as alternate leader start 
     case KC_ESC:
     	if (record->event.pressed) {
@@ -2108,13 +1750,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         else if (enable_keytracker) {
             enable_keytracker = false;
             wireless_mode_token = defer_exec(3000, wireless_mode_callback, NULL);
-        }
-        break;
-    // show all the named colors on different keys
-    case COLORTEST:
-        if (record->event.pressed) {
-            color_test_timer = timer_read();
-            color_test = true;
         }
         break;
     case FLASH_KB:
