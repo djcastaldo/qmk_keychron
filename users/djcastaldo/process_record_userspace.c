@@ -45,6 +45,8 @@ bool color_test;
 uint16_t color_test_timer;
 
 bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
+    static uint32_t key_timer;
+
     // stop color test if active and a key is pressed
     if (color_test && record->event.pressed) {
         color_test = false;
@@ -1855,6 +1857,19 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
 	if (record->event.pressed) {
             symbol_key_mac("d83cdf7c","d83cdf7e");
 	}
+	return false;
+    case FLASH_KB:
+        if (record->event.pressed) {
+           // command to flash this keyboard
+           send_string("qmk flash -j 0 -kb " QMK_KEYBOARD " -km " QMK_KEYMAP "\n");
+        }
+	return false;
+    case BOOTLDR:
+        if (record->event.pressed) {
+            key_timer = timer_read32();
+        } else if (timer_elapsed32(key_timer) >= 500) {
+            reset_keyboard();
+        }
 	return false;
     }
     return true;

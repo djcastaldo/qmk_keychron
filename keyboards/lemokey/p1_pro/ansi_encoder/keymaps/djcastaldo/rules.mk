@@ -1,3 +1,4 @@
+MCU_LDSCRIPT = WB32F3G71xC
 USER_NAME := djcastaldo
 USER_PATH := users/$(USER_NAME)
 include $(USER_PATH)/rules.mk

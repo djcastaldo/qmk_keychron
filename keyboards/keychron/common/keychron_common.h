@@ -257,6 +257,8 @@ enum {
     E_OK,
     E_SGLASS,
     E_BOTTLE,
+    FLASH_KB,
+    BOOTLDR,
     NEW_SAFE_RANGE,
 };
 

@@ -121,9 +121,7 @@ enum custom_keycodes {
     AP_GLOB,
     KB_RESET,
     ENC_TSIZEL,
-    ENC_TSIZER,
-    FLASH_KB,
-    BOOTLDR
+    ENC_TSIZER
 };
 
 // custom tap dances
@@ -707,8 +705,6 @@ uint32_t wireless_mode_callback(uint32_t trigger_time, void *cb_arg) {
 
 // clang-format on
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    static uint32_t key_timer;
-
     // record key index pressed for rgb reactive changes
     if (enable_keytracker && !is_macro_playing && keycode != QK_LEAD) {
         int key_idx = g_led_config.matrix_co[record->event.key.row][record->event.key.col];
@@ -1257,12 +1253,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             wireless_mode_token = defer_exec(3000, wireless_mode_callback, NULL);
         }
         break;
-    case FLASH_KB:
-        if (record->event.pressed) {
-           // command to flash this keyboard
-           send_string("qmk flash -j 0 -kb " QMK_KEYBOARD " -km " QMK_KEYMAP "\n");
-        }
-        break;
     case KB_RESET:
     	if (record->event.pressed) {
 	   // reset the keyboard
@@ -1270,13 +1260,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            soft_reset_keyboard();
 	}
     	break;
-    case BOOTLDR:
-        if (record->event.pressed) {
-            key_timer = timer_read32();
-        } else if (timer_elapsed32(key_timer) >= 500) {
-            reset_keyboard();
-        }
-        break;
     }
     return process_record_secrets(keycode, record);
 }
