@@ -210,7 +210,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:|Ctrl ||Opt  || Cmd ||                Space                || Cmd ||TDOpt||TDFn ||TDCtrl| |Left||Down||Rigt| |    0     || .  ||    |:
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
 //`-------------------------------------------------------------------------------------------------------------------------------------`
-
     [MAC_BASE] = LAYOUT_109_ansi(
         KC_ESC,KC_F1,KC_F2,KC_F3,KC_F4,KC_F5,KC_F6,KC_F7,KC_F8,KC_F9,KC_F10,KC_F11,KC_F12,DUAL_ENCPUSH,
                                                                              DUAL_SNAP,KC_SIRI,AP_GLOB,DUAL_F13,DUAL_F14,CALCPRO,LOCKSCR,
@@ -2535,4 +2534,18 @@ void dynamic_macro_play_user(int8_t direction) {
                 tracked_keys[i].fade = 0;
             }
         }
+}
+
+void keyboard_post_init_user(void) {
+    // read the user config from EEPROM
+    user_config.raw = eeconfig_read_user();
+    // and set this so layers switch correctly on user's first os change
+    layer_state_set(default_layer_state);
+}
+
+void eeconfig_init_user(void) {  // EEPROM is getting reset!
+    user_config.raw = 0;
+    user_config.is_linux_base = false; // set default here
+    eeconfig_update_user(user_config.raw); // write default value to EEPROM now
+    set_single_persistent_default_layer(MAC_BASE);
 }
