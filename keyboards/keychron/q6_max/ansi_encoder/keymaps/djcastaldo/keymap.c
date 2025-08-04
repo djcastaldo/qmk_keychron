@@ -24,41 +24,6 @@
 #include "users/djcastaldo/features/layer_lock.h"
 #include "users/djcastaldo/process_record_userspace.h"
 
-#define NEWFINDER LOPT(LCMD(KC_SPC))            // open new Finder search window
-#define FHOME LCMD(LSFT(KC_H))                  // open new Finder home dir 
-#define FAPPS LCMD(LSFT(KC_A))                  // open new Finder apps dir 
-#define FDOCS LCMD(LSFT(KC_O))                  // open new Finder docs dir 
-#define FDOWNL LCMD(LOPT(KC_L))                 // open new Finder downloads dir 
-#define CMDGRAVE LCMD(KC_GRV)                   // switch to next app window 
-#define SCMDGRAVE LSFT(LCMD(KC_GRV))            // switch to prev app window 
-#define FINSPECT LCMD(KC_I)                     // open inspector
-#define FVHIDDEN LCMD(LSFT(KC_DOT))             // show Finder hidden files
-#define FQLOOK LCMD(KC_Y)                       // open Finder quick look
-#define FDELETE LCMD(KC_BSPC)                   // Finder move selection to trash 
-#define FSTATBAR LCMD(KC_SLSH)                  // show Finder status bar
-#define TOVERVIEW LSFT(LCMD(KC_BSLS))           // show Terminal tab overview
-#define FORCEQUIT LOPT(LCMD(KC_ESC))            // force quit an app
-#define TIMESTAMP LCTL(LOPT(LCMD(KC_T)))        // command to gen timestamp 
-#define SOC1 LSFT(LOPT(LCMD(KC_1)))             // snap dock app switching 
-#define SOC2 LSFT(LOPT(LCMD(KC_2)))             // snap dock app switching 
-#define SOC3 LSFT(LOPT(LCMD(KC_3)))             // snap dock app switching 
-#define SOC4 LSFT(LOPT(LCMD(KC_4)))             // snap dock app switching 
-#define SOC5 LSFT(LOPT(LCMD(KC_5)))             // snap dock app switching 
-#define SOC6 LSFT(LOPT(LCMD(KC_6)))             // snap dock app switching 
-#define SOC7 LSFT(LOPT(LCMD(KC_7)))             // snap dock app switching 
-#define SOC8 LSFT(LOPT(LCMD(KC_8)))             // snap dock app switching 
-#define SOC9 LSFT(LOPT(LCMD(KC_9)))             // snap dock app switching 
-#define SOC0 LSFT(LOPT(LCMD(KC_0)))             // snap dock app switching 
-#define UNICODE LCTL(LCMD(KC_SPC))              // open unicode input menu
-#define V_WSPC_NXT LCTL(LSFT(KC_PGUP))          // vivaldi workspace next
-#define V_WSPC_PRV LCTL(LSFT(KC_PGDN))          // vivaldi workspace prev
-#define V_TAB_NXT LCTL(KC_TAB)                  // vivaldi tab next
-#define V_TAB_PRV LCTL(LSFT(KC_TAB))            // vivaldi tab prev
-#define F_ZOOMI LCMD(KC_EQL)                    // form zoom in
-#define F_ZOOMO LCMD(KC_MINS)                   // form zoom out 
-#define F_ZOOMR LCMD(KC_0)                      // form zoom reset 
-#define MOD_SIRI HYPR(KC_S)                     // customized siri launch 
-
 __attribute__ ((weak))
 bool process_record_secrets(uint16_t keycode, keyrecord_t *record) {
   return true;
@@ -86,12 +51,7 @@ enum layers {
 //  ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~ */
 
 enum custom_keycodes {
-    CALCPRO = NEW_SAFE_RANGE,
-    LOCKSCR,
-    BACKDIR,
-    HOMEDIR,
-    LSLTRAH,
-    LLOCK,
+    LLOCK = NEW_SAFE_RANGE,
     FNLAYER,
     SFTLAYER,
     DUAL_F13,
@@ -115,7 +75,6 @@ enum custom_keycodes {
     PENT_ENCL,
     PENT_ENCR,
     DUAL_SNAP,
-    AP_GLOB,
     KB_RESET,
     ENC_TSIZEL,
     ENC_TSIZER
@@ -153,7 +112,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //`-------------------------------------------------------------------------------------------------------------------------------------`
     [MAC_BASE] = LAYOUT_109_ansi(
         KC_ESC,KC_F1,KC_F2,KC_F3,KC_F4,KC_F5,KC_F6,KC_F7,KC_F8,KC_F9,KC_F10,KC_F11,KC_F12,DUAL_ENCPUSH,
-                                                                             DUAL_SNAP,KC_SIRI,AP_GLOB,DUAL_F13,DUAL_F14,CALCPRO,LOCKSCR,
+                                                                             DUAL_SNAP,KC_SIRI,AP_GLOB,DUAL_F13,DUAL_F14,KC_CALC,LOCKSCR,
         KC_GRV,KC_1,KC_2,KC_3,KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, BSPCFAST,
                                                                                  KC_INS,KC_HOME,KC_PGUP,KC_NUM,KC_PSLS,KC_PAST,DUAL_PMNS,
         LT(TMUX_LAYR,KC_TAB),KC_Q,KC_W,KC_E,KC_R,KC_T,KC_Y,KC_U,KC_I,KC_O,KC_P,KC_LBRC,KC_RBRC,KC_BSLS,
@@ -444,7 +403,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [MAC_BASE]         = {ENCODER_CCW_CW(DUAL_ENCL, DUAL_ENCR)},
-    [FN_LAYR]          = {ENCODER_CCW_CW(F_ZOOMO, F_ZOOMI)},
+    [FN_LAYR]          = {ENCODER_CCW_CW(DUAL_ZOOMO, DUAL_ZOOMI)},
     [WIN_BASE]         = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [SFT_LAYR]         = {ENCODER_CCW_CW(DUAL_NAVL, DUAL_NAVR)},
     [CTL_LAYR]         = {ENCODER_CCW_CW(PENT_ENCL, PENT_ENCR)},
@@ -821,40 +780,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         }
         break;
-    case AP_GLOB:
-        // setup for apple globe key to work
-        host_consumer_send(record->event.pressed ? AC_NEXT_KEYBOARD_LAYOUT_SELECT : 0);
-        break;
-    case CALCPRO:
-    	if (record->event.pressed) {
-	   // send command + control + * then delay and then h
-    	   send_string(SS_LCTL(SS_LCMD(SS_TAP(X_PAST))) SS_DELAY(20) "h");
-	}
-    	break;
-    case LOCKSCR:
-    	if (record->event.pressed) {
-    	   // send control + command + q
-    	   send_string(SS_LCTL(SS_LCMD("q")) SS_DELAY(300) SS_LCTL(SS_LCMD("q")));
-    	}
-    	break;
-    case BACKDIR:
-	if (record->event.pressed) {
-	  // command to go back a dir in terminal
-	  send_string("cd .." SS_TAP(X_ENT));
-	}
-	break;
-    case HOMEDIR:
-	if (record->event.pressed) {
-	  // command to go home in terminal
-	  send_string("cd ~" SS_TAP(X_ENT));
-	}
-	break;
-    case LSLTRAH:
-	if (record->event.pressed) {
-	  // command to ls -ltrah in terminal
-	  send_string("ls -ltrah" SS_TAP(X_ENT));
-	}
-	break;
     case FNLAYER: // this prevents keyboard reset without first switching the hardware switch to WIN_BASE
     	if (record->event.pressed) {
            layer_on(FN_LAYR);

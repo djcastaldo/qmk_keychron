@@ -5,6 +5,38 @@
 #include "deferred_exec.h"    // required for deferred_token
 #include "report.h"           // required for report_mouse_t
 
+#define NEWFINDER LOPT(LCMD(KC_SPC))            // open new Finder search window
+#define FHOME LCMD(LSFT(KC_H))                  // open new Finder home dir
+#define FAPPS LCMD(LSFT(KC_A))                  // open new Finder apps dir
+#define FDOCS LCMD(LSFT(KC_O))                  // open new Finder docs dir
+#define FDOWNL LCMD(LOPT(KC_L))                 // open new Finder downloads dir
+#define CMDGRAVE LCMD(KC_GRV)                   // switch to next app window
+#define SCMDGRAVE LSFT(LCMD(KC_GRV))            // switch to prev app window
+#define FINSPECT LCMD(KC_I)                     // open inspector
+#define FVHIDDEN LCMD(LSFT(KC_DOT))             // show Finder hidden files
+#define FQLOOK LCMD(KC_Y)                       // open Finder quick look
+#define FDELETE LCMD(KC_BSPC)                   // Finder move selection to trash
+#define FSTATBAR LCMD(KC_SLSH)                  // show Finder status bar
+#define TOVERVIEW LSFT(LCMD(KC_BSLS))           // show Terminal tab overview
+#define FORCEQUIT LOPT(LCMD(KC_ESC))            // force quit an app
+#define TIMESTAMP LCTL(LOPT(LCMD(KC_T)))        // command to gen timestamp
+#define SOC1 LSFT(LOPT(LCMD(KC_1)))             // snap dock app switching
+#define SOC2 LSFT(LOPT(LCMD(KC_2)))             // snap dock app switching
+#define SOC3 LSFT(LOPT(LCMD(KC_3)))             // snap dock app switching
+#define SOC4 LSFT(LOPT(LCMD(KC_4)))             // snap dock app switching
+#define SOC5 LSFT(LOPT(LCMD(KC_5)))             // snap dock app switching
+#define SOC6 LSFT(LOPT(LCMD(KC_6)))             // snap dock app switching
+#define SOC7 LSFT(LOPT(LCMD(KC_7)))             // snap dock app switching
+#define SOC8 LSFT(LOPT(LCMD(KC_8)))             // snap dock app switching
+#define SOC9 LSFT(LOPT(LCMD(KC_9)))             // snap dock app switching
+#define SOC0 LSFT(LOPT(LCMD(KC_0)))             // snap dock app switching
+#define UNICODE LCTL(LCMD(KC_SPC))              // open unicode input menu
+#define V_WSPC_NXT LCTL(LSFT(KC_PGUP))          // vivaldi workspace next
+#define V_WSPC_PRV LCTL(LSFT(KC_PGDN))          // vivaldi workspace prev
+#define V_TAB_NXT LCTL(KC_TAB)                  // vivaldi tab next
+#define V_TAB_PRV LCTL(LSFT(KC_TAB))            // vivaldi tab prev
+#define MOD_SIRI HYPR(KC_S)                     // customized siri launch
+
 typedef union {
     uint32_t raw;
     struct {

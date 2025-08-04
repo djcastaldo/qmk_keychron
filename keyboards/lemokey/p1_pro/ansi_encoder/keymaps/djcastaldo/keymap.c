@@ -44,12 +44,9 @@ enum custom_keycodes {
     LLOCK = NEW_SAFE_RANGE,
     DUAL_F12,
     DUAL_ESC,
-    F_ZOOMR,
     SCROLL_UP,
     SCROLL_DN,
     WM_SYM,
-    DUAL_ZOOMO,
-    DUAL_ZOOMI,
     ENC_DUALPUSH,
     ENC_MAINL,
     ENC_MAINR,
@@ -701,12 +698,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     switch (keycode) {
-    // form zoom reset
-    case F_ZOOMR:
-        if (record->event.pressed) {
-            tap_code16(is_mac_base() ? LCMD(KC_0) : LCTL(KC_0));
-        }
-        break;
     // get dynamic macros to work even with oneshot layers
     case DM_REC1:
     case DM_REC2:
@@ -766,46 +757,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             else {
                 tap_code(KC_VOLU);
-            }
-        }
-        break;
-    // set up some different zoom (when control is used) so the zoom knob can be used with multiple apps
-    // that support different ways to zoom
-    case DUAL_ZOOMI:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                if (is_mac_base()) {
-                    unregister_mods(MOD_MASK_CTRL);
-                    tap_code16(LCMD(KC_EQL));
-                    register_mods(mods);
-                }
-                else {
-                    tap_code(KC_EQL);
-                }
-            }
-            else {
-                tap_code16(is_mac_base() ? LCMD(KC_MS_WH_DOWN) : LCTL(KC_MS_WH_UP));
-            }
-        }
-        break;
-    case DUAL_ZOOMO:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                if (is_mac_base()) {
-                    unregister_mods(MOD_MASK_CTRL);
-                    tap_code16(LCMD(KC_MINS));
-                    register_mods(mods);
-                }
-                else {
-                    tap_code(KC_MINS);
-                }
-            }
-            else {
-                tap_code16(is_mac_base() ? LCMD(KC_MS_WH_UP) : LCTL(KC_MS_WH_DOWN));
             }
         }
         break;
@@ -977,26 +928,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
         } 
-        break;
-    case KC_MYCM:
-        if (is_mac_base() && record->event.pressed) {
-            // open new Finder home dir
-            tap_code16(LCMD(LSFT(KC_H)));
-            return false;
-        }
-        break;
-    case KC_CALC:
-        if (is_mac_base() && record->event.pressed) {
-            // send command + control + * then delay and then h (setup to open calculator pro)
-            send_string(SS_LCTL(SS_LCMD(SS_TAP(X_PAST))) SS_DELAY(35) "h");
-            return false;
-        }
-        break;
-    case KC_APP:
-        if (is_mac_base() && record->event.pressed) {
-            tap_code(KC_LPAD);
-            return false;
-        }
         break;
     }
     return process_record_secrets(keycode, record);

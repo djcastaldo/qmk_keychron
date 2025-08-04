@@ -450,6 +450,103 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
     case MK_ACCEL2:
         tap_code(record->event.pressed ? KC_MS_ACCEL2 : KC_MS_ACCEL1);
         return false;
+    case AP_GLOB:
+        // setup for apple globe key to work
+        host_consumer_send(record->event.pressed ? AC_NEXT_KEYBOARD_LAYOUT_SELECT : 0);
+        return false;
+    case KC_MYCM:
+        if (is_mac_base() && record->event.pressed) {
+            // open new Finder home dir
+            tap_code16(LCMD(LSFT(KC_H)));
+            return false;
+        }
+        break;
+    case KC_CALC:
+        if (is_mac_base() && record->event.pressed) {
+            // send command + control + * then delay and then h (setup to open calculator pro)
+            send_string(SS_LCTL(SS_LCMD(SS_TAP(X_PAST))) SS_DELAY(35) "h");
+            return false;
+        }
+        break;
+    case KC_APP:
+        if (is_mac_base() && record->event.pressed) {
+            tap_code(KC_LPAD);
+            return false;
+        }
+        break;
+    case LOCKSCR:
+        if (record->event.pressed) {
+           // send control + command + q
+           send_string(SS_LCTL(SS_LCMD("q")) SS_DELAY(300) SS_LCTL(SS_LCMD("q")));
+        }
+        return false;
+    case BACKDIR:
+        if (record->event.pressed) {
+          // command to go back a dir in terminal
+          send_string("cd .." SS_TAP(X_ENT));
+        }
+        return false;
+    case HOMEDIR:
+        if (record->event.pressed) {
+          // command to go home in terminal
+          send_string("cd ~" SS_TAP(X_ENT));
+        }
+        return false;
+    case LSLTRAH:
+        if (record->event.pressed) {
+          // command to ls -ltrah in terminal
+          send_string("ls -ltrah" SS_TAP(X_ENT));
+        }
+        return false;
+    // form zoom reset
+    case F_ZOOMR:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            clear_mods();
+            tap_code16(is_mac_base() ? LCMD(KC_0) : LCTL(KC_0));
+            register_mods(mods);
+        }
+        return false;
+    // set up some different zoom (when control is used) so the zoom knob can be used with multiple apps
+    // that support different ways to zoom
+    case DUAL_ZOOMI:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                if (is_mac_base()) {
+                    unregister_mods(MOD_MASK_CTRL);
+                    tap_code16(LCMD(KC_EQL));
+                    register_mods(mods);
+                }
+                else {
+                    tap_code(KC_EQL);
+                }
+            }
+            else {
+                tap_code16(is_mac_base() ? LCMD(KC_MS_WH_DOWN) : LCTL(KC_MS_WH_UP));
+            }
+        }
+        return false;
+    case DUAL_ZOOMO:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                if (is_mac_base()) {
+                    unregister_mods(MOD_MASK_CTRL);
+                    tap_code16(LCMD(KC_MINS));
+                    register_mods(mods);
+                }
+                else {
+                    tap_code(KC_MINS);
+                }
+            }
+            else {
+                tap_code16(is_mac_base() ? LCMD(KC_MS_WH_UP) : LCTL(KC_MS_WH_DOWN));
+            }
+        }
+        return false;
     case COLORTEST:
         if (record->event.pressed) {
             color_test_timer = timer_read();
