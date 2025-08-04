@@ -44,9 +44,6 @@ enum custom_keycodes {
     LLOCK = NEW_SAFE_RANGE,
     DUAL_F12,
     DUAL_ESC,
-    MK_HOLD,
-    MK_ACCEL0,
-    MK_ACCEL2,
     F_ZOOMR,
     SCROLL_UP,
     SCROLL_DN,
@@ -641,10 +638,6 @@ int super_scut_altcolor[] = {I_GRV, I_UP, I_DOWN, I_LEFT, I_RIGHT};
 int super_scut_keys_size = sizeof(super_scut_keys) / sizeof(super_scut_keys[0]);
 int super_scut_altcolor_size = sizeof(super_scut_altcolor) / sizeof(super_scut_altcolor[0]);
 
-// this was originally a static declaration in the switch case for MK_HOLD, but I also want to use it outside of
-// that switch case to do rgb change, so am moving it here.
-bool ms_btn_held = false;
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // record key index pressed for rgb reactive changes
     if (enable_keytracker && !is_macro_playing && keycode != QK_LEAD) {
@@ -960,27 +953,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               sim_osl_token = defer_exec(500, sim_osl_callback, NULL);
           }
         }
-        break;
-    case MK_HOLD:
-    	if (record->event.pressed) {
-            if (!ms_btn_held) {
-                register_code(KC_MS_BTN1);
-                ms_btn_held = true;
-            }
-            else {
-                unregister_code(KC_MS_BTN1);
-                ms_btn_held = false;
-            }
-        }
-        break;
-    case KC_MS_BTN1:
-        ms_btn_held = record->event.pressed;
-        break;
-    case MK_ACCEL0:
-        tap_code(record->event.pressed ? KC_MS_ACCEL0 : KC_MS_ACCEL1);
-        break;
-    case MK_ACCEL2:
-        tap_code(record->event.pressed ? KC_MS_ACCEL2 : KC_MS_ACCEL1);
         break;
     case WM_SYM:
         if (record->event.pressed) {

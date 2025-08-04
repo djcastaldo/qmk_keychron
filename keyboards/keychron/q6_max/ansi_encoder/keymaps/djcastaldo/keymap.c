@@ -101,10 +101,7 @@ enum custom_keycodes {
     SSMENU,
     CURSORL,
     CURSORR,
-    MK_HOLD,
     OPT_HOLD,
-    MK_ACCEL0,
-    MK_ACCEL2,
     DUAL_ENCPUSH,
     DUAL_ENCL,
     DUAL_ENCR,
@@ -617,9 +614,6 @@ static uint16_t leader_error_timer;
 // for tracking if oneshot layer is active
 bool oneshot_layer_active;
 
-// this was originally a static declaration in the switch case for MK_HOLD, but I also want to use it outside of
-// that switch case to do rgb change, so am moving it here.
-bool ms_btn_held = false;
 bool is_lopt_held = false;
 
 // tap dance setup
@@ -959,21 +953,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            send_string(SS_LCTL(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_P2))))));
     	}
     	break;
-    case MK_HOLD:
-        if (record->event.pressed) {
-            if (!ms_btn_held) {
-                register_code(KC_MS_BTN1);
-                ms_btn_held = true;
-            }
-            else {
-                unregister_code(KC_MS_BTN1);
-                ms_btn_held = false;
-            }
-        }
-        break;
-    case KC_MS_BTN1:
-        ms_btn_held = record->event.pressed;
-        break;
     case OPT_HOLD:
         if (record->event.pressed) {
             if (!is_lopt_held) {
@@ -985,12 +964,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 is_lopt_held = false;
             }
         }
-        break;
-    case MK_ACCEL0:
-        tap_code(record->event.pressed ? KC_MS_ACCEL0 : KC_MS_ACCEL1);
-        break;
-    case MK_ACCEL2:
-        tap_code(record->event.pressed ? KC_MS_ACCEL2 : KC_MS_ACCEL1);
         break;
     case DUAL_ENCPUSH:
     	if (record->event.pressed) {

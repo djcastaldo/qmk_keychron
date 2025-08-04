@@ -27,6 +27,7 @@ extern bool wide_firstchar;
 
 extern deferred_token jiggler_token;
 extern report_mouse_t jiggler_report;
+extern bool ms_btn_held;
 extern bool fj_light;
 extern bool hrow_light;
 extern bool enable_keytracker;
