@@ -6,12 +6,13 @@ enum layers {
     MAC_BASE,
     FN_LAYR,
     WIN_BASE,
-    EMO_LAYR,
-    CTL_LAYR,
-    OPT_LAYR,
+    SFT_LAYR,
+    KCTL_LAYR,
     TMUX_LAYR,
     MSYM_LAYR,
+    WSYM_LAYR,
     WIDE_LAYR,
     CIRC_LAYR,
+    EMO_LAYR,
     LOCK_LAYR
 };

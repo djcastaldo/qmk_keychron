@@ -27,7 +27,7 @@ enum layers {
     MAC_BASE,
     FN_LAYR,
     SFT_LAYR,
-    CTL_LAYR,
+    KCTL_LAYR,
     TMUX_LAYR,
     WSYM_LAYR,
     MSYM_LAYR,
@@ -46,7 +46,6 @@ enum custom_keycodes {
     DUAL_ESC,
     SCROLL_UP,
     SCROLL_DN,
-    WM_SYM,
     ENC_DUALPUSH,
     ENC_MAINL,
     ENC_MAINR,
@@ -150,7 +149,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         MO(TMUX_LAYR),SECRET3,SECRET2,SECRET1,SECRET8,SECRET9,_______,_______,_______,_______,_______,DM_REC1, DM_REC2, _______, KC_HOME,
         _______,SECRET4,SECRET5, SECRET6, SECRET7, _______, _______, _______, _______, QK_LEAD, KC_SCRL, KC_PSCR,       _______,  KC_END,
         MO(SFT_LAYR),_______,SECRET10,SECRET11,_______,_______,_______,_______, DM_PLY1, DM_PLY2, KC_PAUS, MO(SFT_LAYR), _______,
-        _______,   WM_SYM, MO(CTL_LAYR),                _______,                 MO(CTL_LAYR),_______,_______, _______, _______, _______
+        _______, WM_SYM, MO(KCTL_LAYR),                _______,                 MO(KCTL_LAYR),_______,_______, _______, _______, _______
     ),
 
 //  [SFT_LAYR] (yellow/orange)
@@ -176,10 +175,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,_______,_______,_______, _______, _______, _______, KC_P7, KC_P8, KC_P9, DUAL_PLUSMIN, _______,_______,_______, MK_HOLD,
         _______,_______,_______,_______, _______, _______, _______, KC_P4, KC_P5, KC_P6, DUAL_MULTDIV, _______,    _______,  KC_MS_BTN2,
         _______, MK_ACCEL2, _______, _______, _______, _______, _______, KC_P1, KC_P2, KC_P3, _______,       _______,  KC_MS_UP,
-        _______,_______, MK_ACCEL0,                 KC_P0,             KC_PDOT, _______, KC_MS_BTN1, KC_MS_LEFT, KC_MS_DOWN, KC_MS_RIGHT
+        _______,_______, MK_ACCEL0,                KC_P0,             KC_PDOT, _______, KC_MS_BTN1, KC_MS_LEFT, KC_MS_DOWN, KC_MS_RIGHT
     ),
 
-//  [CTL_LAYR] (red)
+//  [KCTL_LAYR] (red)
 //  ,-----------------------------------------------------------------------------------------------------------------------------------,
 //  :  ______    ______________________________    ______________________________    ______________________________    ______   .----.  :
 //  : |      |  |RMode+||RMode-||      ||      |  |RHue+ ||RHue- ||RSat+ ||RSat- |  |      ||      ||ClrTst||Debug |  |LLock | : RGB  : :
@@ -196,7 +195,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |         ||        ||         ||            Battery Level Check               ||      ||      |      |  |RSpd- ||RBri- ||RSpd+ | :
 //  : |_________||________||_________||______________________________________________||______||______|______|  |______||______||______| :
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
-    [CTL_LAYR] = LAYOUT_ansi_82(
+    [KCTL_LAYR] = LAYOUT_ansi_82(
         _______, RGB_MOD,RGB_RMOD,_______,_______, RGB_HUI,RGB_HUD,RGB_SAI,RGB_SAD,_______,_______,COLORTEST,DB_TOGG,LLOCK,ENC_RGBRESET,
         _______, BT_HST1, BT_HST2, BT_HST3, P2P4G, _______,_______,_______,_______, _______,_______, _______, _______, _______, RGB_TOG,
         _______,_______,_______,_______, QK_RBT, _______,_______, _______, _______, _______,_______, _______, _______, _______, _______,
@@ -366,7 +365,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [MAC_BASE]  = {ENCODER_CCW_CW(ENC_MAINL, ENC_MAINR)},
     [FN_LAYR]   = {ENCODER_CCW_CW(DUAL_ZOOMO, DUAL_ZOOMI)},
     [SFT_LAYR]  = {ENCODER_CCW_CW(SCROLL_UP, SCROLL_DN)},
-    [CTL_LAYR]  = {ENCODER_CCW_CW(RGB_RMOD, RGB_MOD)},
+    [KCTL_LAYR]  = {ENCODER_CCW_CW(RGB_RMOD, RGB_MOD)},
     [TMUX_LAYR] = {ENCODER_CCW_CW(ENC_TSIZEL, ENC_TSIZER)},
     [WSYM_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [MSYM_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
@@ -823,30 +822,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           }
         }
         break;
-    case WM_SYM:
-        if (record->event.pressed) {
-            if (is_mac_base()) {
-                register_code(KC_LOPT);
-                layer_on(MSYM_LAYR);
-            }
-            else {
-                layer_on(WSYM_LAYR);
-            }
-        }
-        else {
-            if (is_mac_base()) {
-                if (!is_layer_locked(MSYM_LAYR)) {
-                    unregister_code(KC_LOPT);
-                    layer_off(MSYM_LAYR);
-                }
-            }
-            else {
-                if (!is_layer_locked(WSYM_LAYR)) {
-                    layer_off(WSYM_LAYR);
-                }
-            }
-        } 
-        break;
     }
     return process_record_secrets(keycode, record);
 }
@@ -861,7 +836,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     case SFT_LAYR:
         rgb_matrix_set_color(I_INDICATOR, RGB_ORANGE);
         break;
-    case CTL_LAYR:
+    case KCTL_LAYR:
         rgb_matrix_set_color(I_INDICATOR, RGB_RED);
         break;
     case TMUX_LAYR:
@@ -902,7 +877,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                         case SFT_LAYR:
                             rgb_matrix_set_color(index, RGB_ORANGE);
                             break;
-                        case CTL_LAYR:
+                        case KCTL_LAYR:
                             rgb_matrix_set_color(index, RGB_RED);
                             break;
                         case TMUX_LAYR:
@@ -971,7 +946,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                     rgb_matrix_set_color(I_LSFT, RGB_ORANGE); // lshift
                     rgb_matrix_set_color(I_RSFT, RGB_ORANGE); // rshift
                     break;
-                case CTL_LAYR:
+                case KCTL_LAYR:
                     rgb_matrix_set_color(I_LALT, RGB_RED);    // lalt
                     rgb_matrix_set_color(I_RALT, RGB_RED);    // ralt
                     break;
@@ -1194,8 +1169,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             }
         }
 
-        // if any rgb key highlights are on, turn the setting keys white on layer CTL_LAYR
-        if (layer == CTL_LAYR)
+        // if any rgb key highlights are on, turn the setting keys white on layer KCTL_LAYR
+        if (layer == KCTL_LAYR)
         {
             if (fj_light) {
                 rgb_matrix_set_color(I_FJLIGHT, RGB_WHITE);     // home (fj highlight key)
@@ -1321,8 +1296,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             rgb_matrix_set_color(I_SLOCK, RGB_WHITE);
         }
             
-        // show wireless connection on CTL_LAYR if in bt or 2.4g modes
-        if (layer == CTL_LAYR)
+        // show wireless connection on KCTL_LAYR if in bt or 2.4g modes
+        if (layer == KCTL_LAYR)
         {
             if (wireless_get_state() == WT_CONNECTED) {
                 // host_index is set to 24 for 2.4g, bt is 1,2,3
@@ -1340,7 +1315,7 @@ bool key_should_fade(keytracker key, uint8_t layer) {
       ((layer == FN_LAYR || layer == SFT_LAYR || layer == WIDE_LAYR ||
         layer == CIRC_LAYR || is_caps_word_on()) &&
         (key.index == I_LSFT || key.index == I_RSFT)) ||                                                         // l/r shift
-      ((layer == FN_LAYR || layer == CTL_LAYR) && (key.index == I_LALT || key.index == I_RALT)) ||               // l/r alt
+      ((layer == FN_LAYR || layer == KCTL_LAYR) && (key.index == I_LALT || key.index == I_RALT)) ||              // l/r alt
       (macro_recording && (key.index == I_MREC1 || key.index == I_MREC2)) ||                                     // macro recording keys
       (is_layer_locked(layer) && key.index == I_LLOCK) ||                                                        // home (layer lock key)
       (is_in_leader_sequence && key.index == I_L) ||                                                             // leader key
@@ -1348,8 +1323,8 @@ bool key_should_fade(keytracker key, uint8_t layer) {
       (layer == FN_LAYR && key.index == I_SLOCK) ||                                                              // scroll lock
       (layer == WIDE_LAYR && (key.index == I_BARTEXT || key.index == I_STHRU ||
         key.index == I_UNDERLN || key.index == I_BBRTEXT)) ||                                                    // wide-text toggles
-      (layer == CTL_LAYR && (key.index == I_FJLIGHT || key.index == I_HROWLIGHT)) ||                             // hrow/fj indicators 
-      (layer == CTL_LAYR && (key.index >= I_N1 && key.index <= I_N4)) ||                                         // wireless mode keys
+      (layer == KCTL_LAYR && (key.index == I_FJLIGHT || key.index == I_HROWLIGHT)) ||                            // hrow/fj indicators
+      (layer == KCTL_LAYR && (key.index >= I_N1 && key.index <= I_N4)) ||                                        // wireless mode keys
       (os_changed) ||                                                                                            // mac/win/lin change
       (layer == WSYM_LAYR && (key.index == I_GRV || key.index == I_N1 || key.index == I_E ||
                                 key.index == I_I || key.index == I_U || key.index == I_N ||                      // accent keys
@@ -1487,12 +1462,12 @@ void caps_finished (tap_dance_state_t *state, void *user_data) {
       }
       break;
     case QUAD_TAP:
-      if (layer_state_is(CTL_LAYR)) {
+      if (layer_state_is(KCTL_LAYR)) {
         //if already set, then switch it off
-        layer_lock_off(CTL_LAYR);
+        layer_lock_off(KCTL_LAYR);
       } else {
         //if not already set, then switch the layer on
-        layer_lock_on(CTL_LAYR);
+        layer_lock_on(KCTL_LAYR);
       }
       break;
     case PENT_TAP:
@@ -1530,7 +1505,7 @@ void ralt_finished (tap_dance_state_t *state, void *user_data) {
   ralt_tap_state.state = cur_dance(state);
   switch (ralt_tap_state.state) {
     case SINGLE_TAP:
-      set_oneshot_layer(CTL_LAYR, ONESHOT_START);
+      set_oneshot_layer(KCTL_LAYR, ONESHOT_START);
       clear_oneshot_layer_state(ONESHOT_PRESSED);
       break;
     case SINGLE_HOLD:
@@ -1568,7 +1543,7 @@ void rcmd_finished (tap_dance_state_t *state, void *user_data) {
   rcmd_tap_state.state = cur_dance(state);
   switch (rcmd_tap_state.state) {
     case SINGLE_TAP:
-      set_oneshot_layer(CTL_LAYR, ONESHOT_START);
+      set_oneshot_layer(KCTL_LAYR, ONESHOT_START);
       clear_oneshot_layer_state(ONESHOT_PRESSED);
       break;
     case SINGLE_HOLD:
@@ -2354,12 +2329,12 @@ void leader_end_user(void) {
             layer_lock_on(SFT_LAYR);
         }
     }
-    else if (leader_sequence_three_keys(KC_L, KC_L, KC_A)) {   // layer lock CTL_LAYR (now on ALT key)
-        if (is_layer_locked(CTL_LAYR)) {
-            layer_lock_off(CTL_LAYR);
+    else if (leader_sequence_three_keys(KC_L, KC_L, KC_A)) {   // layer lock KCTL_LAYR (now on ALT key)
+        if (is_layer_locked(KCTL_LAYR)) {
+            layer_lock_off(KCTL_LAYR);
         }
         else {
-            layer_lock_on(CTL_LAYR);
+            layer_lock_on(KCTL_LAYR);
         }
     }
     else if (leader_sequence_three_keys(KC_L, KC_L, KC_F)) {   // layer lock FN_LAYR

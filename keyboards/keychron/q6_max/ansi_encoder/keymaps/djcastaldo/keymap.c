@@ -39,21 +39,20 @@ enum layers {
     MAC_BASE,
     FN_LAYR,
     WIN_BASE,
-    EMO_LAYR,
-    CTL_LAYR,
-    OPT_LAYR,
+    SFT_LAYR,
+    KCTL_LAYR,
     TMUX_LAYR,
     MSYM_LAYR,
+    WSYM_LAYR,
     WIDE_LAYR,
     CIRC_LAYR,
+    EMO_LAYR,
     LOCK_LAYR
 };
 //  ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~ */
 
 enum custom_keycodes {
     LLOCK = NEW_SAFE_RANGE,
-    FNLAYER,
-    SFTLAYER,
     DUAL_F13,
     DUAL_F14,
     DUAL_PMNS,
@@ -83,7 +82,7 @@ enum {
    CAPS_LAYR = 0,
    FN_OSL = 1,
    ROPT_OSL = 2,
-   RCTL_OSL = 3,
+   RCMD_OSL = 3,
    RSFT_OSL = 4,
    MOUSE_ACCEL = 5,
    KB_UNLOCK = 6
@@ -105,7 +104,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:|________||____||____||____||____||____||____||____||____||____||____||____||___________|        ____        |____||____||____||____|:
 //:| Shift     || Z  || X  || C  || V  || B  || N  || M  || ,  || .  || /  ||TD(SFT_OSL)   |       |Up  |       | 1  || 2  || 3  ||    |:
 //:|___________||____||____||____||____||____||____||____||____||____||____||______________|  ____ |____| ____  |____||____||____||Ent |:
-//:|Ctrl ||Opt  || Cmd ||                Space                || Cmd ||TDOpt||TDFn ||TDCtrl| |Left||Down||Rigt| |    0     || .  ||    |:
+//:|Ctrl ||Opt  || Cmd ||                Space                ||TDCmd||Opt  ||TDFn ||Ctrl  | |Left||Down||Rigt| |    0     || .  ||    |:
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
 //`-------------------------------------------------------------------------------------------------------------------------------------`
     [MAC_BASE] = LAYOUT_109_ansi(
@@ -117,7 +116,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                                  KC_DEL,KC_END,KC_PGDN,KC_P7,KC_P8,KC_P9,
         TD(CAPS_LAYR),KC_A,KC_S,KC_D,KC_F,KC_G,KC_H,KC_J,KC_K,KC_L,KC_SCLN,KC_QUOT, KC_ENT,                 KC_P4, KC_P5, KC_P6, KC_PPLS,
         KC_LSFT, KC_Z,KC_X,KC_C,KC_V,KC_B,KC_N,KC_M,KC_COMM,KC_DOT,KC_SLSH, TD(RSFT_OSL),         KC_UP,        KC_P1, KC_P2, KC_P3,
-        KC_LCTL,KC_LOPT,KC_LCMD,  KC_SPC, KC_RCMD,TD(ROPT_OSL),TD(FN_OSL),TD(RCTL_OSL),KC_LEFT,KC_DOWN,KC_RGHT, KC_P0, KC_PDOT, KC_PENT),
+        KC_LCTL, KC_LOPT, KC_LCMD,   KC_SPC,  TD(RCMD_OSL), KC_ROPT,TD(FN_OSL),KC_RCTL,KC_LEFT,KC_DOWN,KC_RGHT, KC_P0, KC_PDOT, KC_PENT),
 //  [FN_LAYR]
 //,-------------------------------------------------------------------------------------------------------------------------------------,
 //: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
@@ -130,9 +129,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:|_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____||    |:
 //:|        ||Addr||City||ZIP ||Phon||    ||    ||    ||    ||Lead||    ||    ||           |                    |Addr||City||ZIP ||    |:
 //:|________||____||____||____||____||____||____||____||____||____||____||____||___________|        ____        |____||____||____||____|:
-//:|MO(SFT_L)  ||    ||Rout||Acct||    ||    ||    ||    ||    ||    ||    ||MO(EMO_LAYR)  |       |    |       |Phon||RPho||WPho||    |:
+//:|MO(SFT_L)  ||    ||Rout||Acct||    ||    ||    ||    ||    ||    ||    ||MO(SFT_LAYR)  |       |    |       |Phon||RPho||WPho||    |:
 //:|___________||____||____||____||____||____||____||____||____||____||____||______________|  ____ |____| ____  |____||____||____||    |:
-//:|MOCtl||MOOpt||     ||                                     ||     ||MOOpt||     ||MOCtrl| |    ||    ||    | |Timestamp ||    ||    |:
+//:|     ||WMSym||MOCtl||                                     ||MOCtl||     ||     ||      | |    ||    ||    | |Timestamp ||    ||    |:
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
 //`-------------------------------------------------------------------------------------------------------------------------------------`
     [FN_LAYR] = LAYOUT_109_ansi(
@@ -144,9 +143,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                            _______,V_TAB_NXT,V_WSPC_NXT,SECRET1,SECRET2,SECRET3,
         _______,SECRET4,SECRET5,SECRET6,SECRET7,_______,_______,_______,_______, QK_LEAD, _______, _______,      _______,
                                                                                                          SECRET4,SECRET5,SECRET6,_______,
-        SFTLAYER, _______, SECRET10, SECRET11, _______,_______,_______,_______,_______,_______,_______, SFTLAYER,
+        MO(SFT_LAYR), _______, SECRET10, SECRET11, _______,_______,_______,_______,_______,_______,_______, MO(SFT_LAYR),
                                                                                                       _______,   SECRET7,SECRET8,SECRET9,
-        MO(CTL_LAYR),MO(OPT_LAYR), _______,          _______,          _______, MO(OPT_LAYR), _______, MO(CTL_LAYR),
+        _______, WM_SYM, MO(KCTL_LAYR),          _______,          MO(KCTL_LAYR), WM_SYM, _______, _______,
                                                                                   _______, _______, _______, TIMESTAMP, _______,_______),
 //  [WIN_BASE]
 //,-------------------------------------------------------------------------------------------------------------------------------------,
@@ -174,34 +173,36 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_CAPS,KC_A,KC_S,KC_D,KC_F,KC_G,KC_H,KC_J,KC_K,KC_L, KC_SCLN, KC_QUOT,   KC_ENT,                   KC_P4, KC_P5, KC_P6, KC_PPLS,
         KC_LSFT,KC_Z,KC_X,KC_C,KC_V,KC_B,KC_N,KC_M,KC_COMM,KC_DOT,KC_SLSH,         KC_RSFT,        KC_UP,     KC_P1, KC_P2, KC_P3,
         KC_LCTL, KC_LWIN, KC_LALT,     KC_SPC,    KC_RALT,KC_RWIN,MO(EMO_LAYR),KC_RCTL, KC_LEFT,KC_DOWN,KC_RGHT, KC_P0,KC_PDOT,KC_PENT),
-//  [EMO_LAYR]
+//  [SFT_LAYR]
 //,-------------------------------------------------------------------------------------------------------------------------------------,
 //: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
-//:|    | |    ||    ||    ||    | |    ||    ||    ||    | |    ||    ||    ||    | : Uni : |EScr||EMic||EBul| |ESmi||Eirk||EAst||ESad|:
+//:|    | |    ||    ||MCtl||LPad| |    ||    ||MPrv||MPly| |MNxt||    ||    ||    | :Scrol: |Snap||Siri||News| |Rec1||Rec2||Ply1||Ply2|:
 //:|____| |____||____||____||____| |____||____||____||____| |____||____||____||____| `.___.  |____||____||____| |____||____||____||____|:
 //: _______________________________________________________________________________________   ________________   ______________________ :
-//:|    || E1 || E2 || E3 || E4 || E5 || E6 || E7 || E8 || E9 || E0 || E- || E+ ||         | |LLck||EDri||EMrk| |Car ||Bus ||Trai||Taxi|:
+//:|Quit||SOC1||SOC2||SOC3||SOC4||SOC5||SOC6||SOC7||SOC8||SOC9||SOC0||    ||    ||         | |LLck||TPrv||APrv| |QLok||Insp||Hide||Stat|:
 //:|____||____||____||____||____||____||____||____||____||____||____||____||____||_________| |____||____||____| |____||____||____||____|:
-//:|       ||    ||    ||    ||    ||    ||    ||    || EI ||EOK ||    ||    ||    ||      | |EDel||ECMk||EQMk| |US  ||PI  ||Glob||    |:
-//:|_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____||Taco|:
-//:|        ||Star||SunG||    ||    ||    ||Hash||    ||Keyb||    ||    ||    ||           |                    |Piza||Burg||Chik||    |:
+//:|MAcel2 ||QLok||    ||    ||    ||Time||    ||Btn1||MSUp||OHld||    ||    ||    ||OverVw| |FDel||TNxt||ANxt| |    ||    ||    ||    |:
+//:|_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____||    |:
+//:|        ||    ||    ||    ||    ||    ||    ||MLft||MSDn||MRgt||TDAc||    ||           |                    |cd..||cd ~||cQMK||    |:
 //:|________||____||____||____||____||____||____||____||____||____||____||____||___________|        ____        |____||____||____||____|:
-//:|           ||    ||    ||    ||    ||Botl||    ||    ||    ||Grim||Div ||              |       |EUp |       |Snai||Ninj||Stop||    |:
-//:|___________||____||____||____||____||____||____||____||____||____||____||______________|  ____ |____| ____  |____||____||____||Pack|:
-//:|     ||     ||     ||                                     ||     ||     ||     ||      | |ELft||EDwn||ERgt| |  EHand   ||Shh ||    |:
+//:|           ||MAc2||    ||    ||    ||    ||    ||MHld||CsrL||CsrR||Stat||              |       |    |       |ls  ||log ||rsnc||    |:
+//:|___________||____||____||____||____||____||____||____||____||____||____||______________|  ____ |____| ____  |____||____||____||    |:
+//:|     ||     ||MAcl0||                                     ||     ||     ||     ||      | |    ||    ||    | |Timestamp ||    ||    |:
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
 //`-------------------------------------------------------------------------------------------------------------------------------------`
-    [EMO_LAYR] = LAYOUT_109_ansi(
-        _______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______, DUAL_UNIPUSH,
-                                                                                E_SSHOT, E_MIC, E_BULB, E_SMILE, E_SMIRK, E_ASTON, E_SAD,
-        _______,E_K1,E_K2,E_K3,E_K4,E_K5,E_K6,E_K7,E_K8,E_K9,E_K0,E_MINS,E_PLUS,_______,LLOCK,E_DRINK,E_EMARK,E_CAR,E_BUS,E_TRAIN,E_TAXI,
-        _______,_______,_______,_______,_______,_______,_______,_______,E_I,E_OK,_______,_______,_______,_______,
-                                                                               E_TRASH,E_CMARK,E_QMARK, E_FLAGUS,E_FLAGPI,E_GLOBE,
-        _______,E_STAR,E_SGLASS,_______,_______,_______,E_HASH,_______,E_KB,_______,_______,_______,_______,
-                                                                                                       E_PIZZA,E_BURGER,E_CHICKEN,E_TACO,
-        _______,_______,_______,_______,_______,E_BOTTLE,_______,_______,_______,E_GRIM,E_DIV,_______, E_POINTU,  E_SNAIL,E_NINJA,E_STOP,
-        _______,_______,_______,       _______,       _______,_______,_______,_______,E_POINTL,E_POINTD,E_POINTR,E_HAND,E_SHH,E_PACKAGE),
-//  [CTL_LAYR]
+    [SFT_LAYR] = LAYOUT_109_ansi(
+        _______,_______,_______,KC_MCTRL,KC_LNPAD,_______,_______,KC_MPRV,KC_MPLY,KC_MNXT,_______,_______,_______, DUAL_ENCPUSH2,
+                                                                                      QK_LOCK,_______,NEWFINDER,FHOME,FAPPS,FDOCS,FDOWNL,
+        FORCEQUIT,SOC1,SOC2,SOC3,SOC4,SOC5,SOC6,SOC7,SOC8,SOC9,SOC0,_______,_______,_______,
+                                                                             LLOCK,V_TAB_PRV,SCMDGRAVE,FQLOOK,FINSPECT,FVHIDDEN,FSTATBAR,
+        MK_ACCEL2,FQLOOK,_______,_______,_______,TIMESTAMP,_______,KC_MS_BTN1,KC_MS_UP,OPT_HOLD,_______,_______,_______,TOVERVIEW,
+                                                                                      FDELETE,V_TAB_NXT,CMDGRAVE,_______,_______,_______,
+        _______,_______,_______,_______,_______,_______,_______,KC_MS_LEFT,KC_MS_DOWN,KC_MS_RIGHT,TD(MOUSE_ACCEL),_______,_______,
+                                                                                                        BACKDIR,HOMEDIR,SECRET22,_______,
+        _______,MK_ACCEL2,_______,_______,_______,_______,_______,MK_HOLD,CURSORL,CURSORR,FSTATBAR,_______,_______,
+                                                                                                        LSLTRAH,GIT_LOG,SECRET25,
+        _______,_______,MK_ACCEL0,     _______,    _______,_______,_______,_______, _______,_______,_______,  TIMESTAMP,_______,_______),
+//  [KCTL_LAYR]
 //,-------------------------------------------------------------------------------------------------------------------------------------,
 //: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
 //:|    | |    ||    ||    ||    | |RSet||    ||    ||    | |    ||    ||CTst||Debg| : RGB : |KLck||KTrk||RGBM| |    ||Log ||    ||    |:
@@ -218,7 +219,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:|     ||     ||     ||          Battery Level              ||     ||     ||     ||      | |RSp-||RMo-||RSp+| |          ||    ||    |:
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
 //`-------------------------------------------------------------------------------------------------------------------------------------`
-    [CTL_LAYR] = LAYOUT_109_ansi(
+    [KCTL_LAYR] = LAYOUT_109_ansi(
         _______,_______,_______,_______,_______,KB_RESET,_______,_______,_______,_______,_______,COLORTEST,DB_TOGG, PENT_ENCPUSH,
                                                                              QK_LOCK, KTRACK, RGB_MOD, _______, SECRET0, _______,_______,
         _______,BT_HST1,BT_HST2,BT_HST3,P2P4G,_______,_______,_______,_______,_______,_______,_______,_______,_______,
@@ -230,35 +231,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,_______,_______, EE_CLR,_______,BOOTLDR,_______,_______,_______,_______,_______, _______,  RGB_MOD,
                                                                                                          _______,_______,_______,
         _______,_______,_______,      BAT_LVL,     _______,_______,_______,_______, RGB_SPD,RGB_RMOD,RGB_SPI, _______, _______, _______),
-//  [OPT_LAYR]
-//,-------------------------------------------------------------------------------------------------------------------------------------,
-//: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
-//:|    | |    ||    ||MCtl||LPad| |    ||    ||MPrv||MPly| |MNxt||    ||    ||    | :Scrol: |Snap||Siri||News| |Rec1||Rec2||Ply1||Ply2|:
-//:|____| |____||____||____||____| |____||____||____||____| |____||____||____||____| `.___.  |____||____||____| |____||____||____||____|:
-//: _______________________________________________________________________________________   ________________   ______________________ :
-//:|Quit||SOC1||SOC2||SOC3||SOC4||SOC5||SOC6||SOC7||SOC8||SOC9||SOC0||    ||    ||         | |LLck||TPrv||APrv| |QLok||Insp||Hide||Stat|:
-//:|____||____||____||____||____||____||____||____||____||____||____||____||____||_________| |____||____||____| |____||____||____||____|:
-//:|MAcel2 ||QLok||    ||    ||    ||Time||    ||Btn1||MSUp||OHld||    ||    ||    ||OverVw| |FDel||TNxt||ANxt| |    ||    ||    ||    |:
-//:|_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____||    |:
-//:|        ||    ||    ||    ||    ||    ||    ||MLft||MSDn||MRgt||TDAc||    ||           |                    |cd..||cd ~||cQMK||    |:
-//:|________||____||____||____||____||____||____||____||____||____||____||____||___________|        ____        |____||____||____||____|:
-//:|MAcel0     ||MAc2||    ||    ||    ||    ||    ||MHld||CsrL||CsrR||Stat||              |       |    |       |ls  ||log ||rsnc||    |:
-//:|___________||____||____||____||____||____||____||____||____||____||____||______________|  ____ |____| ____  |____||____||____||    |:
-//:|     ||     ||     ||                                     ||     ||     ||     ||      | |    ||    ||    | |Timestamp ||    ||    |:
-//:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
-//`-------------------------------------------------------------------------------------------------------------------------------------`
-    [OPT_LAYR] = LAYOUT_109_ansi(
-        _______,_______,_______,KC_MCTRL,KC_LNPAD,_______,_______,KC_MPRV,KC_MPLY,KC_MNXT,_______,_______,_______, DUAL_ENCPUSH2,
-                                                                                      QK_LOCK,_______,NEWFINDER,FHOME,FAPPS,FDOCS,FDOWNL,
-        FORCEQUIT,SOC1,SOC2,SOC3,SOC4,SOC5,SOC6,SOC7,SOC8,SOC9,SOC0,_______,_______,_______,
-                                                                             LLOCK,V_TAB_PRV,SCMDGRAVE,FQLOOK,FINSPECT,FVHIDDEN,FSTATBAR,
-        MK_ACCEL2,FQLOOK,_______,_______,_______,TIMESTAMP,_______,KC_MS_BTN1,KC_MS_UP,OPT_HOLD,_______,_______,_______,TOVERVIEW,
-                                                                                      FDELETE,V_TAB_NXT,CMDGRAVE,_______,_______,_______,
-        _______,_______,_______,_______,_______,_______,_______,KC_MS_LEFT,KC_MS_DOWN,KC_MS_RIGHT,TD(MOUSE_ACCEL),_______,_______,
-                                                                                                        BACKDIR,HOMEDIR,SECRET22,_______,
-        MK_ACCEL0,MK_ACCEL2,_______,_______,_______,_______,_______,MK_HOLD,CURSORL,CURSORR,FSTATBAR,_______,_______,
-                                                                                                        LSLTRAH,GIT_LOG,SECRET25,
-        _______,_______,_______,      _______,     _______,_______,_______,_______, _______,_______,_______,  TIMESTAMP,_______,_______),
 //  [TMUX_LAYR]
 //,-------------------------------------------------------------------------------------------------------------------------------------,
 //: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
@@ -305,6 +277,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
 //`-------------------------------------------------------------------------------------------------------------------------------------`
     [MSYM_LAYR] = LAYOUT_109_ansi(
+        _______, SUP1, SUP2, SUP3, _______, SUITH, SUITD, SUITC, SUITS,  CIRCLI, _______, _______, NBSP, KC_MUTE,
+                                                                             _______,_______,_______,  _______, _______, _______,_______,
+        LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,_______,
+                                                                                  LLOCK,_______,_______, _______,_______,_______,_______,
+        _______,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,
+                                                                                         _______,_______,_______,_______,_______,_______,
+        _______,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,_______,
+                                                                                                         _______,_______,_______,_______,
+        KC_LSFT,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS, KC_RSFT,     _______,     _______,_______,_______,
+        _______,_______,_______,      _______,      _______,_______,_______,_______, _______,_______,_______, _______, _______, _______),
+//  [WSYM_LAYR] right now, this is just a copy of MSYM_LAYR, need to update it
+//,-------------------------------------------------------------------------------------------------------------------------------------,
+//: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
+//:|    | |SUP1||SUP2||SUP3||    | |SUTH||SUTD||SUTC||SUTS| |CRCI||    ||    ||NBSP| : Vol : |    ||    ||    | |    ||    ||    ||    |:
+//:|____| |____||____||____||____| |____||____||____||____| |____||____||____||____| `.___.  |____||____||____| |____||____||____||____|:
+//: _______________________________________________________________________________________   ________________   ______________________ :
+//:|LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||         | |LLck||    ||    | |    ||    ||    ||    |:
+//:|____||____||____||____||____||____||____||____||____||____||____||____||____||_________| |____||____||____| |____||____||____||____|:
+//:|       ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN  | |    ||    ||    | |    ||    ||    ||    |:
+//:|_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____||    |:
+//:|        ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||           |                    |    ||    ||    ||    |:
+//:|________||____||____||____||____||____||____||____||____||____||____||____||___________|        ____        |____||____||____||____|:
+//:|LShift     ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||RShift        |       |    |       |    ||    ||    ||    |:
+//:|___________||____||____||____||____||____||____||____||____||____||____||______________|  ____ |____| ____  |____||____||____||    |:
+//:|     ||     ||     ||                                     ||     ||     ||     ||      | |    ||    ||    | |          ||    ||    |:
+//:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
+//`-------------------------------------------------------------------------------------------------------------------------------------`
+    [WSYM_LAYR] = LAYOUT_109_ansi(
         _______, SUP1, SUP2, SUP3, _______, SUITH, SUITD, SUITC, SUITS,  CIRCLI, _______, _______, NBSP, KC_MUTE,
                                                                              _______,_______,_______,  _______, _______, _______,_______,
         LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,_______,
@@ -371,6 +371,33 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                                          _______,_______,_______,_______,
         _______,CIRCLZ,CIRCLX,CIRCLC,CIRCLV,CIRCLB,CIRCLN,CIRCLM,_______,_______,_______, _______,   _______,    _______,_______,_______,
         _______,_______,_______,      _______,      _______,_______,_______,_______, _______,_______,_______, _______, _______, _______),
+//  [EMO_LAYR]
+//,-------------------------------------------------------------------------------------------------------------------------------------,
+//: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
+//:|    | |    ||    ||    ||    | |    ||    ||    ||    | |    ||    ||    ||    | : Uni : |EScr||EMic||EBul| |ESmi||Eirk||EAst||ESad|:
+//:|____| |____||____||____||____| |____||____||____||____| |____||____||____||____| `.___.  |____||____||____| |____||____||____||____|:
+//: _______________________________________________________________________________________   ________________   ______________________ :
+//:|    || E1 || E2 || E3 || E4 || E5 || E6 || E7 || E8 || E9 || E0 || E- || E+ ||         | |LLck||EDri||EMrk| |Car ||Bus ||Trai||Taxi|:
+//:|____||____||____||____||____||____||____||____||____||____||____||____||____||_________| |____||____||____| |____||____||____||____|:
+//:|       ||    ||    ||    ||    ||    ||    ||    || EI ||EOK ||    ||    ||    ||      | |EDel||ECMk||EQMk| |US  ||PI  ||Glob||    |:
+//:|_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____||Taco|:
+//:|        ||Star||SunG||    ||    ||    ||Hash||    ||Keyb||    ||    ||    ||           |                    |Piza||Burg||Chik||    |:
+//:|________||____||____||____||____||____||____||____||____||____||____||____||___________|        ____        |____||____||____||____|:
+//:|           ||    ||    ||    ||    ||Botl||    ||    ||    ||Grim||Div ||              |       |EUp |       |Snai||Ninj||Stop||    |:
+//:|___________||____||____||____||____||____||____||____||____||____||____||______________|  ____ |____| ____  |____||____||____||Pack|:
+//:|     ||     ||     ||                                     ||     ||     ||     ||      | |ELft||EDwn||ERgt| |  EHand   ||Shh ||    |:
+//:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
+//`-------------------------------------------------------------------------------------------------------------------------------------`
+    [EMO_LAYR] = LAYOUT_109_ansi(
+        _______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______, DUAL_UNIPUSH,
+                                                                                E_SSHOT, E_MIC, E_BULB, E_SMILE, E_SMIRK, E_ASTON, E_SAD,
+        _______,E_K1,E_K2,E_K3,E_K4,E_K5,E_K6,E_K7,E_K8,E_K9,E_K0,E_MINS,E_PLUS,_______,LLOCK,E_DRINK,E_EMARK,E_CAR,E_BUS,E_TRAIN,E_TAXI,
+        _______,_______,_______,_______,_______,_______,_______,_______,E_I,E_OK,_______,_______,_______,_______,
+                                                                               E_TRASH,E_CMARK,E_QMARK, E_FLAGUS,E_FLAGPI,E_GLOBE,
+        _______,E_STAR,E_SGLASS,_______,_______,_______,E_HASH,_______,E_KB,_______,_______,_______,_______,
+                                                                                                       E_PIZZA,E_BURGER,E_CHICKEN,E_TACO,
+        _______,_______,_______,_______,_______,E_BOTTLE,_______,_______,_______,E_GRIM,E_DIV,_______, E_POINTU,  E_SNAIL,E_NINJA,E_STOP,
+        _______,_______,_______,       _______,       _______,_______,_______,_______,E_POINTL,E_POINTD,E_POINTR,E_HAND,E_SHH,E_PACKAGE),
 //  [LOCK_LAYR]
 //,-------------------------------------------------------------------------------------------------------------------------------------,
 //: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
@@ -403,13 +430,13 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [MAC_BASE]  = {ENCODER_CCW_CW(DUAL_ENCL, DUAL_ENCR)},
     [FN_LAYR]   = {ENCODER_CCW_CW(DUAL_ZOOMO, DUAL_ZOOMI)},
     [WIN_BASE]  = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [EMO_LAYR]  = {ENCODER_CCW_CW(DUAL_NAVL, DUAL_NAVR)},
-    [CTL_LAYR]  = {ENCODER_CCW_CW(PENT_ENCL, PENT_ENCR)},
-    [OPT_LAYR]  = {ENCODER_CCW_CW(DUAL_ENCL2, DUAL_ENCR2)},
+    [SFT_LAYR]  = {ENCODER_CCW_CW(DUAL_ENCL2, DUAL_ENCR2)},
+    [KCTL_LAYR]  = {ENCODER_CCW_CW(PENT_ENCL, PENT_ENCR)},
     [TMUX_LAYR] = {ENCODER_CCW_CW(ENC_TSIZEL, ENC_TSIZER)},
     [MSYM_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [WIDE_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [CIRC_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [EMO_LAYR]  = {ENCODER_CCW_CW(DUAL_NAVL, DUAL_NAVR)},
     [LOCK_LAYR] = {ENCODER_CCW_CW(KC_NO, KC_NO)},
 };
 
@@ -596,8 +623,8 @@ void fn_finished (tap_dance_state_t *state, void *user_data);
 void fn_reset (tap_dance_state_t *state, void *user_data);
 void ropt_finished (tap_dance_state_t *state, void *user_data);
 void ropt_reset (tap_dance_state_t *state, void *user_data);
-void rctl_finished (tap_dance_state_t *state, void *user_data);
-void rctl_reset (tap_dance_state_t *state, void *user_data);
+void rcmd_finished (tap_dance_state_t *state, void *user_data);
+void rcmd_reset (tap_dance_state_t *state, void *user_data);
 void rsft_finished (tap_dance_state_t *state, void *user_data);
 void rsft_reset (tap_dance_state_t *state, void *user_data);
 void macl_finished (tap_dance_state_t *state, void *user_data);
@@ -719,22 +746,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     switch (keycode) {
-    case FNLAYER: // this prevents keyboard reset without first switching the hardware switch to WIN_BASE
-    	if (record->event.pressed) {
-           layer_on(FN_LAYR);
-	}
-        else if (!is_layer_locked(FN_LAYR)) {
-           layer_off(FN_LAYR);
-        }
-    	break;
-    case SFTLAYER: // this prevents keyboard reset without first switching the hardware switch to WIN_BASE
-    	if (record->event.pressed) {
-           layer_on(EMO_LAYR);
-	}
-        else if (!is_layer_locked(EMO_LAYR)) {
-           layer_off(EMO_LAYR);
-        }
-    	break;
     // this allows a running macro to be stopped using the macro key 
     case DUAL_F13:
     	if (record->event.pressed) {
@@ -1015,7 +1026,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         }
         break;
-    // switch rgb modes with max brightness, since the CTL_LAYR auto dims when initally switching to it
+    // switch rgb modes with max brightness, since the KCTL_LAYR auto dims when initally switching to it
     case RGB_MOD:
     case RGB_RMOD:
     case RGB_SPD:
@@ -1053,7 +1064,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         }
         break;
-    // functionality for opt keys with holds for OPT_LAYR and MSYM_LAYR
+    // functionality for opt keys with holds for SFT_LAYR and MSYM_LAYR
     case KC_LOPT:
         if (!record->event.pressed) {
             is_lopt_held = false;
@@ -1118,12 +1129,12 @@ void leader_end_user(void) {
     if (leader_sequence_two_keys(KC_L, KC_K)) {                // key lock watch for key to lock
         set_key_lock_watching();
     } 
-    else if (leader_sequence_three_keys(KC_L, KC_L, KC_C)) {   // layer lock CTL_LAYR
-        if (is_layer_locked(CTL_LAYR)) {
-            layer_lock_off(CTL_LAYR);
+    else if (leader_sequence_three_keys(KC_L, KC_L, KC_C)) {   // layer lock KCTL_LAYR
+        if (is_layer_locked(KCTL_LAYR)) {
+            layer_lock_off(KCTL_LAYR);
         }
         else {
-            layer_lock_on(CTL_LAYR);
+            layer_lock_on(KCTL_LAYR);
         }
     }
     else if (leader_sequence_three_keys(KC_L, KC_L, KC_F)) {   // layer lock FN_LAYR
@@ -1134,15 +1145,15 @@ void leader_end_user(void) {
             layer_lock_on(FN_LAYR);
         }
     }
-    else if (leader_sequence_three_keys(KC_L, KC_L, KC_O)) {   // layer lock OPT_LAYR
-        if (is_layer_locked(OPT_LAYR)) {
-            layer_lock_off(OPT_LAYR);
+    else if (leader_sequence_three_keys(KC_L, KC_L, KC_S)) {   // layer lock SFT_LAYR
+        if (is_layer_locked(SFT_LAYR)) {
+            layer_lock_off(SFT_LAYR);
         }
         else {
-            layer_lock_on(OPT_LAYR);
+            layer_lock_on(SFT_LAYR);
         }
     }
-    else if (leader_sequence_three_keys(KC_L, KC_L, KC_S)) {   // layer lock EMO_LAYR
+    else if (leader_sequence_three_keys(KC_L, KC_L, KC_E)) {   // layer lock EMO_LAYR
         if (is_layer_locked(EMO_LAYR)) {
             layer_lock_off(EMO_LAYR);
         }
@@ -1196,19 +1207,19 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                                 rgb_matrix_set_color(index, RGB_GREEN);
 			    }
 			    break;
-		        case EMO_LAYR:
-                            rgb_matrix_set_color(index, RGB_ORANGE);
-			    break;
-		        case CTL_LAYR:
-                            rgb_matrix_set_color(index, RGB_RED);
-			    break;
-		        case OPT_LAYR:
+		        case SFT_LAYR:
                             rgb_matrix_set_color(index, RGB_YELLOW);
+			    break;
+		        case KCTL_LAYR:
+                            rgb_matrix_set_color(index, RGB_RED);
 			    break;
 		        case TMUX_LAYR:
                             rgb_matrix_set_color(index, RGB_CYAN);
 			    break;
 		        case MSYM_LAYR:
+                            rgb_matrix_set_color(index, RGB_SPRINGGREEN);
+			    break;
+		        case WSYM_LAYR:
                             rgb_matrix_set_color(index, RGB_SPRINGGREEN);
 			    break;
                         case WIDE_LAYR:
@@ -1217,6 +1228,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                         case CIRC_LAYR:
                             rgb_matrix_set_color(index, RGB_CORAL);
                             break;
+		        case EMO_LAYR:
+                            rgb_matrix_set_color(index, RGB_ORANGE);
+			    break;
 		        case LOCK_LAYR:
 			    break;
 		        default:	
@@ -1230,10 +1244,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 	    if (layer == FN_LAYR) {
                 rgb_matrix_set_color(I_LSFT, RGB_ORANGE);  // left shift 
                 rgb_matrix_set_color(I_RSFT, RGB_ORANGE);  // right shift 
-                rgb_matrix_set_color(I_LCTL, RGB_RED);     // left ctrl
-                rgb_matrix_set_color(I_LOPT, RGB_YELLOW);  // left option
-                rgb_matrix_set_color(I_ROPT, RGB_YELLOW);  // right option
-                rgb_matrix_set_color(I_RCTL, RGB_RED);     // right ctrl
+                rgb_matrix_set_color(I_LCMD, RGB_RED);     // left cmd
+                rgb_matrix_set_color(I_RCMD, RGB_RED);     // right cmd
+                rgb_matrix_set_color(I_LOPT, RGB_AZURE);   // left option
+                rgb_matrix_set_color(I_ROPT, RGB_AZURE);   // right option
                 rgb_matrix_set_color(I_TAB, RGB_CYAN);     // tab
 	    }	
             // custom colors for tap dance keys on symbol layer
@@ -1262,22 +1276,22 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                     rgb_matrix_set_color(I_CAPS, RGB_GREEN);       // caps
                     rgb_matrix_set_color(I_FN, RGB_GREEN);         // fn
 		    break;
-	        case EMO_LAYR:
-                    rgb_matrix_set_color(I_LSFT, RGB_ORANGE);      // lshift 
-                    rgb_matrix_set_color(I_RSFT, RGB_ORANGE);      // rshift
+	        case SFT_LAYR:
+                    rgb_matrix_set_color(I_LSFT, RGB_YELLOW);      // lsft
+                    rgb_matrix_set_color(I_RSFT, RGB_YELLOW);      // rsft
 		    break;
-	        case CTL_LAYR:
-                    rgb_matrix_set_color(I_LCTL, RGB_RED);         // lctrl
-                    rgb_matrix_set_color(I_RCTL, RGB_RED);         // rctrl
-		    break;
-	        case OPT_LAYR:
-                    rgb_matrix_set_color(I_LOPT, RGB_YELLOW);      // lopt
-                    rgb_matrix_set_color(I_ROPT, RGB_YELLOW);      // ropt
+	        case KCTL_LAYR:
+                    rgb_matrix_set_color(I_LCMD, RGB_RED);         // lcmd
+                    rgb_matrix_set_color(I_RCMD, RGB_RED);         // rcmd
 		    break;
 	        case TMUX_LAYR:
                     rgb_matrix_set_color(I_TAB, RGB_CYAN);         // Tab
 		    break;
 	        case MSYM_LAYR:
+                    rgb_matrix_set_color(I_LOPT, RGB_SPRINGGREEN); // lopt
+                    rgb_matrix_set_color(I_ROPT, RGB_SPRINGGREEN); // ropt
+		    break;
+	        case WSYM_LAYR:
                     rgb_matrix_set_color(I_LOPT, RGB_SPRINGGREEN); // lopt
                     rgb_matrix_set_color(I_ROPT, RGB_SPRINGGREEN); // ropt
 		    break;
@@ -1287,6 +1301,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 case CIRC_LAYR:
                     rgb_matrix_set_color(I_RSFT, RGB_CORAL);      // rshift
                     break;
+	        case EMO_LAYR:
+                    rgb_matrix_set_color(I_LSFT, RGB_ORANGE);      // lshift
+                    rgb_matrix_set_color(I_RSFT, RGB_ORANGE);      // rshift
+		    break;
 	        case LOCK_LAYR:
                     rgb_matrix_set_color(I_EKS, RGB_RED);          // X
                     rgb_matrix_set_color(I_INDICATOR, RGB_RED);    // indicator
@@ -1356,14 +1374,15 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     	          rgb_matrix_set_color(I_J, 255, 255, 255); // j
               }
             }
-    	    rgb_matrix_set_color(I_ENT, 255, 255, 255);     // enter
-    	    rgb_matrix_set_color(I_LCTL, 255, 0, 0);        // left ctrl
-    	    rgb_matrix_set_color(I_LOPT, 0, 255, 255);      // left option
-    	    rgb_matrix_set_color(I_LCMD, 75, 199, 255);     // left command
-    	    rgb_matrix_set_color(I_RCMD, 75, 199, 255);     // right command
-    	    rgb_matrix_set_color(I_ROPT, 0, 255, 255);      // right option
-    	    rgb_matrix_set_color(I_FN, RGB_ORANGE);         // fn 
-    	    rgb_matrix_set_color(I_RCTL, 255, 0, 0);        // right control
+            rgb_matrix_set_color(I_ENT, 255, 255, 255);     // enter
+            rgb_matrix_set_color(I_LCMD, 255, 0, 0);        // left cmd
+            rgb_matrix_set_color(I_LOPT, 0, 255, 255);      // left option
+            rgb_matrix_set_color(I_LCMD, 75, 199, 255);     // left control
+            rgb_matrix_set_color(I_RCMD, 75, 199, 255);     // right control
+            rgb_matrix_set_color(I_ROPT, 0, 255, 255);      // right option
+            rgb_matrix_set_color(I_FN, RGB_ORANGE);         // fn
+            rgb_matrix_set_color(I_LCMD, 255, 0, 0);        // left command
+            rgb_matrix_set_color(I_RCMD, 255, 0, 0);        // right command
             rgb_matrix_set_color(I_TAB, 0x77,0x77,0x77);    // tab
         }
         // if layer locked, turn the lock key white
@@ -1435,8 +1454,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 }
             }
         }
-        // if any rgb key highlights are on, turn the setting keys white on layer CTL_LAYR
-	if (layer == CTL_LAYR)
+        // if any rgb key highlights are on, turn the setting keys white on layer KCTL_LAYR
+	if (layer == KCTL_LAYR)
 	{
             if (fj_light) {
                 rgb_matrix_set_color(I_FJLIGHT, 255, 255, 255);     // home (fj highlight key)
@@ -1530,8 +1549,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 rgb_matrix_set_color(I_L, RGB_YELLOW);
             }
         }
-        // track button holds on OPT_LAYR
-        if (layer == OPT_LAYR) {
+        // track button holds on SFT_LAYR
+        if (layer == SFT_LAYR) {
             if (ms_btn_held) { // show if mouse btn is held
                 rgb_matrix_set_color(I_M, RGB_WHITE);        // mouse btn1 hold key
             }
@@ -1558,8 +1577,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 break;
             }
         }
-        // show wireless connection on CTL_LAYR if in bt or 2.4g modes
-	if (layer == CTL_LAYR)
+        // show wireless connection on KCTL_LAYR if in bt or 2.4g modes
+	if (layer == KCTL_LAYR)
 	{
             if (wireless_get_state() == WT_CONNECTED) {
                 // host_index is set to 24 for 2.4g, bt is 1,2,3
@@ -1582,10 +1601,10 @@ bool key_should_fade(keytracker key, uint8_t layer) {
          (key.index == I_LSFT || key.index == I_RSFT)) ||                                                           // shift
        (layer == WIDE_LAYR && (key.index == I_BARTEXT || key.index == I_STHRU ||
          key.index == I_UNDERLN || key.index == I_BBRTEXT)) ||                                                      // wide-text toggles
-       (layer == CTL_LAYR && (key.index >= I_N1 && key.index <= I_N4)) ||                                           // wireless mode keys
+       (layer == KCTL_LAYR && (key.index >= I_N1 && key.index <= I_N4)) ||                                          // wireless mode keys
        (layer < 2 && key.index > 94 && key.index < 103) ||                                                          // bottom row mods
-       (layer == 4 && (key.index == I_LCTL || key.index == I_RCTL || key.index == I_HOME || key.index == I_END ||
-         key.index == I_SEMI || key.index == I_APOS)) ||                                                            // ctrl, mode keys 
+       (layer == 4 && (key.index == I_LCMD || key.index == I_RCMD || key.index == I_HOME || key.index == I_END ||
+         key.index == I_SEMI || key.index == I_APOS)) ||                                                            // cmd, mode keys
        ((layer == 5 || layer == MSYM_LAYR) && (key.index == I_LOPT || key.index == I_ROPT))) {                      // option
  	 should_fade = false;
        }
@@ -1638,7 +1657,7 @@ static tap ropt_tap_state = {
   .is_press_action = true,
   .state = 0
 };
-static tap rctl_tap_state = {
+static tap rcmd_tap_state = {
   .is_press_action = true,
   .state = 0
 };
@@ -1675,21 +1694,21 @@ void caps_finished (tap_dance_state_t *state, void *user_data) {
       }
       break;
     case TRIPLE_TAP: 
-      if (layer_state_is(CTL_LAYR)) {
+      if (layer_state_is(KCTL_LAYR)) {
         //if already set, then switch it off
-        layer_lock_off(CTL_LAYR);
+        layer_lock_off(KCTL_LAYR);
       } else { 
         //if not already set, then switch the layer on
-        layer_lock_on(CTL_LAYR);
+        layer_lock_on(KCTL_LAYR);
       }
       break;
     case QUAD_TAP: 
-      if (layer_state_is(OPT_LAYR)) {
+      if (layer_state_is(SFT_LAYR)) {
         //if already set, then switch it off
-        layer_lock_off(OPT_LAYR);
+        layer_lock_off(SFT_LAYR);
       } else { 
         //if not already set, then switch the layer on
-        layer_lock_on(OPT_LAYR);
+        layer_lock_on(SFT_LAYR);
       }
       break;
     case PENT_TAP:
@@ -1747,7 +1766,7 @@ void ropt_finished (tap_dance_state_t *state, void *user_data) {
   ropt_tap_state.state = cur_dance(state);
   switch (ropt_tap_state.state) {
     case SINGLE_TAP: 
-      set_oneshot_layer(OPT_LAYR, ONESHOT_START);
+      set_oneshot_layer(SFT_LAYR, ONESHOT_START);
       clear_oneshot_layer_state(ONESHOT_PRESSED);
       break;
     case SINGLE_HOLD: 
@@ -1774,15 +1793,15 @@ void ropt_reset (tap_dance_state_t *state, void *user_data) {
 }
 
 // function for rctl tap dance
-void rctl_finished (tap_dance_state_t *state, void *user_data) {
-  rctl_tap_state.state = cur_dance(state);
-  switch (rctl_tap_state.state) {
+void rcmd_finished (tap_dance_state_t *state, void *user_data) {
+  rcmd_tap_state.state = cur_dance(state);
+  switch (rcmd_tap_state.state) {
     case SINGLE_TAP: 
-      set_oneshot_layer(CTL_LAYR, ONESHOT_START);
+      set_oneshot_layer(KCTL_LAYR, ONESHOT_START);
       clear_oneshot_layer_state(ONESHOT_PRESSED);
       break;
     case SINGLE_HOLD: 
-      register_code(KC_RCTL); 
+      register_code(KC_RCMD);
       break;
     case DOUBLE_TAP:
       leader_start();
@@ -1790,15 +1809,15 @@ void rctl_finished (tap_dance_state_t *state, void *user_data) {
   }
 }
 
-void rctl_reset (tap_dance_state_t *state, void *user_data) {
-  switch (rctl_tap_state.state) {
+void rcmd_reset (tap_dance_state_t *state, void *user_data) {
+  switch (rcmd_tap_state.state) {
     case SINGLE_TAP:
       break;
     case SINGLE_HOLD:
-      unregister_code(KC_RCTL);
+      unregister_code(KC_RCMD);
       break;
   }
-  rctl_tap_state.state = 0;
+  rcmd_tap_state.state = 0;
 }
 
 // function for each press of rsft
@@ -1815,7 +1834,7 @@ void rsft_finished (tap_dance_state_t *state, void *user_data) {
     case SINGLE_TAP: 
       // check if this is caps word activation, otherwise set the osl
       if (!is_caps_word_on()) {
-          set_oneshot_layer(EMO_LAYR, ONESHOT_START);
+          set_oneshot_layer(SFT_LAYR, ONESHOT_START);
           clear_oneshot_layer_state(ONESHOT_PRESSED);
       }
       break;
@@ -1924,7 +1943,7 @@ tap_dance_action_t tap_dance_actions[] = {
   [CAPS_LAYR] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, caps_finished, caps_reset),
   [FN_OSL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, fn_finished, fn_reset),
   [ROPT_OSL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ropt_finished, ropt_reset),
-  [RCTL_OSL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, rctl_finished, rctl_reset),
+  [RCMD_OSL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, rcmd_finished, rcmd_reset),
   [RSFT_OSL] = ACTION_TAP_DANCE_FN_ADVANCED(rsft_each, rsft_finished, rsft_reset),
   [MOUSE_ACCEL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, macl_finished, macl_reset),
   [KB_UNLOCK] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, kbunlock_finished, kbunlock_reset),

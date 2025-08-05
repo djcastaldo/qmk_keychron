@@ -87,6 +87,7 @@ enum {
     SECRET29,
     SECRET30,
     SECRET31,
+    WM_SYM,
     JIGGLE,
     FJLIGHT,
     HROWLIGHT,

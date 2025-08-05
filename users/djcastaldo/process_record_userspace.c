@@ -8,6 +8,7 @@
 #elif defined(KEYBOARD_IS_LEMOKEY)
 #include "lemokey_common.h"
 #endif
+#include "features/layer_lock.h"
 #include "process_record_userspace.h"
 #include "config.h"
 #include "layers.h"
@@ -191,6 +192,30 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             else {
                 wide_text_mode = WIDE_BBRTEXT;
                 wide_firstchar = true;
+            }
+        }
+        return false;
+    case WM_SYM:
+        if (record->event.pressed) {
+            if (is_mac_base()) {
+                register_code(KC_LOPT);
+                layer_on(MSYM_LAYR);
+            }
+            else {
+                layer_on(WSYM_LAYR);
+            }
+        }
+        else {
+            if (is_mac_base()) {
+                if (!is_layer_locked(MSYM_LAYR)) {
+                    unregister_code(KC_LOPT);
+                    layer_off(MSYM_LAYR);
+                }
+            }
+            else {
+                if (!is_layer_locked(WSYM_LAYR)) {
+                    layer_off(WSYM_LAYR);
+                }
             }
         }
         return false;

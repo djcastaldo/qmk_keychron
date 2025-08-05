@@ -7,7 +7,7 @@ enum layers {
     MAC_BASE,
     FN_LAYR,
     SFT_LAYR,
-    CTL_LAYR,
+    KCTL_LAYR,
     TMUX_LAYR,
     WSYM_LAYR,
     MSYM_LAYR,
