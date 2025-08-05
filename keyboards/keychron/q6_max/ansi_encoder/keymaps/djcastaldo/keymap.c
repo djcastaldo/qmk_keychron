@@ -76,8 +76,6 @@ enum custom_keycodes {
     PENT_ENCR,
     DUAL_SNAP,
     KB_RESET,
-    ENC_TSIZEL,
-    ENC_TSIZER
 };
 
 // custom tap dances
@@ -721,65 +719,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     switch (keycode) {
-    // tmux encoder control
-    // set this up to do resize l/r or u/d if control is held
-    // on mac, control arrow conflicts with mission control, so using alt resizing instead
-    case ENC_TSIZEL:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            if (mods & MOD_MASK_CTRL) {
-                unregister_mods(MOD_MASK_CTRL);                                      // remove control
-                if (mods & MOD_MASK_SHIFT) {
-                    unregister_mods(MOD_MASK_SHIFT);                                 // remove shift
-                    send_string_with_delay(SS_LCTL("b") ":", 25);                    // prefix with delay 
-                    send_string("resize-pane -U 1\n");                               // size up by 1
-                }
-                else {
-                    send_string_with_delay(SS_LCTL("b") SS_LALT(SS_TAP(X_UP)),10);   // size up
-                }
-                register_mods(mods);                                                 // add back mods
-            }
-            else {
-                if (mods & MOD_MASK_SHIFT) {
-                    unregister_mods(MOD_MASK_SHIFT);                                 // remove shift
-                    send_string_with_delay(SS_LCTL("b") ":", 25);                    // prefix with delay
-                    send_string("resize-pane -L 1\n");                               // size left by 1
-                    register_mods(mods);                                             // add back mods
-                }
-                else {
-                    send_string_with_delay(SS_LCTL("b") SS_LALT(SS_TAP(X_LEFT)),10); // size left
-                }
-            }
-        }
-        break;
-    case ENC_TSIZER:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            if (mods & MOD_MASK_CTRL) {
-                unregister_mods(MOD_MASK_CTRL);                                       // remove control
-                if (mods & MOD_MASK_SHIFT) {
-                    unregister_mods(MOD_MASK_SHIFT);                                  // remove shift
-                    send_string_with_delay(SS_LCTL("b") ":", 25);                     // prefix with delay
-                    send_string("resize-pane -D 1\n");                                // size down by 1
-                }
-                else {  
-                    send_string_with_delay(SS_LCTL("b") SS_LALT(SS_TAP(X_DOWN)),10);  // size down
-                }
-                register_mods(mods);                                                  // add back mods
-            }
-            else {
-                if (mods & MOD_MASK_SHIFT) {
-                    unregister_mods(MOD_MASK_SHIFT);                                  // remove shift
-                    send_string_with_delay(SS_LCTL("b") ":", 25);                     // prefix with delay
-                    send_string("resize-pane -R 1\n");                                // size right by 1
-                    register_mods(mods);                                              // add back mods
-                }
-                else {
-                    send_string_with_delay(SS_LCTL("b") SS_LALT(SS_TAP(X_RIGHT)),10); // size right
-                }
-            }
-        }
-        break;
     case FNLAYER: // this prevents keyboard reset without first switching the hardware switch to WIN_BASE
     	if (record->event.pressed) {
            layer_on(FN_LAYR);

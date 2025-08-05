@@ -51,8 +51,6 @@ enum custom_keycodes {
     ENC_MAINL,
     ENC_MAINR,
     ENC_RGBRESET,
-    ENC_TSIZEL,
-    ENC_TSIZER
 };
 
 // custom tap dances
@@ -769,86 +767,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case SCROLL_DN:
         if (record->event.pressed) {
             tap_code16(is_mac_base() ? KC_MS_WH_UP : KC_MS_WH_DOWN);
-        }
-        break;
-    // tmux encoder control
-    // set this up to do resize l/r or u/d if control is held
-    case ENC_TSIZEL:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                unregister_mods(MOD_MASK_CTRL);                                          // remove control
-                if (is_mac_base()) {
-                    if (mods & MOD_MASK_ALT) {
-                        unregister_mods(MOD_MASK_ALT);                                   // remove alt
-                        send_string_with_delay(SS_LCTL("b") ":", 25);                    // prefix with delay
-                        send_string("resize-pane -U 1\n");                               // size up by 1
-                    }
-                    else {
-                        send_string_with_delay(SS_LCTL("b") SS_LALT(SS_TAP(X_UP)),10);   // size up
-                    }
-                }
-                else {
-                    send_string_with_delay(SS_LCTL("b") SS_LCTL(SS_TAP(X_UP)),5);        // size up
-                }
-                register_mods(mods);                                                     // add back mods
-            }
-            else {
-                if (is_mac_base()) {
-                    if (mods & MOD_MASK_ALT) {
-                        unregister_mods(MOD_MASK_ALT);                                   // remove alt
-                        send_string_with_delay(SS_LCTL("b") ":", 25);                    // prefix with delay
-                        send_string("resize-pane -L 1\n");                               // size left by 1
-                        register_mods(mods);                                             // add back mods
-                    }
-                    else {
-                        send_string_with_delay(SS_LCTL("b") SS_LALT(SS_TAP(X_LEFT)),10); // size left
-                    }
-                }
-                else {
-                    send_string_with_delay(SS_LCTL("b") SS_LCTL(SS_TAP(X_LEFT)),5);      // size left
-                }
-            }
-        }
-        break;
-    case ENC_TSIZER:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                unregister_mods(MOD_MASK_CTRL);                                          // remove control
-                if (is_mac_base()) {
-                    if (mods & MOD_MASK_ALT) {
-                        unregister_mods(MOD_MASK_ALT);                                   // remove alt
-                        send_string_with_delay(SS_LCTL("b") ":", 25);                    // prefix with delay
-                        send_string("resize-pane -D 1\n");                               // size up by 1
-                    }
-                    else {
-                        send_string_with_delay(SS_LCTL("b") SS_LALT(SS_TAP(X_DOWN)),10); // size down
-                    }
-                }
-                else {
-                    send_string_with_delay(SS_LCTL("b") SS_LCTL(SS_TAP(X_DOWN)),5);      // size down
-                }
-                register_mods(mods);                                                     // add back mods
-            }
-            else {
-                if (is_mac_base()) {
-                    if (mods & MOD_MASK_ALT) {
-                        unregister_mods(MOD_MASK_ALT);                                   // remove alt
-                        send_string_with_delay(SS_LCTL("b") ":", 25);                    // prefix with delay
-                        send_string("resize-pane -R 1\n");                               // size right by 1
-                        register_mods(mods);                                             // add back mods
-                    }
-                    else {
-                        send_string_with_delay(SS_LCTL("b") SS_LALT(SS_TAP(X_RIGHT)),10); // size right
-                    }
-                }
-                else {
-                    send_string_with_delay(SS_LCTL("b") SS_LCTL(SS_TAP(X_RIGHT)),5);     // size right
-                }
-            }
         }
         break;
     case DUAL_ESC:

@@ -381,6 +381,78 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             }
         }
         return false;
+    // tmux encoder control
+    // set this up to do resize l/r or u/d if control is held
+    case ENC_TSIZEL:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            clear_mods();
+            if (mods & MOD_MASK_CTRL) {
+                if (mods & MOD_MASK_SHIFT) {
+                    if (is_mac_base()) {
+                        send_string_with_delay(SS_LCTL("b") ":", TMUX_DELAY);            // prefix with delay
+                        send_string("resize-pane -U 1\n");                               // size up by 1
+                    }
+                    else {
+                        send_string_with_delay(SS_LCTL("b") SS_LCTL(SS_TAP(X_UP)),10);   // size up by 1
+                    }
+                }
+                else {
+                    send_string_with_delay(SS_LCTL("b") SS_LALT(SS_TAP(X_UP)),10);       // size up by 5
+                }
+            }
+            else {
+                if (mods & MOD_MASK_SHIFT) {
+                    if (is_mac_base()) {
+                        send_string_with_delay(SS_LCTL("b") ":", TMUX_DELAY);            // prefix with delay
+                        send_string("resize-pane -L 1\n");                               // size left by 1
+                    }
+                    else {
+                        send_string_with_delay(SS_LCTL("b") SS_LCTL(SS_TAP(X_LEFT)),10); // size left by 1
+                    }
+                }
+                else {
+                    send_string_with_delay(SS_LCTL("b") SS_LALT(SS_TAP(X_LEFT)),10);     // size left by 5
+                }
+            }
+            register_mods(mods);                                                         // add back mods
+        }
+        return false;
+    case ENC_TSIZER:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            clear_mods();
+            if (mods & MOD_MASK_CTRL) {
+                if (mods & MOD_MASK_SHIFT) {
+                    if (is_mac_base()) {
+                        send_string_with_delay(SS_LCTL("b") ":", TMUX_DELAY);            // prefix with delay
+                        send_string("resize-pane -D 1\n");                               // size down by 1
+                    }
+                    else {
+                        send_string_with_delay(SS_LCTL("b") SS_LCTL(SS_TAP(X_DOWN)),10); // size down by 1
+                    }
+                }
+                else {
+                    send_string_with_delay(SS_LCTL("b") SS_LALT(SS_TAP(X_DOWN)),10);     // size down by 5
+                }
+            }
+            else {
+                if (mods & MOD_MASK_SHIFT) {
+                    if (is_mac_base()) {
+                        send_string_with_delay(SS_LCTL("b") ":", TMUX_DELAY);             // prefix with delay
+                        send_string("resize-pane -R 1\n");                                // size right by 1
+                    }
+                    else {
+                        send_string_with_delay(SS_LCTL("b") SS_LCTL(SS_TAP(X_RIGHT)),10); // size right by 1
+                    }
+                }
+                else {
+                    send_string_with_delay(SS_LCTL("b") SS_LALT(SS_TAP(X_RIGHT)),10);     // size right by 5
+                }
+            }
+            register_mods(mods);                                                          // add back mods
+        }
+        return false;
     case DUAL_PLUSMIN:
         if (record->event.pressed) {
             // standard: plus symbol, while control is held: minus

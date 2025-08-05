@@ -104,6 +104,8 @@ enum {
     TWINRGT,
     TJPANE,
     ENC_TMON,
+    ENC_TSIZEL,
+    ENC_TSIZER,
     DUAL_PLUSMIN,
     DUAL_MULTDIV,
     VI_REPLACE,
