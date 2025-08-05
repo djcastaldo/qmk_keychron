@@ -1375,14 +1375,15 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
               }
             }
             rgb_matrix_set_color(I_ENT, 255, 255, 255);     // enter
-            rgb_matrix_set_color(I_LCMD, 255, 0, 0);        // left cmd
-            rgb_matrix_set_color(I_LOPT, 0, 255, 255);      // left option
-            rgb_matrix_set_color(I_LCMD, 75, 199, 255);     // left control
-            rgb_matrix_set_color(I_RCMD, 75, 199, 255);     // right control
-            rgb_matrix_set_color(I_ROPT, 0, 255, 255);      // right option
+            rgb_matrix_set_color(I_LCTL, 75, 199, 255);     // left control
+            rgb_matrix_set_color(I_RCTL, 75, 199, 255);     // right control
+            //rgb_matrix_set_color(I_LOPT, 0, 255, 255);      // left option
+            //rgb_matrix_set_color(I_ROPT, 0, 255, 255);      // right option
+            rgb_matrix_set_color(I_LOPT, 75, 199, 255);     // left option
+            rgb_matrix_set_color(I_ROPT, 75, 199, 255);     // right option
+            rgb_matrix_set_color(I_LCMD, 75, 199, 255);     // left command
+            rgb_matrix_set_color(I_RCMD, 75, 199, 255);     // right command
             rgb_matrix_set_color(I_FN, RGB_ORANGE);         // fn
-            rgb_matrix_set_color(I_LCMD, 255, 0, 0);        // left command
-            rgb_matrix_set_color(I_RCMD, 255, 0, 0);        // right command
             rgb_matrix_set_color(I_TAB, 0x77,0x77,0x77);    // tab
         }
         // if layer locked, turn the lock key white
