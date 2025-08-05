@@ -78,7 +78,7 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             }
 
             // for some wide modes, should start with the spacing char
-            if (layer == WIDE_TEXT_LAYR && wide_firstchar) {
+            if (layer == WIDE_LAYR && wide_firstchar) {
                 unregister_mods(mods); // temp remove mods
                 switch (wide_text_mode) {
                 case WIDE_STHRU:
@@ -112,7 +112,7 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             register_code(keymap_key_to_keycode(biton32(default_layer_state), record->event.key));
 
             // if WIDE_TEXT_LAYER, add the extra spacing char
-            if (layer == WIDE_TEXT_LAYR) {
+            if (layer == WIDE_LAYR) {
                 unregister_mods(mods); // temp remove mods
                 switch (wide_text_mode) {
                 case WIDE_STHRU:

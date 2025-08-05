@@ -23,16 +23,16 @@ bool process_leader_secrets(void) {
 /* layer identifiers defined in layers.h
 // ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 enum layers {
-    BASE_LAYR,
-    MAC_BASE_LAYR,
+    WIN_BASE,
+    MAC_BASE,
     FN_LAYR,
     SFT_LAYR,
     CTL_LAYR,
     TMUX_LAYR,
-    SYMBOL_LAYR,
-    MAC_SYMBOL_LAYR,
-    WIDE_TEXT_LAYR,
-    CIRCLE_TEXT_LAYR,
+    WSYM_LAYR,
+    MSYM_LAYR,
+    WIDE_LAYR,
+    CIRC_LAYR,
     LOCK_LAYR
 };
 // ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
@@ -77,7 +77,7 @@ enum {
 // all the keymaps with their defined keycodes
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-//  [BASE_LAYR]
+//  [WIN_BASE]
 //  ,-----------------------------------------------------------------------------------------------------------------------------------,
 //  :  ______    ______________________________    ______________________________    ______________________________    ______   .----.  :
 //  : |D_Esc |  | F1   || F2   || F3   || F4   |  | F5   || F6   || F7   || F8   |  | F9   || F10  || F11  ||D_F12 |  | Menu | : Vol  : :
@@ -94,7 +94,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : | Ctrl    ||TD(GUI) || Alt     || Space                                        ||TD(RA)||TD(FN)| Ctrl |  | Left || Down || Rght | :
 //  : |_________||________||_________||______________________________________________||______||______|______|  |______||______||______| :
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
-    [BASE_LAYR] = LAYOUT_ansi_82(
+    [WIN_BASE] = LAYOUT_ansi_82(
         DUAL_ESC,  KC_F1, KC_F2, KC_F3,  KC_F4,  KC_F5,  KC_F6,  KC_F7,  KC_F8,  KC_F9, KC_F10, KC_F11, DUAL_F12,  KC_APP, ENC_DUALPUSH,
         KC_GRV,  KC_1,   KC_2,   KC_3,   KC_4,   KC_5,   KC_6,   KC_7,   KC_8,   KC_9,   KC_0, KC_MINS, KC_EQL,   BSPCFAST,      KC_DEL,
         LT(TMUX_LAYR,KC_TAB),  KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y,   KC_U,   KC_I,   KC_O,   KC_P, KC_LBRC, KC_RBRC, KC_BSLS,   KC_PGUP,
@@ -103,7 +103,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL, TD(LGUI_OSL), KC_LALT,              KC_SPC,               TD(RALT_OSL), TD(FN_OSL), KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT
     ),
 
-//  [MAC_BASE_LAYR]
+//  [MAC_BASE]
 //  ,-----------------------------------------------------------------------------------------------------------------------------------,
 //  :  ______    ______________________________    ______________________________    ______________________________    ______   .----.  :
 //  : |D_Esc |  | F1   || F2   || F3   || F4   |  | F5   || F6   || F7   || F8   |  | F9   || F10  || F11  ||D_F12 |  | LPad | : Vol  : :
@@ -120,7 +120,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : | Ctrl    ||TD(LOPT)|| Command || Space                                        ||TD(RC)||TD(FN)| Ctrl |  | Left || Down || Rght | :
 //  : |_________||________||_________||______________________________________________||______||______|______|  |______||______||______| :
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
-    [MAC_BASE_LAYR] = LAYOUT_ansi_82(
+    [MAC_BASE] = LAYOUT_ansi_82(
         DUAL_ESC,  KC_F1, KC_F2, KC_F3,  KC_F4,   KC_F5, KC_F6,  KC_F7,  KC_F8,  KC_F9, KC_F10, KC_F11, DUAL_F12, KC_LPAD, ENC_DUALPUSH,
         KC_GRV,  KC_1,   KC_2,   KC_3,   KC_4,   KC_5,   KC_6,   KC_7,   KC_8,   KC_9,   KC_0, KC_MINS, KC_EQL,   BSPCFAST,      KC_DEL,
         LT(TMUX_LAYR,KC_TAB),  KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y,   KC_U,   KC_I,   KC_O,   KC_P, KC_LBRC, KC_RBRC, KC_BSLS,   KC_PGUP,
@@ -233,7 +233,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,    _______,  KC_LALT,                      LTRANS,                   KC_LALT,_______,_______, LTRANS, LTRANS, LTRANS
     ),
 
-//  [SYMBOL_LAYR] (blue)
+//  [WSYM_LAYR] (blue)
 //  ,-----------------------------------------------------------------------------------------------------------------------------------,
 //  :  ______    ______________________________    ______________________________    ______________________________    ______   .----.  :
 //  : |      |  | SUP1 || SUP2 || SUP3 ||      |  |SUITH ||SUITD ||SUITC ||SUITS |  |CIRCLI||      ||      || NBSP |  |LLock | : Vol  : :
@@ -250,7 +250,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |         ||        ||         ||                                              ||      ||      |      |  |      ||      ||      | :
 //  : |_________||________||_________||______________________________________________||______||______|______|  |______||______||______| :
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
-    [SYMBOL_LAYR] = LAYOUT_ansi_82(
+    [WSYM_LAYR] = LAYOUT_ansi_82(
         _______,  SUP1,  SUP2,  SUP3, _______,    SUITH, SUITD, SUITC, SUITS,      CIRCLI, _______, _______, NBSP,     LLOCK,   KC_MUTE,
         TD(ACT_GRV), TD(ACT_1), OPT2, OPT3, OPT4, OPT5,  OPT6,   OPT7,  OPT8,   OPT9,  OPT0,   OPTMIN,  OPTEQ,       _______,   _______,
         _______,    OPTQ,  OPTW, TD(ACT_E), OPTR,  OPTT,   OPTY, TD(ACT_U), TD(ACT_I), OPTO, OPTP,  OPTLBR,  OPTRBR, OPTBSL,    _______,
@@ -259,7 +259,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,    _______,  _______,                    _______,                   _______,_______,_______, _______, _______, _______
     ),
 
-//  [MAC_SYMBOL_LAYR] (blue)
+//  [MSYM_LAYR] (blue)
 //  ,-----------------------------------------------------------------------------------------------------------------------------------,
 //  :  ______    ______________________________    ______________________________    ______________________________    ______   .----.  :
 //  : |      |  | SUP1 || SUP2 || SUP3 ||      |  |SUITH ||SUITD ||SUITC ||SUITS |  |CIRCLI||      ||      || NBSP |  |LLock | : Vol  : :
@@ -276,7 +276,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |         ||        ||         ||                                              ||      ||      |      |  |      ||      ||      | :
 //  : |_________||________||_________||______________________________________________||______||______|______|  |______||______||______| :
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
-    [MAC_SYMBOL_LAYR] = LAYOUT_ansi_82(
+    [MSYM_LAYR] = LAYOUT_ansi_82(
         _______,  SUP1,  SUP2,  SUP3, _______,    SUITH, SUITD, SUITC, SUITS,      CIRCLI, _______, _______, NBSP,     LLOCK,   KC_MUTE,
         LTRANS,  LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,      _______,  _______,
         _______,     LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS ,LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,    _______,
@@ -285,7 +285,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  _______,  _______,                      _______,                   _______,_______,_______, _______, _______, _______
     ),
 
-//  [WIDE_TEXT_LAYR] (purple)
+//  [WIDE_LAYR] (purple)
 //  ,-----------------------------------------------------------------------------------------------------------------------------------,
 //  :  ______    ______________________________    ______________________________    ______________________________    ______   .----.  :
 //  : |      |  |      ||      ||      ||      |  |      ||      ||      ||      |  |      ||      ||      ||BBrTxt|  |LLock | : Vol  : :
@@ -302,7 +302,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |         ||        ||         ||                                              ||      ||      |      |  |      ||      ||      | :
 //  : |_________||________||_________||______________________________________________||______||______|______|  |______||______||______| :
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
-    [WIDE_TEXT_LAYR] = LAYOUT_ansi_82(
+    [WIDE_LAYR] = LAYOUT_ansi_82(
         _______, _______,_______,_______,_______,  _______,_______,_______,_______, _______,_______,_______,BBRTEXT,    LLOCK,  KC_MUTE,
         LTRANS,  LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,      _______,  BARTEXT,
         _______,     LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS ,LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,      STHRU,
@@ -310,7 +310,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,           LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,   _______,  _______,
         _______,  _______,  _______,                        LTRANS,                  _______,_______,_______, _______, _______, _______
     ),
-//  [CIRCLE_TEXT_LAYR] (coral)
+//  [CIRC_LAYR] (coral)
 //  ,-----------------------------------------------------------------------------------------------------------------------------------,
 //  :  ______    ______________________________    ______________________________    ______________________________    ______   .----.  :
 //  : |      |  |      ||      ||      ||      |  |      ||      ||      ||      |  |      ||      ||      ||      |  |LLock | : Vol  : :
@@ -327,7 +327,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |         ||        ||         ||                                              ||      ||      |      |  |      ||      ||      | :
 //  : |_________||________||_________||______________________________________________||______||______|______|  |______||______||______| :
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
-    [CIRCLE_TEXT_LAYR] = LAYOUT_ansi_82(
+    [CIRC_LAYR] = LAYOUT_ansi_82(
         _______, _______,_______,_______,_______,  _______,_______,_______,_______, _______,_______,_______,_______,    LLOCK,  KC_MUTE,
         _______,  CIRCL1, CIRCL2, CIRCL3, CIRCL4, CIRCL5, CIRCL6, CIRCL7, CIRCL8, CIRCL9, CIRCL0, _______, _______,   _______,  _______,
         _______,     CIRCLQ, CIRCLW, CIRCLE, CIRCLR, CIRCLT, CIRCLY, CIRCLU, CIRCLI ,CIRCLO, CIRCLP, _______, _______, _______, _______,
@@ -364,17 +364,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
-    [BASE_LAYR]         = {ENCODER_CCW_CW(ENC_MAINL, ENC_MAINR)},
-    [MAC_BASE_LAYR]     = {ENCODER_CCW_CW(ENC_MAINL, ENC_MAINR)},
-    [FN_LAYR]           = {ENCODER_CCW_CW(DUAL_ZOOMO, DUAL_ZOOMI)},
-    [SFT_LAYR]          = {ENCODER_CCW_CW(SCROLL_UP, SCROLL_DN)},
-    [CTL_LAYR]          = {ENCODER_CCW_CW(RGB_RMOD, RGB_MOD)},
-    [TMUX_LAYR]         = {ENCODER_CCW_CW(ENC_TSIZEL, ENC_TSIZER)},
-    [SYMBOL_LAYR]       = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [MAC_SYMBOL_LAYR]   = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [WIDE_TEXT_LAYR]    = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [CIRCLE_TEXT_LAYR]  = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [LOCK_LAYR]         = {ENCODER_CCW_CW(KC_NO, KC_NO)}
+    [WIN_BASE]  = {ENCODER_CCW_CW(ENC_MAINL, ENC_MAINR)},
+    [MAC_BASE]  = {ENCODER_CCW_CW(ENC_MAINL, ENC_MAINR)},
+    [FN_LAYR]   = {ENCODER_CCW_CW(DUAL_ZOOMO, DUAL_ZOOMI)},
+    [SFT_LAYR]  = {ENCODER_CCW_CW(SCROLL_UP, SCROLL_DN)},
+    [CTL_LAYR]  = {ENCODER_CCW_CW(RGB_RMOD, RGB_MOD)},
+    [TMUX_LAYR] = {ENCODER_CCW_CW(ENC_TSIZEL, ENC_TSIZER)},
+    [WSYM_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [MSYM_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [WIDE_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [CIRC_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [LOCK_LAYR] = {ENCODER_CCW_CW(KC_NO, KC_NO)}
 };
 #endif
 
@@ -909,22 +909,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
             if (is_mac_base()) {
                 register_code(KC_LOPT);
-                layer_on(MAC_SYMBOL_LAYR);
+                layer_on(MSYM_LAYR);
             }
             else {
-                layer_on(SYMBOL_LAYR);
+                layer_on(WSYM_LAYR);
             }
         }
         else {
             if (is_mac_base()) {
-                if (!is_layer_locked(MAC_SYMBOL_LAYR)) {
+                if (!is_layer_locked(MSYM_LAYR)) {
                     unregister_code(KC_LOPT);
-                    layer_off(MAC_SYMBOL_LAYR);
+                    layer_off(MSYM_LAYR);
                 }
             }
             else {
-                if (!is_layer_locked(SYMBOL_LAYR)) { 
-                    layer_off(SYMBOL_LAYR);
+                if (!is_layer_locked(WSYM_LAYR)) {
+                    layer_off(WSYM_LAYR);
                 }
             }
         } 
@@ -949,14 +949,14 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     case TMUX_LAYR:
         rgb_matrix_set_color(I_INDICATOR, RGB_CYAN);
         break;
-    case SYMBOL_LAYR:
-    case MAC_SYMBOL_LAYR:
+    case WSYM_LAYR:
+    case MSYM_LAYR:
         rgb_matrix_set_color(I_INDICATOR, RGB_BLUE);
         break;
-    case WIDE_TEXT_LAYR:
+    case WIDE_LAYR:
         rgb_matrix_set_color(I_INDICATOR, RGB_PURPLE);
         break;
-    case CIRCLE_TEXT_LAYR:
+    case CIRC_LAYR:
         rgb_matrix_set_color(I_INDICATOR, RGB_CORAL);
         break;
     case LOCK_LAYR:
@@ -990,14 +990,14 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                         case TMUX_LAYR:
                             rgb_matrix_set_color(index, RGB_CYAN);
                             break;
-                        case SYMBOL_LAYR:
-                        case MAC_SYMBOL_LAYR:
+                        case WSYM_LAYR:
+                        case MSYM_LAYR:
                             rgb_matrix_set_color(index, RGB_BLUE);
                             break;
-                        case WIDE_TEXT_LAYR:
+                        case WIDE_LAYR:
                             rgb_matrix_set_color(index, RGB_PURPLE);
                             break;
-                        case CIRCLE_TEXT_LAYR:
+                        case CIRC_LAYR:
                             rgb_matrix_set_color(index, RGB_CORAL);
                             break;
                         case LOCK_LAYR:
@@ -1021,7 +1021,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             }
     // ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~ 
             // custom colors for tap dance keys on symbol layer
-            else if (layer == SYMBOL_LAYR || layer == MAC_SYMBOL_LAYR) {
+            else if (layer == WSYM_LAYR || layer == MSYM_LAYR) {
               rgb_matrix_set_color(I_GRV, RGB_YELLOW); // grave
               rgb_matrix_set_color(I_N1, RGB_YELLOW);   // 1
               rgb_matrix_set_color(I_E, RGB_YELLOW);   // e
@@ -1060,7 +1060,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 case TMUX_LAYR:
                     rgb_matrix_set_color(I_TAB, RGB_CYAN);    // tab
                     break;
-                case SYMBOL_LAYR:
+                case WSYM_LAYR:
                     if (timer_elapsed(layer_timer) > 250) {
                         rgb_matrix_set_color(I_RALT, RGB_YELLOW); // ralt
                         rgb_matrix_set_color(I_LGUI, RGB_YELLOW); // lgui
@@ -1070,7 +1070,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                         rgb_matrix_set_color(I_LGUI, RGB_BLUE);   // lgui
                     }
                     break;
-                case MAC_SYMBOL_LAYR:
+                case MSYM_LAYR:
                     if (timer_elapsed(layer_timer) > 250) {
                         rgb_matrix_set_color(I_LOPT, RGB_YELLOW); // lopt
                         rgb_matrix_set_color(I_RCMD, RGB_YELLOW); // rcmd
@@ -1080,10 +1080,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                         rgb_matrix_set_color(I_RCMD, RGB_BLUE);   // rcmd
                     }
                     break;
-                case WIDE_TEXT_LAYR:
+                case WIDE_LAYR:
                     rgb_matrix_set_color(I_RSFT, RGB_PURPLE);     // rshift
                     break;
-                case CIRCLE_TEXT_LAYR:
+                case CIRC_LAYR:
                     rgb_matrix_set_color(I_RSFT, RGB_CORAL);      // rshift
                     break;
                 }
@@ -1371,8 +1371,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         if (layer == SFT_LAYR && ms_btn_held) {
             rgb_matrix_set_color(I_PGUP, RGB_WHITE);   // mouse btn1 hold key
         }
-        // track mode keys on WIDE_TEXT_LAYR
-        if (layer == WIDE_TEXT_LAYR) {
+        // track mode keys on WIDE_LAYR
+        if (layer == WIDE_LAYR) {
             switch (wide_text_mode) {
             case WIDE_STHRU:
                 rgb_matrix_set_color(I_STHRU, RGB_WHITE);    // sthru toggle
@@ -1419,8 +1419,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 bool key_should_fade(keytracker key, uint8_t layer) {
     bool should_fade = true;
     if ((key.fade < 1) ||
-      ((layer == FN_LAYR || layer == SFT_LAYR || layer == WIDE_TEXT_LAYR ||
-        layer == CIRCLE_TEXT_LAYR || is_caps_word_on()) &&
+      ((layer == FN_LAYR || layer == SFT_LAYR || layer == WIDE_LAYR ||
+        layer == CIRC_LAYR || is_caps_word_on()) &&
         (key.index == I_LSFT || key.index == I_RSFT)) ||                                                         // l/r shift
       ((layer == FN_LAYR || layer == CTL_LAYR) && (key.index == I_LALT || key.index == I_RALT)) ||               // l/r alt
       (macro_recording && (key.index == I_MREC1 || key.index == I_MREC2)) ||                                     // macro recording keys
@@ -1428,12 +1428,12 @@ bool key_should_fade(keytracker key, uint8_t layer) {
       (is_in_leader_sequence && key.index == I_L) ||                                                             // leader key
       (layer == SFT_LAYR && (key.index == I_NUMLOCK || key.index == I_PGUP)) ||                                  // num lock, mouse hold
       (layer == FN_LAYR && key.index == I_SLOCK) ||                                                              // scroll lock
-      (layer == WIDE_TEXT_LAYR && (key.index == I_BARTEXT || key.index == I_STHRU ||
+      (layer == WIDE_LAYR && (key.index == I_BARTEXT || key.index == I_STHRU ||
         key.index == I_UNDERLN || key.index == I_BBRTEXT)) ||                                                    // wide-text toggles
       (layer == CTL_LAYR && (key.index == I_FJLIGHT || key.index == I_HROWLIGHT)) ||                             // hrow/fj indicators 
       (layer == CTL_LAYR && (key.index >= I_N1 && key.index <= I_N4)) ||                                         // wireless mode keys
       (os_changed) ||                                                                                            // mac/win/lin change
-      (layer == SYMBOL_LAYR && (key.index == I_GRV || key.index == I_N1 || key.index == I_E ||
+      (layer == WSYM_LAYR && (key.index == I_GRV || key.index == I_N1 || key.index == I_E ||
                                 key.index == I_I || key.index == I_U || key.index == I_N ||                      // accent keys
                                 key.index == I_RALT || key.index == I_LGUI)) ||                                  // sym_layr ralt, lgui
       (key.index == I_CAPS) || (key.index == I_FN || key.index == I_TAB)) {                                      // caps lock, fn, tab
@@ -1588,12 +1588,12 @@ void caps_finished (tap_dance_state_t *state, void *user_data) {
       break;
     case HEXA_TAP:
       if (!is_mac_base()) {
-          if (layer_state_is(SYMBOL_LAYR)) {
+          if (layer_state_is(WSYM_LAYR)) {
             //if already set, then switch it off
-            layer_lock_off(SYMBOL_LAYR);
+            layer_lock_off(WSYM_LAYR);
           } else {
             //if not already set, then switch the layer on
-            layer_lock_on(SYMBOL_LAYR);
+            layer_lock_on(WSYM_LAYR);
           }
       }
       break;
@@ -1619,11 +1619,11 @@ void ralt_finished (tap_dance_state_t *state, void *user_data) {
       register_code(KC_RALT);
       break;
     case DOUBLE_TAP:
-      set_oneshot_layer(SYMBOL_LAYR, ONESHOT_START);
+      set_oneshot_layer(WSYM_LAYR, ONESHOT_START);
       clear_oneshot_layer_state(ONESHOT_PRESSED);
       break;
     case DOUBLE_HOLD:
-      layer_on(SYMBOL_LAYR);  
+      layer_on(WSYM_LAYR);
       break;
   }
 }
@@ -1637,8 +1637,8 @@ void ralt_reset (tap_dance_state_t *state, void *user_data) {
     case DOUBLE_TAP:
       break;
     case DOUBLE_HOLD:
-      if (!is_layer_locked(SYMBOL_LAYR)) {
-        layer_off(SYMBOL_LAYR);
+      if (!is_layer_locked(WSYM_LAYR)) {
+        layer_off(WSYM_LAYR);
       }
       break;
   }
@@ -1657,14 +1657,14 @@ void rcmd_finished (tap_dance_state_t *state, void *user_data) {
       register_code(KC_RCMD);
       break;
     case DOUBLE_TAP:
-      set_oneshot_layer(MAC_SYMBOL_LAYR, ONESHOT_START);
+      set_oneshot_layer(MSYM_LAYR, ONESHOT_START);
       add_oneshot_mods(MOD_BIT(KC_ROPT));
       clear_oneshot_layer_state(ONESHOT_PRESSED);
       break;
     case DOUBLE_HOLD:
       register_code(KC_ROPT);
       if (get_highest_layer(layer_state) < 4) {
-          layer_on(MAC_SYMBOL_LAYR);
+          layer_on(MSYM_LAYR);
       }
       break;
   }
@@ -1679,9 +1679,9 @@ void rcmd_reset (tap_dance_state_t *state, void *user_data) {
     case DOUBLE_TAP:
       break;
     case DOUBLE_HOLD:
-      if (!is_layer_locked(MAC_SYMBOL_LAYR)) {
+      if (!is_layer_locked(MSYM_LAYR)) {
         unregister_code(KC_ROPT);
-        layer_off(MAC_SYMBOL_LAYR);
+        layer_off(MSYM_LAYR);
       }
       break;
   }
@@ -1742,22 +1742,22 @@ void rsft_finished (tap_dance_state_t *state, void *user_data) {
       }
       break;
     case DOUBLE_TAP:
-      // activate WIDE_TEXT_LAYR
-      if (IS_LAYER_ON(WIDE_TEXT_LAYR)) {
-          layer_lock_off(WIDE_TEXT_LAYR);
+      // activate WIDE_LAYR
+      if (IS_LAYER_ON(WIDE_LAYR)) {
+          layer_lock_off(WIDE_LAYR);
       }
       else {
-          layer_lock_on(WIDE_TEXT_LAYR);
+          layer_lock_on(WIDE_LAYR);
           wide_firstchar = true;
       }
       break;
     case TRIPLE_TAP:
-      // activate CIRCLE_TEXT_LAYR
-      if (IS_LAYER_ON(CIRCLE_TEXT_LAYR)) {
-          layer_lock_off(CIRCLE_TEXT_LAYR);
+      // activate CIRC_LAYR
+      if (IS_LAYER_ON(CIRC_LAYR)) {
+          layer_lock_off(CIRC_LAYR);
       }
       else {
-          layer_lock_on(CIRCLE_TEXT_LAYR);
+          layer_lock_on(CIRC_LAYR);
       }
       break;
   }
@@ -2252,11 +2252,11 @@ void lgui_finished (tap_dance_state_t *state, void *user_data) {
       }
       break;
     case DOUBLE_TAP:
-      set_oneshot_layer(SYMBOL_LAYR, ONESHOT_START);
+      set_oneshot_layer(WSYM_LAYR, ONESHOT_START);
       clear_oneshot_layer_state(ONESHOT_PRESSED);
       break;
     case DOUBLE_HOLD:
-      layer_on(SYMBOL_LAYR);  
+      layer_on(WSYM_LAYR);
       break;
   }
 }
@@ -2273,8 +2273,8 @@ void lgui_reset (tap_dance_state_t *state, void *user_data) {
     case DOUBLE_TAP:
       break;
     case DOUBLE_HOLD:
-      if (!is_layer_locked(SYMBOL_LAYR)) {
-        layer_off(SYMBOL_LAYR);
+      if (!is_layer_locked(WSYM_LAYR)) {
+        layer_off(WSYM_LAYR);
       }
       break;
   }
@@ -2292,11 +2292,11 @@ void lopt_finished (tap_dance_state_t *state, void *user_data) {
     case DOUBLE_HOLD:
       register_code(KC_LOPT);
       if (get_highest_layer(layer_state) < FN_LAYR) {
-        layer_on(MAC_SYMBOL_LAYR);
+        layer_on(MSYM_LAYR);
       }
       break;
     case DOUBLE_TAP:
-      set_oneshot_layer(MAC_SYMBOL_LAYR, ONESHOT_START);
+      set_oneshot_layer(MSYM_LAYR, ONESHOT_START);
       add_oneshot_mods(MOD_BIT(KC_LOPT));
       clear_oneshot_layer_state(ONESHOT_PRESSED);
       break;
@@ -2308,9 +2308,9 @@ void lopt_reset (tap_dance_state_t *state, void *user_data) {
       break;
     case SINGLE_HOLD:
     case DOUBLE_HOLD:
-      if (!is_layer_locked(MAC_SYMBOL_LAYR)) {
+      if (!is_layer_locked(MSYM_LAYR)) {
         unregister_code(KC_LOPT);
-        layer_off(MAC_SYMBOL_LAYR);
+        layer_off(MSYM_LAYR);
       }
       break;
     case DOUBLE_TAP:
@@ -2413,7 +2413,7 @@ void oneshot_layer_changed_user(uint8_t layer) {
 
 void layer_lock_set_user(layer_state_t locked_layers) {
     static bool opt_is_held_for_symbol = false;
-    if (is_layer_locked(MAC_SYMBOL_LAYR)) {
+    if (is_layer_locked(MSYM_LAYR)) {
         register_code(KC_LOPT);
         opt_is_held_for_symbol = true;
     }
@@ -2460,21 +2460,21 @@ void leader_end_user(void) {
             layer_lock_on(TMUX_LAYR);
         }
     }
-    else if (leader_sequence_four_keys(KC_L, KC_L, KC_S, KC_M)) {   // layer lock SYMBOL_LAYR
+    else if (leader_sequence_four_keys(KC_L, KC_L, KC_S, KC_M)) {   // layer lock WSYM_LAYR
         if (is_mac_base()) {
-            if (is_layer_locked(MAC_SYMBOL_LAYR)) {
-                layer_lock_off(MAC_SYMBOL_LAYR);
+            if (is_layer_locked(MSYM_LAYR)) {
+                layer_lock_off(MSYM_LAYR);
             }
             else {
-                layer_lock_on(MAC_SYMBOL_LAYR);
+                layer_lock_on(MSYM_LAYR);
             }
         }
         else {
-            if (is_layer_locked(SYMBOL_LAYR)) {
-                layer_lock_off(SYMBOL_LAYR);
+            if (is_layer_locked(WSYM_LAYR)) {
+                layer_lock_off(WSYM_LAYR);
             }
             else {
-                layer_lock_on(SYMBOL_LAYR);
+                layer_lock_on(WSYM_LAYR);
             }
         }
     }
@@ -2490,15 +2490,15 @@ void leader_end_user(void) {
     }
     else if (leader_sequence_three_keys(KC_M, KC_A, KC_C)) {         // change to mac os
         if (!is_mac_base()) {
-            set_single_persistent_default_layer(MAC_BASE_LAYR);
-            layer_move(MAC_BASE_LAYR);
+            set_single_persistent_default_layer(MAC_BASE);
+            layer_move(MAC_BASE);
         }
         os_changed = true;
     }
     else if (leader_sequence_three_keys(KC_W, KC_I, KC_N)) {         // change to windows os
         if (is_mac_base()) {
-            set_single_persistent_default_layer(BASE_LAYR);
-            layer_move(BASE_LAYR);
+            set_single_persistent_default_layer(WIN_BASE);
+            layer_move(WIN_BASE);
         }
         if (user_config.is_linux_base) {
             user_config.is_linux_base = false;
@@ -2508,8 +2508,8 @@ void leader_end_user(void) {
     }
     else if (leader_sequence_three_keys(KC_L, KC_I, KC_N)) {         // change to linux os
         if (is_mac_base()) {
-            set_single_persistent_default_layer(BASE_LAYR);
-            layer_move(BASE_LAYR);
+            set_single_persistent_default_layer(WIN_BASE);
+            layer_move(WIN_BASE);
         }
         if (!user_config.is_linux_base) {
             user_config.is_linux_base = true;
@@ -2539,5 +2539,5 @@ void eeconfig_init_user(void) {  // EEPROM is getting reset!
     user_config.raw = 0;
     user_config.is_linux_base = true; // set default here
     eeconfig_update_user(user_config.raw); // write default value to EEPROM now
-    set_single_persistent_default_layer(BASE_LAYR);
+    set_single_persistent_default_layer(WIN_BASE);
 }
