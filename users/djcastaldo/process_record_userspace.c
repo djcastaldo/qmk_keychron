@@ -478,6 +478,136 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             register_mods(mods);                                                          // add back mods
         }
         return false;
+    case ENC_MUTEPLAY:
+        if (record->event.pressed) {
+            // standard: mute, while command is held: play/pause
+            dual_key(KC_MUTE,KC_MPLY,MOD_MASK_GUI);
+        }
+        return false;
+    case ENC_VOLD:
+        if (record->event.pressed) {
+            // standard: volume down, while command is held: keypad up
+            dual_key(KC_VOLD,KC_UP,MOD_MASK_GUI);
+        }
+        return false;
+    case ENC_VOLU:
+        if (record->event.pressed) {
+            // standard: volume up, while command is held: keypad down
+            dual_key(KC_VOLU,KC_DOWN,MOD_MASK_GUI);
+        }
+        return false;
+    case ENC_UNIMENU:
+        if (record->event.pressed) {
+            // standard: unicode menu, while command is held: enter
+            dual_key(UNICODE,KC_ENT,MOD_MASK_GUI);
+        }
+        return false;
+    case ENC_MENUL:
+        if (record->event.pressed) {
+            // standard: key up, while command is held: keypad left
+            dual_key(KC_UP,KC_LEFT,MOD_MASK_GUI);
+        }
+        return false;
+    case ENC_MENUR:
+        if (record->event.pressed) {
+            // standard: key down, while command is held: keypad right
+            dual_key(KC_DOWN,KC_RIGHT,MOD_MASK_GUI);
+        }
+        return false;
+    case ENC_RGBPUSH:
+        if (record->event.pressed) {
+            // standard: reset all, if control is held: hue defualt,
+            // if opt/gui is held: sat default, if shift is held: speed defualt
+            // if control and opt/gui are both held: mode default
+            // get current mod states
+            const uint8_t mods = get_mods();
+            if (mods & MOD_MASK_SHIFT) {
+                rgb_matrix_set_speed(RGB_MATRIX_DEFAULT_SPD);
+            }
+            else if ((mods & MOD_MASK_CTRL) && (mods & (MOD_MASK_ALT | MOD_MASK_GUI))) {
+                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_mode(RGB_MATRIX_DEFAULT_MODE);
+            }
+            else if (mods & MOD_MASK_CTRL) {
+                rgb_matrix_sethsv(RGB_MATRIX_DEFAULT_HUE, rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+            }
+            else if (mods & (MOD_MASK_ALT | MOD_MASK_GUI)) {
+                rgb_matrix_sethsv(rgb_matrix_get_hue(), RGB_MATRIX_DEFAULT_SAT, RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+            }
+            // otherwise reset everything
+            else {
+                rgb_matrix_mode(RGB_MATRIX_DEFAULT_MODE);
+                rgb_matrix_set_speed(RGB_MATRIX_DEFAULT_SPD);
+                rgb_matrix_sethsv(RGB_MATRIX_DEFAULT_HUE, RGB_MATRIX_DEFAULT_SAT, RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+            }
+        }
+        return false;
+    // these have been further adjusted to do max brightness if anything other than brightness is
+    // being adjusted.  This is good to best see the changes since the backlights are dimmed when
+    // not on the base layer.
+    case ENC_RGBL:
+        if (record->event.pressed) {
+            // standard: bri down, if control is held: hue down,
+            // if opt/gui is held: sat down, if shift is held: speed down
+            // if control and opt/gui are both held: mode reverse
+            // get current mod states
+            const uint8_t mods = get_mods();
+            if (mods & MOD_MASK_SHIFT) {
+                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_decrease_speed();
+            }
+            else if ((mods & MOD_MASK_CTRL) && (mods & (MOD_MASK_ALT | MOD_MASK_GUI))) {
+                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_step_reverse();
+            }
+            else if (mods & MOD_MASK_CTRL) {
+                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_decrease_hue();
+            }
+            else if (mods & (MOD_MASK_ALT | MOD_MASK_GUI)) {
+                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_decrease_sat();
+            }
+            else {
+                rgb_matrix_decrease_val();
+            }
+        }
+        return false;
+    case ENC_RGBR:
+        if (record->event.pressed) {
+            // standard: bri up, while control is held: hue up, while opt/gui is held: sat up
+            // if shift is held: speed up, if control and opt/gui are both held: mode forward
+            // get current mod states
+            const uint8_t mods = get_mods();
+            if (mods & MOD_MASK_SHIFT) {
+                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_increase_speed();
+            }
+            else if ((mods & MOD_MASK_CTRL) && (mods & (MOD_MASK_ALT | MOD_MASK_GUI))) {
+                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_step();
+            }
+            else if (mods & MOD_MASK_CTRL) {
+                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_increase_hue();
+            }
+            else if (mods & (MOD_MASK_ALT | MOD_MASK_GUI)) {
+                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_increase_sat();
+            }
+            else {
+                rgb_matrix_increase_val();
+            }
+        }
+        return false;
+    // switch rgb modes with max brightness, since the KCTL_LAYR auto dims when initally switching to it
+    case RGB_MOD:
+    case RGB_RMOD:
+    case RGB_SPD:
+    case RGB_SPI:
+        if (record->event.pressed)
+            rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+        break;
     case DUAL_PLUSMIN:
         if (record->event.pressed) {
             // standard: plus symbol, while control is held: minus
@@ -2076,6 +2206,13 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             symbol_key_mac("d83cdf7c","d83cdf7e");
 	}
 	return false;
+    case KB_RESET:
+        if (record->event.pressed) {
+           // reset the keyboard
+           eeconfig_init();
+           soft_reset_keyboard();
+        }
+        return false;
     case FLASH_KB:
         if (record->event.pressed) {
            // command to flash this keyboard

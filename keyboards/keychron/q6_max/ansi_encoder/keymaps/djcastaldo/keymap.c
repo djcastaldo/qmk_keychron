@@ -61,20 +61,10 @@ enum custom_keycodes {
     CURSORL,
     CURSORR,
     OPT_HOLD,
-    DUAL_ENCPUSH,
-    DUAL_ENCL,
-    DUAL_ENCR,
     DUAL_ENCPUSH2,
     DUAL_ENCL2,
     DUAL_ENCR2,
-    DUAL_UNIPUSH,
-    DUAL_NAVL,
-    DUAL_NAVR,
-    PENT_ENCPUSH,
-    PENT_ENCL,
-    PENT_ENCR,
     DUAL_SNAP,
-    KB_RESET,
 };
 
 // custom tap dances
@@ -108,7 +98,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
 //`-------------------------------------------------------------------------------------------------------------------------------------`
     [MAC_BASE] = LAYOUT_109_ansi(
-        KC_ESC,KC_F1,KC_F2,KC_F3,KC_F4,KC_F5,KC_F6,KC_F7,KC_F8,KC_F9,KC_F10,KC_F11,KC_F12,DUAL_ENCPUSH,
+        KC_ESC,KC_F1,KC_F2,KC_F3,KC_F4,KC_F5,KC_F6,KC_F7,KC_F8,KC_F9,KC_F10,KC_F11,KC_F12,ENC_MUTEPLAY,
                                                                              DUAL_SNAP,KC_SIRI,AP_GLOB,DUAL_F13,DUAL_F14,KC_CALC,LOCKSCR,
         KC_GRV,KC_1,KC_2,KC_3,KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, BSPCFAST,
                                                                                  KC_INS,KC_HOME,KC_PGUP,KC_NUM,KC_PSLS,KC_PAST,DUAL_PMNS,
@@ -220,7 +210,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
 //`-------------------------------------------------------------------------------------------------------------------------------------`
     [KCTL_LAYR] = LAYOUT_109_ansi(
-        _______,_______,_______,_______,_______,KB_RESET,_______,_______,_______,_______,_______,COLORTEST,DB_TOGG, PENT_ENCPUSH,
+        _______,_______,_______,_______,_______,KB_RESET,_______,_______,_______,_______,_______,COLORTEST,DB_TOGG, ENC_RGBPUSH,
                                                                              QK_LOCK, KTRACK, RGB_MOD, _______, SECRET0, _______,_______,
         _______,BT_HST1,BT_HST2,BT_HST3,P2P4G,_______,_______,_______,_______,_______,_______,_______,_______,_______,
                                                                                   LLOCK,FJLIGHT,_______, _______,_______,_______,_______,
@@ -389,7 +379,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
 //`-------------------------------------------------------------------------------------------------------------------------------------`
     [EMO_LAYR] = LAYOUT_109_ansi(
-        _______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______, DUAL_UNIPUSH,
+        _______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______, ENC_UNIMENU,
                                                                                 E_SSHOT, E_MIC, E_BULB, E_SMILE, E_SMIRK, E_ASTON, E_SAD,
         _______,E_K1,E_K2,E_K3,E_K4,E_K5,E_K6,E_K7,E_K8,E_K9,E_K0,E_MINS,E_PLUS,_______,LLOCK,E_DRINK,E_EMARK,E_CAR,E_BUS,E_TRAIN,E_TAXI,
         _______,_______,_______,_______,_______,_______,_______,_______,E_I,E_OK,_______,_______,_______,_______,
@@ -427,16 +417,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
-    [MAC_BASE]  = {ENCODER_CCW_CW(DUAL_ENCL, DUAL_ENCR)},
+    [MAC_BASE]  = {ENCODER_CCW_CW(ENC_VOLD, ENC_VOLU)},
     [FN_LAYR]   = {ENCODER_CCW_CW(DUAL_ZOOMO, DUAL_ZOOMI)},
     [WIN_BASE]  = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [SFT_LAYR]  = {ENCODER_CCW_CW(DUAL_ENCL2, DUAL_ENCR2)},
-    [KCTL_LAYR]  = {ENCODER_CCW_CW(PENT_ENCL, PENT_ENCR)},
+    [KCTL_LAYR]  = {ENCODER_CCW_CW(ENC_RGBL, ENC_RGBR)},
     [TMUX_LAYR] = {ENCODER_CCW_CW(ENC_TSIZEL, ENC_TSIZER)},
     [MSYM_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [WIDE_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [CIRC_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [EMO_LAYR]  = {ENCODER_CCW_CW(DUAL_NAVL, DUAL_NAVR)},
+    [EMO_LAYR]  = {ENCODER_CCW_CW(ENC_MENUL, ENC_MENUR)},
     [LOCK_LAYR] = {ENCODER_CCW_CW(KC_NO, KC_NO)},
 };
 
@@ -840,42 +830,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         }
         break;
-    case DUAL_ENCPUSH:
-    	if (record->event.pressed) {
-            // standard: mute, while command is held: play/pause
-            dual_key(KC_MUTE,KC_MPLY,MOD_MASK_GUI);
-        }
-        break;
-    case DUAL_ENCL:
-    	if (record->event.pressed) {
-            // standard: volume down, while command is held: keypad up 
-            dual_key(KC_VOLD,KC_UP,MOD_MASK_GUI);
-        }
-        break;
-    case DUAL_ENCR:
-    	if (record->event.pressed) {
-            // standard: volume up, while command is held: keypad down 
-            dual_key(KC_VOLU,KC_DOWN,MOD_MASK_GUI);
-        }
-        break;
-    case DUAL_UNIPUSH:
-    	if (record->event.pressed) {
-            // standard: unicode menu, while command is held: enter 
-            dual_key(UNICODE,KC_ENT,MOD_MASK_GUI);
-        }
-        break;
-    case DUAL_NAVL:
-    	if (record->event.pressed) {
-            // standard: key up, while command is held: keypad left 
-            dual_key(KC_UP,KC_LEFT,MOD_MASK_GUI);
-        }
-        break;
-    case DUAL_NAVR:
-    	if (record->event.pressed) {
-            // standard: key down, while command is held: keypad right 
-            dual_key(KC_DOWN,KC_RIGHT,MOD_MASK_GUI);
-        }
-        break;
     case DUAL_ENCPUSH2:
     	if (record->event.pressed) {
             // standard: h (hide app windows), while cmd is held: mouse jiggler
@@ -945,95 +899,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         }
         break;
-    case PENT_ENCPUSH:
-    	if (record->event.pressed) {
-            // standard: rgb toggle, if command is held: hue defualt, 
-            // if opt held: sat default, if shift is held: speed defualt 
-            // get current mod states
-            const uint8_t mods = get_mods();
-            if (mods & MOD_MASK_SHIFT) {
-                rgblight_set_speed(UINT8_MAX / 2);
-            }
-            else if ((mods & MOD_MASK_GUI) && (mods & MOD_MASK_ALT)) {
-                rgblight_sethsv(rgblight_get_hue(), rgblight_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgblight_mode(RGB_MATRIX_SOLID_COLOR);
-            }
-            else if (mods & MOD_MASK_GUI) {
-                rgblight_sethsv(170, rgblight_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-            }
-            else if (mods & MOD_MASK_ALT) {
-                rgblight_sethsv(rgblight_get_hue(), 235, RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-            }
-            // otherwise do toggle 
-            else {
-                rgblight_toggle(); 
-            }
-        }
-        break;
-    // these have been further adjusted to do max brightness if anything other than brightness is
-    // being adjusted.  This is good to best see the changes since the backlights are dimmed when
-    // not on the base layer.
-    case PENT_ENCL:
-    	if (record->event.pressed) {
-            // standard: bri down, if command is held: hue down, 
-            // if opt is held: sat down, if shift is held: speed down
-            // get current mod states
-            const uint8_t mods = get_mods();
-            if (mods & MOD_MASK_SHIFT) {
-                rgblight_sethsv(rgblight_get_hue(), rgblight_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgblight_decrease_speed();
-            }
-            else if ((mods & MOD_MASK_GUI) && (mods & MOD_MASK_ALT)) {
-                rgblight_sethsv(rgblight_get_hue(), rgblight_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgblight_step_reverse();
-            }
-            else if (mods & MOD_MASK_GUI) {
-                rgblight_sethsv(rgblight_get_hue(), rgblight_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgblight_decrease_hue();
-            }
-            else if (mods & MOD_MASK_ALT) {
-                rgblight_sethsv(rgblight_get_hue(), rgblight_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgblight_decrease_sat();
-            }
-            else {
-                rgblight_decrease_val(); 
-            }
-        }
-        break;
-    case PENT_ENCR:
-    	if (record->event.pressed) {
-            // standard: bri up, while command is held: hue up, while opt is held: sat up 
-            // get current mod states
-            const uint8_t mods = get_mods();
-            if (mods & MOD_MASK_SHIFT) {
-                rgblight_sethsv(rgblight_get_hue(), rgblight_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgblight_increase_speed();
-            }
-            else if ((mods & MOD_MASK_GUI) && (mods & MOD_MASK_ALT)) {
-                rgblight_sethsv(rgblight_get_hue(), rgblight_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgblight_step();
-            }
-            else if (mods & MOD_MASK_GUI) {
-                rgblight_sethsv(rgblight_get_hue(), rgblight_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgblight_increase_hue();
-            }
-            else if (mods & MOD_MASK_ALT) {
-                rgblight_sethsv(rgblight_get_hue(), rgblight_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgblight_increase_sat();
-            }
-            else {
-                rgblight_increase_val(); 
-            }
-        }
-        break;
-    // switch rgb modes with max brightness, since the KCTL_LAYR auto dims when initally switching to it
-    case RGB_MOD:
-    case RGB_RMOD:
-    case RGB_SPD:
-    case RGB_SPI:
-    	if (record->event.pressed)
-            rgblight_sethsv(rgblight_get_hue(), rgblight_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-        break;
     // use cmd + esc as alternate leader start 
     case KC_ESC:
     	if (record->event.pressed) {
@@ -1101,13 +966,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             wireless_mode_token = defer_exec(3000, wireless_mode_callback, NULL);
         }
         break;
-    case KB_RESET:
-    	if (record->event.pressed) {
-	   // reset the keyboard
-           eeconfig_init();
-           soft_reset_keyboard();
-	}
-    	break;
     }
     return process_record_secrets(keycode, record);
 }
@@ -1246,8 +1104,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 rgb_matrix_set_color(I_RSFT, RGB_ORANGE);  // right shift 
                 rgb_matrix_set_color(I_LCMD, RGB_RED);     // left cmd
                 rgb_matrix_set_color(I_RCMD, RGB_RED);     // right cmd
-                rgb_matrix_set_color(I_LOPT, RGB_AZURE);   // left option
-                rgb_matrix_set_color(I_ROPT, RGB_AZURE);   // right option
+                rgb_matrix_set_color(I_LOPT, RGB_SPRINGGREEN);    // left option
+                rgb_matrix_set_color(I_ROPT, RGB_SPRINGGREEN);    // right option
                 rgb_matrix_set_color(I_TAB, RGB_CYAN);     // tab
 	    }	
             // custom colors for tap dance keys on symbol layer
@@ -1337,7 +1195,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     	    rgb_matrix_set_color(I_SQR, 234, 234, 255);   // square
     	    rgb_matrix_set_color(I_EKS, 255, 0, 0);       // X
             if (!host_keyboard_led_state().caps_lock) {
-    	      rgb_matrix_set_color(I_CAPS, RGB_ORANGE);  // caps
+                rgb_matrix_set_color(I_CAPS, RGB_GREEN);  // caps
 	    }
             // if caps lock, color caps alpha keys
             else {
@@ -1375,15 +1233,14 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
               }
             }
             rgb_matrix_set_color(I_ENT, 255, 255, 255);     // enter
-            rgb_matrix_set_color(I_LCTL, 75, 199, 255);     // left control
-            rgb_matrix_set_color(I_RCTL, 75, 199, 255);     // right control
-            //rgb_matrix_set_color(I_LOPT, 0, 255, 255);      // left option
-            //rgb_matrix_set_color(I_ROPT, 0, 255, 255);      // right option
-            rgb_matrix_set_color(I_LOPT, 75, 199, 255);     // left option
-            rgb_matrix_set_color(I_ROPT, 75, 199, 255);     // right option
-            rgb_matrix_set_color(I_LCMD, 75, 199, 255);     // left command
-            rgb_matrix_set_color(I_RCMD, 75, 199, 255);     // right command
-            rgb_matrix_set_color(I_FN, RGB_ORANGE);         // fn
+            //rgb_matrix_set_color(I_LCTL, 75, 199, 255);     // left control
+            //rgb_matrix_set_color(I_RCTL, 75, 199, 255);     // right control
+            rgb_matrix_set_color(I_LOPT, 0x77,0x77,0x77);   // left option
+            rgb_matrix_set_color(I_ROPT, 0x77,0x77,0x77);   // right option
+            //rgb_matrix_set_color(I_LCMD, 75, 199, 255);     // left command
+            rgb_matrix_set_color(I_RCMD, RGB_RED);          // right command
+            rgb_matrix_set_color(I_RSFT, RGB_ORANGE);       // right shift
+            rgb_matrix_set_color(I_FN, RGB_GREEN);          // fn
             rgb_matrix_set_color(I_TAB, 0x77,0x77,0x77);    // tab
         }
         // if layer locked, turn the lock key white
