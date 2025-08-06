@@ -46,6 +46,18 @@ typedef union {
 
 extern user_config_t user_config;
 
+// key tracker
+typedef struct {
+    uint8_t index;
+    bool press;
+    int fade;
+} keytracker;
+
+// setup keytracker
+extern deferred_token key_token;
+extern keytracker tracked_keys[20];
+extern uint8_t tk_length;
+
 // for tracking wide-text options for the WIDE_TEXT_LAYR
 enum {
     WIDE_STANDARD,
@@ -67,6 +79,15 @@ extern bool color_test;
 extern uint16_t color_test_timer;
 extern const uint8_t monitored_macos_base_layers[];
 extern const uint8_t monitored_macos_base_count;
+extern int8_t macro_direction;
+extern bool macro_recording;
+extern bool is_macro_led_on;
+extern uint16_t macro_timer;
+extern deferred_token osl_macro_token;
+extern bool oneshot_layer_active;
+extern bool is_cmd_tab_active;
+extern bool is_cmd_shift_tab_active;
+extern deferred_token cmd_tab_token;
 
 bool process_record_userspace(uint16_t keycode, keyrecord_t *record);
 bool process_leader_userspace(void);
@@ -77,3 +98,6 @@ void symbol_key_mac(const char *unicode, const char *shift_unicode);
 void symbol_key_win(const char *alt_code, const char *shift_alt_code);
 void symbol_key_linux(const char *hex_code, const char *shift_hex_code);
 void type_numpad_keys_from_string(const char *stringnum);
+uint32_t osl_macro_callback(uint32_t trigger_time, void *cb_arg);
+bool app_switch_active(void);
+uint32_t cmd_tab_callback(uint32_t trigger_time, void* cb_arg);

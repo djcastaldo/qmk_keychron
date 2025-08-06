@@ -5,6 +5,7 @@
 #include "lemokey_common.h"
 #include "print.h"
 #include "layers.h"
+#include "keyindex.h"
 #include "wireless/battery.h"
 #include "wireless/wireless.h"
 #include "wireless/bat_level_animation.h"
@@ -393,87 +394,6 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
 //  : |   71    ||   72   ||   73    ||                      74                      ||  75  ||  76  |  77  |  |  78  ||  79  ||  80  | :
 //  : |_________||________||_________||______________________________________________||______||______|______|  |______||______||______| :
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
-// useful key indexes
-enum key_indexes {
-    I_INDICATOR = 0,
-    I_ESC = 0,
-    I_BBRTEXT = 12,
-    I_LLOCK = 13,
-    I_HOME = 13,
-    I_GRV = 14,
-    I_N1 = 15,
-    I_N2 = 16,
-    I_N3 = 17,
-    I_N4 = 18,
-    I_N5 = 19,
-    I_N6 = 20,
-    I_N7 = 21,
-    I_N8 = 22,
-    I_N9 = 23,
-    I_N0 = 24,    
-    I_MIN = 25,
-    I_PLUS = 26,
-    I_DEL = 28,
-    I_NUMLOCK = 28,
-    I_BARTEXT = 28,
-    I_TAB = 29,
-    I_Q = 30,
-    I_W = 31,
-    I_E = 32,
-    I_R = 33,
-    I_T = 34,
-    I_Y = 35,
-    I_U = 36,
-    I_I = 37,
-    I_O = 38,
-    I_P = 39,
-    I_MREC1 = 40,
-    I_MREC2 = 41,
-    I_PGUP = 43,
-    I_STHRU = 43,
-    I_CAPS = 44,
-    I_A = 45,
-    I_S = 46,
-    I_D = 47,
-    I_F = 48,
-    I_G = 49,
-    I_H = 50,
-    I_J = 51,
-    I_K = 52,
-    I_L = 53,
-    I_SEMI = 54,
-    I_SLOCK = 54,
-    I_FJLIGHT = 55,
-    I_HROWLIGHT = 56,
-    I_PGDN = 57,
-    I_UNDERLN = 57,
-    I_LSFT = 58,
-    I_Z = 59,
-    I_X = 60,
-    I_C = 61,
-    I_V = 62,
-    I_B = 63,
-    I_N = 64,
-    I_M = 65,
-    I_COMMA = 66,
-    I_MPLY1 = 66,
-    I_MPLY2 = 67,
-    I_DOT = 67,
-    I_RSFT = 69,
-    I_UP = 70,
-    I_LCTL = 71,
-    I_LGUI = 72,
-    I_LOPT = 72,
-    I_LALT = 73,
-    I_LCMD = 73,
-    I_RALT = 75,
-    I_RCMD = 75,
-    I_FN = 76,
-    I_RCTL = 77,
-    I_LEFT = 78,
-    I_DOWN = 79,
-    I_RIGHT = 80
-};
 
 // led indexes for keys that get capitalized when caps lock is on
 bool is_capslock_shifted(uint8_t i) {
@@ -538,20 +458,8 @@ void rcmd_reset (tap_dance_state_t *state, void *user_data);
 void lopt_finished (tap_dance_state_t *state, void *user_data);
 void lopt_reset (tap_dance_state_t *state, void *user_data);
 
-// key tracker
-typedef struct {
-    uint8_t index;
-    bool press;
-    int fade;
-} keytracker;
-
 // function for determining if a key should fade
 bool key_should_fade(keytracker key, uint8_t layer);
-
-// setup keytracker
-static deferred_token key_token = INVALID_DEFERRED_TOKEN;
-static keytracker tracked_keys[20];
-static int tk_length = sizeof(tracked_keys) / sizeof(tracked_keys[0]);
 
 // for tracking if leader sequence is started
 bool is_in_leader_sequence;
@@ -596,22 +504,6 @@ static uint16_t layer_lock_timer;
 bool is_key_lock_led_on;
 static uint16_t key_lock_timer;
 
-// for tracking a recording macro
-int8_t macro_direction;
-bool macro_recording;
-bool is_macro_led_on;
-static uint16_t macro_timer;
-// and a delayed callback after playing a dynamic macro from osl
-static deferred_token osl_macro_token = INVALID_DEFERRED_TOKEN;
-// callback for when a dynamic mcaro on fn osl is run (to turn off the layer)
-uint32_t osl_macro_callback(uint32_t trigger_time, void *cb_arg) {
-    layer_off(FN_LAYR);
-    return 0;
-}
-
-// for tracking if oneshot layer is active
-bool oneshot_layer_active;
-
 // for tracking os and base layer changes
 bool os_changed;
 static uint16_t os_change_timer;
@@ -635,6 +527,7 @@ int super_scut_altcolor_size = sizeof(super_scut_altcolor) / sizeof(super_scut_a
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // record key index pressed for rgb reactive changes
     if (enable_keytracker && !is_macro_playing && keycode != QK_LEAD) {
+#include "keyindex.h"
         int key_idx = g_led_config.matrix_co[record->event.key.row][record->event.key.col];
         if (record->event.pressed) {
             dprintf("%u \n", key_idx);
@@ -695,18 +588,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     switch (keycode) {
-    // get dynamic macros to work even with oneshot layers
-    case DM_REC1:
-    case DM_REC2:
-    case DM_PLY1:
-    case DM_PLY2:
-        if (record->event.pressed) {
-            if (oneshot_layer_active) {
-                reset_oneshot_layer();
-                osl_macro_token = defer_exec(100, osl_macro_callback, NULL);
-            }
-        }
-        break;
     case ENC_RGBRESET:
         if (record->event.pressed) {
             rgb_matrix_mode(RGB_MATRIX_BAND_VAL);
@@ -2264,43 +2145,6 @@ bool caps_word_press_user(uint16_t keycode) {
 
         default:
             return false;  // Deactivate Caps Word.
-    }
-}
-
-// setup to store vars when macro recording starts or ends. then can flash some rgb
-void dynamic_macro_record_start_user(int8_t direction) {
-    macro_direction = direction;
-    macro_recording = true;
-    macro_timer = timer_read();
-}
-void dynamic_macro_record_end_user(int8_t direction) {
-    macro_direction = direction;
-    macro_recording = false;
-    is_macro_led_on = false;
-    // this loop is needed to prevent a stuck led after a macro finishes recording
-    for (int i = 0; i < tk_length; i++) {
-        if (tracked_keys[i].index == I_MREC1 || tracked_keys[i].index == I_MREC2) {
-            tracked_keys[i].press = false;
-            tracked_keys[i].fade = 0;
-        }
-    }
-}
-// this is so the macro key lights don't get stuck when i play the macro
-void dynamic_macro_play_user(int8_t direction) {
-    for (int i = 0; i < tk_length; i++) {
-        if (tracked_keys[i].index == I_MPLY1 || tracked_keys[i].index == I_MPLY2) {
-            tracked_keys[i].press = false;
-            tracked_keys[i].fade = 0;
-        }
-    }
-}
-
-void oneshot_layer_changed_user(uint8_t layer) {
-    if (layer > 1) {
-        oneshot_layer_active = true;
-    }
-    if (!layer) {
-        oneshot_layer_active = false;
     }
 }
 

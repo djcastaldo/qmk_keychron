@@ -18,6 +18,7 @@
 #include QMK_KEYBOARD_H
 #include "keychron_common.h"
 #include "layers.h"
+#include "keyindex.h"
 #include "wireless/battery.h"
 #include "wireless/bat_level_animation.h"
 #include "wireless/wireless.h"
@@ -61,9 +62,6 @@ enum custom_keycodes {
     CURSORL,
     CURSORR,
     OPT_HOLD,
-    DUAL_ENCPUSH2,
-    DUAL_ENCL2,
-    DUAL_ENCR2,
     DUAL_SNAP,
 };
 
@@ -181,7 +179,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
 //`-------------------------------------------------------------------------------------------------------------------------------------`
     [SFT_LAYR] = LAYOUT_109_ansi(
-        _______,_______,_______,KC_MCTRL,KC_LNPAD,_______,_______,KC_MPRV,KC_MPLY,KC_MNXT,_______,_______,_______, DUAL_ENCPUSH2,
+        _______,_______,_______,KC_MCTRL,KC_LNPAD,_______,_______,KC_MPRV,KC_MPLY,KC_MNXT,_______,_______,_______, ENC_APPHIDE,
                                                                                       QK_LOCK,_______,NEWFINDER,FHOME,FAPPS,FDOCS,FDOWNL,
         FORCEQUIT,SOC1,SOC2,SOC3,SOC4,SOC5,SOC6,SOC7,SOC8,SOC9,SOC0,_______,_______,_______,
                                                                              LLOCK,V_TAB_PRV,SCMDGRAVE,FQLOOK,FINSPECT,FVHIDDEN,FSTATBAR,
@@ -420,7 +418,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [MAC_BASE]  = {ENCODER_CCW_CW(ENC_VOLD, ENC_VOLU)},
     [FN_LAYR]   = {ENCODER_CCW_CW(DUAL_ZOOMO, DUAL_ZOOMI)},
     [WIN_BASE]  = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [SFT_LAYR]  = {ENCODER_CCW_CW(DUAL_ENCL2, DUAL_ENCR2)},
+    [SFT_LAYR]  = {ENCODER_CCW_CW(ENC_SCROLLAPPL, ENC_SCROLLAPPR)},
     [KCTL_LAYR]  = {ENCODER_CCW_CW(ENC_RGBL, ENC_RGBR)},
     [TMUX_LAYR] = {ENCODER_CCW_CW(ENC_TSIZEL, ENC_TSIZER)},
     [MSYM_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
@@ -450,93 +448,6 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
 //:|95:Ct||96:Op||97:C ||             98:Space                ||99:C ||100:O||101:F||102:Ct| |103 ||104 ||105 | |  106:0   ||107 ||    |:
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
 //`-------------------------------------------------------------------------------------------------------------------------------------`
-// useful key indexes
-enum key_indexes {
-    I_INDICATOR = 0,
-    I_ESC = 0,
-    I_F1 = 1,
-    I_F2 = 2,
-    I_F3 = 3,
-    I_F4 = 4,
-    I_F5 = 5,
-    I_F6 = 6,
-    I_F7 = 7,
-    I_F8 = 8,
-    I_F9 = 9,
-    I_F10 = 10,
-    I_F11 = 11,
-    I_F12 = 12,
-    I_SSHOT = 13,
-    I_KLOCK = 13,
-    I_SIRI = 14,
-    I_KTRACK = 14,
-    I_RGB = 15,
-    I_CIRC = 16,
-    I_TRI = 17,
-    I_SQR = 18,
-    I_GRV = 19,
-    I_EKS = 72,
-    I_MREC1 = 16,
-    I_MREC2 = 17,
-    I_MPLY1 = 18,
-    I_N1 = 20,
-    I_N4 = 23,
-    I_MPLY2 = 72,
-    I_LLOCK = 33,
-    I_INS = 33,
-    I_HOME = 34,
-    I_FJLIGHT = 34,
-    I_BBRTEXT = 34,
-    I_PGUP = 35,
-    I_STHRU = 35,
-    I_NUMLOCK = 36,
-    I_TAB = 39,
-    I_Q = 40,
-    I_W = 41,
-    I_E = 42,
-    I_R = 43,
-    I_T = 44,
-    I_Y = 45,
-    I_U = 46,
-    I_I = 47,
-    I_O = 48,
-    I_P = 49,
-    I_HROWLIGHT = 54,
-    I_END = 54,
-    I_BARTEXT = 54,
-    I_PGDN = 55,
-    I_UNDERLN = 55,
-    I_CAPS = 59,
-    I_A = 60,
-    I_S = 61,
-    I_D = 62,
-    I_F = 63,
-    I_G = 64,
-    I_H = 65,
-    I_J = 66,
-    I_K = 67,
-    I_L = 68,
-    I_SEMI = 69,
-    I_APOS = 70,
-    I_ENT = 71,
-    I_PMINS = 73,
-    I_LSFT = 79,
-    I_N = 85,
-    I_M = 86,
-    I_RSFT = 90,
-    I_LCTL = 95,
-    I_LALT = 96,
-    I_LOPT = 96,
-    I_LGUI = 97,
-    I_LCMD = 97,
-    I_SPACE = 98,
-    I_RGUI = 99,
-    I_RCMD = 99,
-    I_RALT = 100,
-    I_ROPT = 100,
-    I_FN = 101,
-    I_RCTL = 102,
-};
 
 // led indexes for keys that get capitalized when caps lock is on
 bool is_capslock_shifted(uint8_t i) {
@@ -559,19 +470,6 @@ static uint16_t layer_timer;
 
 // for storing the last rgb_mode to return to after returning from LOCK_LAYR
 uint8_t saved_rgb_mode;
-
-// for tracking cmd-tab app switching
-bool is_cmd_tab_active;
-bool is_cmd_shift_tab_active;
-bool app_switch_active(void); 
-
-// for tracking a recording macro
-int8_t macro_direction;
-bool macro_recording;
-bool is_macro_led_on;
-static uint16_t macro_timer;
-// and a delayed callback after playing a macro from osl
-static deferred_token osl_macro_token = INVALID_DEFERRED_TOKEN;
 
 // for tracking key lock blinking
 bool is_key_lock_led_on;
@@ -622,44 +520,14 @@ void macl_reset (tap_dance_state_t *state, void *user_data);
 void kbunlock_finished (tap_dance_state_t *state, void *user_data);
 void kbunlock_reset (tap_dance_state_t *state, void *user_data);
 
-// key tracker
-typedef struct {
-    uint8_t index;
-    bool press;
-    int fade;
-} keytracker;
-
-// setup keytracker
-static deferred_token key_token = INVALID_DEFERRED_TOKEN;
-static keytracker tracked_keys[20]; 
-static int tk_length = sizeof(tracked_keys) / sizeof(tracked_keys[0]);
-
 // function for determining if a key should fade
 bool key_should_fade(keytracker key, uint8_t layer);
 
-// setup cmd-tab app switching 
-static deferred_token cmd_tab_token = INVALID_DEFERRED_TOKEN;
-uint32_t cmd_tab_callback(uint32_t trigger_time, void* cb_arg) {
-    unregister_code(KC_LCMD);
-    unregister_code(KC_LSFT);
-    is_cmd_tab_active = false;
-    is_cmd_shift_tab_active = false;
-    return 0;
-}
-bool app_switch_active(void) {
-    return is_cmd_tab_active || is_cmd_shift_tab_active;
-}
 // setup leader sequence error blinking callback 
 static deferred_token leader_error_token = INVALID_DEFERRED_TOKEN;
 uint32_t leader_error_callback(uint32_t trigger_time, void* cb_arg) {
     is_leader_error = false;
     is_leader_error_led_on = false;
-    return 0;
-}
-
-// callback for when a mcaro on osl is run (to turn off the layer) 
-uint32_t osl_macro_callback(uint32_t trigger_time, void *cb_arg) {
-    layer_off(FN_LAYR);
     return 0;
 }
 
@@ -830,75 +698,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         }
         break;
-    case DUAL_ENCPUSH2:
-    	if (record->event.pressed) {
-            // standard: h (hide app windows), while cmd is held: mouse jiggler
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if (((mods | oneshot_mods) & MOD_MASK_GUI) && !app_switch_active()) {
-                jiggle_mouse();
-	    }
-            else {
-	        // If token is already waiting to exec, cancel it.
-                if (cmd_tab_token && app_switch_active()) {
-                    cancel_deferred_exec(cmd_tab_token);
-                    tap_code(KC_H);
-	            cmd_tab_token = defer_exec(1000, cmd_tab_callback, NULL);  // Schedule callback.
-                }
-                else {   // if the button was pushed and appswitcher is not running, hide current app windows
-    	            send_string(SS_LCMD(SS_TAP(X_H)));
-                }
-            }
-        }
-        break;
-    case DUAL_ENCL2:
-    	if (record->event.pressed) {
-            // with command: app switch, standard: mouse down 
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_GUI) {
-	        // If token is already waiting to exec, cancel it.
-                if (cmd_tab_token) {
-                    cancel_deferred_exec(cmd_tab_token);
-                }
-                if (!is_cmd_shift_tab_active) {
-                    is_cmd_shift_tab_active = true;
-                    is_cmd_tab_active = false;
-                    register_code(KC_LCMD);
-                    register_code(KC_LSFT);
-                }
-                tap_code(KC_TAB);
-	        cmd_tab_token = defer_exec(1000, cmd_tab_callback, NULL);  // Schedule callback.
-            }
-            else {
-                tap_code16(KC_MS_WH_DOWN);
-            }
-        }
-        break;
-    case DUAL_ENCR2:
-    	if (record->event.pressed) {
-            // with command: app switch, standard: mouse up 
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_GUI) {  // Is cmd held?
-	        // If token is already waiting to exec, cancel it.
-                if (cmd_tab_token) {
-                    cancel_deferred_exec(cmd_tab_token);
-                }
-                if (!is_cmd_tab_active) {
-                    is_cmd_tab_active = true;
-                    is_cmd_shift_tab_active = false;
-                    register_code(KC_LCMD);
-                    unregister_code(KC_LSFT);
-                }
-                tap_code(KC_TAB);
-	        cmd_tab_token = defer_exec(1000, cmd_tab_callback, NULL);  // Schedule callback.
-            }
-            else {
-                tap_code16(KC_MS_WH_UP);
-            }
-        }
-        break;
     // use cmd + esc as alternate leader start 
     case KC_ESC:
     	if (record->event.pressed) {
@@ -917,18 +716,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 send_string(SS_LSFT(SS_LCMD(SS_TAP(X_4)))); // KC_SNAP wasn't working here
     	}
     	break;
-    // attempt to get dynamic macros to work even with oneshot layers
-    case DM_REC1:
-    case DM_REC2:
-    case DM_PLY1:
-    case DM_PLY2:
-        if (record->event.pressed) {
-            if (oneshot_layer_active) {
-                reset_oneshot_layer();
-                osl_macro_token = defer_exec(100, osl_macro_callback, NULL);
-            }
-        }
-        break;
     // functionality for opt keys with holds for SFT_LAYR and MSYM_LAYR
     case KC_LOPT:
         if (!record->event.pressed) {
@@ -968,15 +755,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     }
     return process_record_secrets(keycode, record);
-}
-
-void oneshot_layer_changed_user(uint8_t layer) {
-    if (layer > 0) {
-        oneshot_layer_active = true; 
-    }
-    if (!layer) {
-        oneshot_layer_active = false;
-    }
 }
 
 void leader_start_user(void) {
@@ -1842,38 +1620,13 @@ void layer_lock_set_user(layer_state_t locked_layers) {
     }
 }
 
-// setup to store vars when macro recording starts or ends. then can flash some rgb
-void dynamic_macro_record_start_user(int8_t direction) {
-	macro_direction = direction;
-	macro_recording = true;
-        macro_timer = timer_read();
-}
-void dynamic_macro_record_end_user(int8_t direction) {
-	macro_direction = direction;
-	macro_recording = false;
-        is_macro_led_on = false;
-        for (int i = 0; i < tk_length; i++) {
-            if ((tracked_keys[i].index > 15 && tracked_keys[i].index < 19) || (tracked_keys[i].index == 72)) {
-	        tracked_keys[i].press = false;
-	        tracked_keys[i].fade = 0;
-	    }
-        }
-}
-// this is so the macro key lights don't get stuck when i play the macro
-void dynamic_macro_play_user(int8_t direction) {
-        for (int i = 0; i < tk_length; i++) {
-	    if ((tracked_keys[i].index > 15 && tracked_keys[i].index < 19) || (tracked_keys[i].index == 72)) {
-                tracked_keys[i].press = false;
-                tracked_keys[i].fade = 0;
-            }
-        }
-}
-
 void keyboard_post_init_user(void) {
     // read the user config from EEPROM
     user_config.raw = eeconfig_read_user();
     // and set this so layers switch correctly on user's first os change
     layer_state_set(default_layer_state);
+    // need to track dip switch changes after userspace move is complete
+    layer_move(MAC_BASE);
 }
 
 void eeconfig_init_user(void) {  // EEPROM is getting reset!

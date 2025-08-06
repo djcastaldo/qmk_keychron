@@ -12,22 +12,18 @@
 #include "process_record_userspace.h"
 #include "config.h"
 #include "layers.h"
+#include "keyindex.h"
 
+user_config_t user_config;
 const uint8_t monitored_macos_base_layers[] = MONITORED_MACOS_BASE_LAYERS;
 const uint8_t monitored_macos_base_count = MONITORED_MACOS_BASE_COUNT;
 
-user_config_t user_config;
+// setup keytracker
+deferred_token key_token = INVALID_DEFERRED_TOKEN;
+keytracker tracked_keys[20];
+uint8_t tk_length = sizeof(tracked_keys) / sizeof(tracked_keys[0]);
 
-// for tracking if base is mac
-bool is_mac_base(void) {
-    for (uint8_t i = 0; i < monitored_macos_base_count; i++) {
-        if (IS_LAYER_ON(monitored_macos_base_layers[i])) {
-            return true;
-        }
-    }
-    return false;
-}
-
+// setup wide-text mode
 uint8_t wide_text_mode = WIDE_STANDARD;
 bool wide_firstchar = false;
 
@@ -36,7 +32,7 @@ deferred_token jiggler_token = INVALID_DEFERRED_TOKEN;
 report_mouse_t jiggler_report = {0};
 // this was originally a static declaration in the switch case for MK_HOLD, but I also want to use it outside of
 // that switch case to do rgb change, so am moving it here.
-bool ms_btn_held = false;
+bool ms_btn_held;
 // for tracking whether to highlight home row keys f and j
 bool fj_light;
 // and for tracking if the full home row light is on
@@ -47,6 +43,20 @@ bool enable_keytracker = true;
 bool color_test;
 // and use a timer so that it can be turned off after a delay even if no further key is pressed
 uint16_t color_test_timer;
+// for tracking a recording macro
+int8_t macro_direction;
+bool macro_recording;
+bool is_macro_led_on;
+uint16_t macro_timer;
+// and a delayed callback after playing a macro from osl
+deferred_token osl_macro_token = INVALID_DEFERRED_TOKEN;
+// for tracking if oneshot layer is active
+bool oneshot_layer_active;
+// for tracking cmd-tab app switching
+bool is_cmd_tab_active;
+bool is_cmd_shift_tab_active;
+// setup cmd-tab app switching
+deferred_token cmd_tab_token = INVALID_DEFERRED_TOKEN;
 
 bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
     static uint32_t key_timer;
@@ -514,6 +524,79 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             dual_key(KC_DOWN,KC_RIGHT,MOD_MASK_GUI);
         }
         return false;
+    case ENC_APPHIDE:
+        if (record->event.pressed) {
+            // standard or app switcher running: h (hide app windows), while cmd is held: mouse jiggler
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if (((mods | oneshot_mods) & (MOD_MASK_GUI | MOD_MASK_CTRL)) && !app_switch_active()) {
+                jiggle_mouse();
+            }
+            else {
+                // If token is already waiting to exec, cancel it.
+                if (cmd_tab_token && app_switch_active()) {
+                    cancel_deferred_exec(cmd_tab_token);
+                    tap_code(KC_H);
+                    cmd_tab_token = defer_exec(1000, cmd_tab_callback, NULL);  // Schedule callback.
+                }
+                else {   // if the button was pushed and appswitcher is not running, hide current app windows
+                    send_string(SS_LCMD(SS_TAP(X_H)));
+                }
+            }
+        }
+        return false;
+    case ENC_SCROLLAPPL:
+        if (record->event.pressed) {
+            // with command: app switch, standard: mouse wheel down
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & (MOD_MASK_GUI | MOD_MASK_CTRL)) {
+                unregister_mods(MOD_MASK_CTRL);
+                // If token is already waiting to exec, cancel it.
+                if (cmd_tab_token) {
+                    cancel_deferred_exec(cmd_tab_token);
+                }
+                if (!is_cmd_shift_tab_active) {
+                    is_cmd_shift_tab_active = true;
+                    is_cmd_tab_active = false;
+                    register_code(KC_LCMD);
+                    register_code(KC_LSFT);
+                }
+                tap_code(KC_TAB);
+                register_mods(mods);
+                cmd_tab_token = defer_exec(1000, cmd_tab_callback, NULL);  // Schedule callback.
+            }
+            else {
+                tap_code16(KC_MS_WH_DOWN);
+            }
+        }
+        return false;
+    case ENC_SCROLLAPPR:
+        if (record->event.pressed) {
+            // with command: app switch, standard: mouse up
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & (MOD_MASK_GUI | MOD_MASK_CTRL)) {
+                unregister_mods(MOD_MASK_CTRL);
+                // If token is already waiting to exec, cancel it.
+                if (cmd_tab_token) {
+                    cancel_deferred_exec(cmd_tab_token);
+                }
+                if (!is_cmd_tab_active) {
+                    is_cmd_tab_active = true;
+                    is_cmd_shift_tab_active = false;
+                    register_code(KC_LCMD);
+                    unregister_code(KC_LSFT);
+                }
+                tap_code(KC_TAB);
+                register_mods(mods);
+                cmd_tab_token = defer_exec(1000, cmd_tab_callback, NULL);  // Schedule callback.
+            }
+            else {
+                tap_code16(KC_MS_WH_UP);
+            }
+        }
+        return false;
     case ENC_RGBPUSH:
         if (record->event.pressed) {
             // standard: reset all, if control is held: hue defualt,
@@ -774,6 +857,18 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             }
         }
         return false;
+    // get dynamic macros to work even with oneshot layers
+    case DM_REC1:
+    case DM_REC2:
+    case DM_PLY1:
+    case DM_PLY2:
+        if (record->event.pressed) {
+            if (oneshot_layer_active) {
+                reset_oneshot_layer();
+                osl_macro_token = defer_exec(100, osl_macro_callback, NULL);
+            }
+        }
+        break;
     case COLORTEST:
         if (record->event.pressed) {
             color_test_timer = timer_read();
@@ -2543,4 +2638,68 @@ void type_numpad_keys_from_string(const char *stringnum) {
         }
     ptr++;
     }
+}
+
+// callback for when a mcaro on osl is run (to turn off the layer)
+uint32_t osl_macro_callback(uint32_t trigger_time, void *cb_arg) {
+    layer_off(FN_LAYR);
+    return 0;
+}
+// callback to turn off app-switch mode
+uint32_t cmd_tab_callback(uint32_t trigger_time, void* cb_arg) {
+    unregister_code(KC_LCMD);
+    unregister_code(KC_LSFT);
+    is_cmd_tab_active = false;
+    is_cmd_shift_tab_active = false;
+    return 0;
+}
+// setup to store vars when macro recording starts or ends. then can flash some rgb
+void dynamic_macro_record_start_user(int8_t direction) {
+    macro_direction = direction;
+    macro_recording = true;
+    macro_timer = timer_read();
+}
+void dynamic_macro_record_end_user(int8_t direction) {
+    macro_direction = direction;
+    macro_recording = false;
+    is_macro_led_on = false;
+    // this loop is needed to prevent a stuck led after a macro finishes recording
+    for (int i = 0; i < tk_length; i++) {
+        if (tracked_keys[i].index == I_MREC1 || tracked_keys[i].index == I_MREC2) {
+            tracked_keys[i].press = false;
+            tracked_keys[i].fade = 0;
+        }
+    }
+}
+// this is so the macro key lights don't get stuck when i play the macro
+void dynamic_macro_play_user(int8_t direction) {
+    for (int i = 0; i < tk_length; i++) {
+        if (tracked_keys[i].index == I_MPLY1 || tracked_keys[i].index == I_MPLY2) {
+            tracked_keys[i].press = false;
+            tracked_keys[i].fade = 0;
+        }
+    }
+}
+
+void oneshot_layer_changed_user(uint8_t layer) {
+    if (layer) {
+        oneshot_layer_active = true;
+    }
+    else {
+        oneshot_layer_active = false;
+    }
+}
+
+// for tracking if base is mac
+bool is_mac_base(void) {
+    for (uint8_t i = 0; i < monitored_macos_base_count; i++) {
+        if (IS_LAYER_ON(monitored_macos_base_layers[i])) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool app_switch_active(void) {
+    return is_cmd_tab_active || is_cmd_shift_tab_active;
 }
