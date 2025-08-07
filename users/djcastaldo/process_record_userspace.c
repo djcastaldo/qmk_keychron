@@ -535,7 +535,15 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
                 // If token is already waiting to exec, cancel it.
                 if (cmd_tab_token && app_switch_active()) {
                     cancel_deferred_exec(cmd_tab_token);
+                    bool ctrl_removed = false;
+                    if (mods & MOD_BIT(KC_LCTL)) {
+                        del_mods(MOD_BIT(KC_LCTL));
+                        ctrl_removed = true;
+                    }
                     tap_code(KC_H);
+                    if (ctrl_removed) {
+                        register_mods(MOD_BIT(KC_LCTL));
+                    }
                     cmd_tab_token = defer_exec(1000, cmd_tab_callback, NULL);  // Schedule callback.
                 }
                 else {   // if the button was pushed and appswitcher is not running, hide current app windows
@@ -548,9 +556,12 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
             // with command: app switch, standard: mouse wheel down
             const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & (MOD_MASK_GUI | MOD_MASK_CTRL)) {
-                unregister_mods(MOD_MASK_CTRL);
+            if (mods & (MOD_MASK_GUI | MOD_BIT(KC_LCTL))) {
+                bool ctrl_removed = false;
+                if (mods & MOD_BIT(KC_LCTL)) {
+                    del_mods(MOD_BIT(KC_LCTL));
+                    ctrl_removed = true;
+                }
                 // If token is already waiting to exec, cancel it.
                 if (cmd_tab_token) {
                     cancel_deferred_exec(cmd_tab_token);
@@ -558,12 +569,14 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
                 if (!is_cmd_shift_tab_active) {
                     is_cmd_shift_tab_active = true;
                     is_cmd_tab_active = false;
-                    register_code(KC_LCMD);
+                    register_code(KC_RCMD);
                     register_code(KC_LSFT);
                 }
                 tap_code(KC_TAB);
-                register_mods(mods);
                 cmd_tab_token = defer_exec(1000, cmd_tab_callback, NULL);  // Schedule callback.
+                if (ctrl_removed) {
+                    register_mods(MOD_BIT(KC_LCTL));
+                }
             }
             else {
                 tap_code16(KC_MS_WH_DOWN);
@@ -574,9 +587,12 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
             // with command: app switch, standard: mouse up
             const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & (MOD_MASK_GUI | MOD_MASK_CTRL)) {
-                unregister_mods(MOD_MASK_CTRL);
+            if (mods & (MOD_MASK_GUI | MOD_BIT(KC_LCTL))) {
+                bool ctrl_removed = false;
+                if (mods  & MOD_BIT(KC_LCTL)) {
+                    del_mods(MOD_BIT(KC_LCTL));
+                    ctrl_removed = true;
+                }
                 // If token is already waiting to exec, cancel it.
                 if (cmd_tab_token) {
                     cancel_deferred_exec(cmd_tab_token);
@@ -584,12 +600,14 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
                 if (!is_cmd_tab_active) {
                     is_cmd_tab_active = true;
                     is_cmd_shift_tab_active = false;
-                    register_code(KC_LCMD);
+                    register_code(KC_RCMD);
                     unregister_code(KC_LSFT);
                 }
                 tap_code(KC_TAB);
-                register_mods(mods);
                 cmd_tab_token = defer_exec(1000, cmd_tab_callback, NULL);  // Schedule callback.
+                if (ctrl_removed) {
+                    register_mods(MOD_BIT(KC_LCTL));
+                }
             }
             else {
                 tap_code16(KC_MS_WH_UP);
@@ -2749,7 +2767,7 @@ uint32_t osl_macro_callback(uint32_t trigger_time, void *cb_arg) {
 }
 // callback to turn off app-switch mode
 uint32_t cmd_tab_callback(uint32_t trigger_time, void* cb_arg) {
-    unregister_code(KC_LCMD);
+    unregister_code(KC_RCMD);
     unregister_code(KC_LSFT);
     is_cmd_tab_active = false;
     is_cmd_shift_tab_active = false;
