@@ -2,14 +2,8 @@
 // @davex 07/30/2025
 // this is the start of moving some stuff to separate files to make it easier to move between keyboards 
 
-#include QMK_KEYBOARD_H
-#ifdef KEYBOARD_IS_KEYCHRON
-#include "keychron_common.h"
-#elif defined(KEYBOARD_IS_LEMOKEY)
-#include "lemokey_common.h"
-#endif
-#include "features/layer_lock.h"
 #include "process_record_userspace.h"
+#include "features/layer_lock.h"
 #include "config.h"
 #include "layers.h"
 #include "keyindex.h"
@@ -701,6 +695,50 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
             // standard: asterisk, while control is held: divide
             dual_key(KC_PAST, KC_PSLS, MOD_MASK_CTRL);
+        }
+        return false;
+    // this allows a running macro to be stopped using the macro key
+    case DUAL_F13:
+        if (record->event.pressed) {
+           if (!macro_recording) {
+               // send F13
+               tap_code(KC_F13);
+           }
+           else {
+               // if macro is recording, stop it
+               dynamic_macro_stop_recording();
+           }
+        }
+        return false;
+    case DUAL_F14:
+        if (record->event.pressed) {
+           if (!macro_recording) {
+               // send F14
+               tap_code(KC_F14);
+           }
+           else {
+               // if macro is recording, stop it
+               dynamic_macro_stop_recording();
+           }
+        }
+        return false;
+    // this is setup so I can use numpad - to insert a delay while recording a macro
+    case DUAL_PMNS:
+        if (record->event.pressed) {
+           if (!macro_recording && !is_macro_playing) {
+               // send PMNS
+               register_code(KC_PMNS);
+           }
+           else {
+               // if macro is recording or playing, insert a delay
+               // wait_ms(150); // this only works when wired
+               send_string(SS_DELAY(150)); // this works wired and wireless
+           }
+        }
+        else {
+           if (!macro_recording && !is_macro_playing) {
+               unregister_code(KC_PMNS);
+           }
         }
         return false;
     case VI_REPLACE:

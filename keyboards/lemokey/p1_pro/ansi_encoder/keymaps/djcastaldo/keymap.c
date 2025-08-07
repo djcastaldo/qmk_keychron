@@ -42,7 +42,7 @@ enum layers {
 
 // custom keycodes
 enum custom_keycodes {
-    LLOCK = NEW_SAFE_RANGE,
+    LLOCK = USERSPACE_END,
     DUAL_F12,
     DUAL_ESC,
     SCROLL_UP,

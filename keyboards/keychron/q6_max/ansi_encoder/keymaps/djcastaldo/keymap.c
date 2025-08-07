@@ -53,10 +53,7 @@ enum layers {
 //  ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~ */
 
 enum custom_keycodes {
-    LLOCK = NEW_SAFE_RANGE,
-    DUAL_F13,
-    DUAL_F14,
-    DUAL_PMNS,
+    LLOCK = USERSPACE_END,
     GNEWS,
     SSMENU,
     CURSORL,
@@ -604,50 +601,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     switch (keycode) {
-    // this allows a running macro to be stopped using the macro key 
-    case DUAL_F13:
-    	if (record->event.pressed) {
-           if (!macro_recording) {
-    	       // send F13 
-    	       tap_code(KC_F13);
-           }
-           else {
-               // if macro is recording, stop it
-               dynamic_macro_stop_recording();
-           }
-    	}
-    	break;
-    case DUAL_F14:
-    	if (record->event.pressed) {
-           if (!macro_recording) {
-    	       // send F14 
-    	       tap_code(KC_F14);
-           }
-           else {
-               // if macro is recording, stop it
-               dynamic_macro_stop_recording();
-           }
-    	}
-    	break;
-    // this is setup so I can use numpad - to insert a delay while recording a macro
-    case DUAL_PMNS:
-    	if (record->event.pressed) {
-           if (!macro_recording && !is_macro_playing) {
-    	       // send PMNS 
-    	       register_code(KC_PMNS);
-           }
-           else {
-               // if macro is recording or playing, insert a delay 
-               // wait_ms(150); // this only works when wired
-    	       send_string(SS_DELAY(150)); // this works wired and wireless
-           }
-    	}
-	else {
-           if (!macro_recording && !is_macro_playing) {
-               unregister_code(KC_PMNS);
-	   }
-        }  
-    	break;
     case SSMENU:
     	if (record->event.pressed) {
     	   // send shift + command + 5 (for screenshot with options menus) 
