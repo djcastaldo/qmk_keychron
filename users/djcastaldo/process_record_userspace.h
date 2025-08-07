@@ -9,6 +9,8 @@
 #include "lemokey_common.h"
 #endif
 
+#include "features/layer_lock.h"
+
 #define NEWFINDER LOPT(LCMD(KC_SPC))            // open new Finder search window
 #define FHOME LCMD(LSFT(KC_H))                  // open new Finder home dir
 #define FAPPS LCMD(LSFT(KC_A))                  // open new Finder apps dir
@@ -74,6 +76,7 @@ enum userspace_keycodes {
     SECRET29,
     SECRET30,
     SECRET31,
+    LLOCK,
     WM_SYM,
     JIGGLE,
     FJLIGHT,
@@ -106,6 +109,9 @@ enum userspace_keycodes {
     ENC_RGBPUSH,
     ENC_RGBL,
     ENC_RGBR,
+    F_ZOOMR,
+    DUAL_ZOOMI,
+    DUAL_ZOOMO,
     DUAL_PLUSMIN,
     DUAL_MULTDIV,
     DUAL_F13,
@@ -129,10 +135,13 @@ enum userspace_keycodes {
     BACKDIR,
     HOMEDIR,
     LSLTRAH,
+    SSMENU,
+    GNEWS,
+    CURSORL,
+    CURSORR,
+    OPT_HOLD,
+    DUAL_SNAP,
     AP_GLOB,
-    F_ZOOMR,
-    DUAL_ZOOMI,
-    DUAL_ZOOMO,
     COLORTEST,
     OPT2,
     OPT3,
@@ -314,6 +323,7 @@ extern bool wide_firstchar;
 extern deferred_token jiggler_token;
 extern report_mouse_t jiggler_report;
 extern bool ms_btn_held;
+extern bool is_lopt_held;
 extern bool fj_light;
 extern bool hrow_light;
 extern bool enable_keytracker;

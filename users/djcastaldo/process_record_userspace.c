@@ -3,7 +3,6 @@
 // this is the start of moving some stuff to separate files to make it easier to move between keyboards 
 
 #include "process_record_userspace.h"
-#include "features/layer_lock.h"
 #include "config.h"
 #include "layers.h"
 #include "keyindex.h"
@@ -27,6 +26,7 @@ report_mouse_t jiggler_report = {0};
 // this was originally a static declaration in the switch case for MK_HOLD, but I also want to use it outside of
 // that switch case to do rgb change, so am moving it here.
 bool ms_btn_held;
+bool is_lopt_held;
 // for tracking whether to highlight home row keys f and j
 bool fj_light;
 // and for tracking if the full home row light is on
@@ -68,6 +68,11 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
         jiggler_report = (report_mouse_t){};  // clear the mouse
         host_mouse_send(&jiggler_report);
     }
+    // layer lock
+    if (!process_layer_lock(keycode, record, LLOCK)) {
+       return false;
+    }
+
     switch (keycode) {
     // this is a custom version of KC_TRANS to press a key on default layer
     // setup so that I can use LTRANS in the keymap to denote which fallthrough keys get lit up on the layer
@@ -677,6 +682,55 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             }
         }
         return false;
+    // form zoom reset
+    case F_ZOOMR:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            clear_mods();
+            tap_code16(is_mac_base() ? LCMD(KC_0) : LCTL(KC_0));
+            register_mods(mods);
+        }
+        return false;
+    // set up some different zoom (when control is used) so the zoom knob can be used with multiple apps
+    // that support different ways to zoom
+    case DUAL_ZOOMI:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                if (is_mac_base()) {
+                    unregister_mods(MOD_MASK_CTRL);
+                    tap_code16(LCMD(KC_EQL));
+                    register_mods(mods);
+                }
+                else {
+                    tap_code(KC_EQL);
+                }
+            }
+            else {
+                tap_code16(is_mac_base() ? LCMD(KC_MS_WH_DOWN) : LCTL(KC_MS_WH_UP));
+            }
+        }
+        return false;
+    case DUAL_ZOOMO:
+        if (record->event.pressed) {
+            const uint8_t mods = get_mods();
+            const uint8_t oneshot_mods = get_oneshot_mods();
+            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
+                if (is_mac_base()) {
+                    unregister_mods(MOD_MASK_CTRL);
+                    tap_code16(LCMD(KC_MINS));
+                    register_mods(mods);
+                }
+                else {
+                    tap_code(KC_MINS);
+                }
+            }
+            else {
+                tap_code16(is_mac_base() ? LCMD(KC_MS_WH_UP) : LCTL(KC_MS_WH_DOWN));
+            }
+        }
+        return false;
     // switch rgb modes with max brightness, since the KCTL_LAYR auto dims when initally switching to it
     case RGB_MOD:
     case RGB_RMOD:
@@ -798,10 +852,6 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
     case MK_ACCEL2:
         tap_code(record->event.pressed ? KC_MS_ACCEL2 : KC_MS_ACCEL1);
         return false;
-    case AP_GLOB:
-        // setup for apple globe key to work
-        host_consumer_send(record->event.pressed ? AC_NEXT_KEYBOARD_LAYOUT_SELECT : 0);
-        return false;
     case KC_MYCM:
         if (is_mac_base() && record->event.pressed) {
             // open new Finder home dir
@@ -846,55 +896,6 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
           send_string("ls -ltrah" SS_TAP(X_ENT));
         }
         return false;
-    // form zoom reset
-    case F_ZOOMR:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            clear_mods();
-            tap_code16(is_mac_base() ? LCMD(KC_0) : LCTL(KC_0));
-            register_mods(mods);
-        }
-        return false;
-    // set up some different zoom (when control is used) so the zoom knob can be used with multiple apps
-    // that support different ways to zoom
-    case DUAL_ZOOMI:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                if (is_mac_base()) {
-                    unregister_mods(MOD_MASK_CTRL);
-                    tap_code16(LCMD(KC_EQL));
-                    register_mods(mods);
-                }
-                else {
-                    tap_code(KC_EQL);
-                }
-            }
-            else {
-                tap_code16(is_mac_base() ? LCMD(KC_MS_WH_DOWN) : LCTL(KC_MS_WH_UP));
-            }
-        }
-        return false;
-    case DUAL_ZOOMO:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                if (is_mac_base()) {
-                    unregister_mods(MOD_MASK_CTRL);
-                    tap_code16(LCMD(KC_MINS));
-                    register_mods(mods);
-                }
-                else {
-                    tap_code(KC_MINS);
-                }
-            }
-            else {
-                tap_code16(is_mac_base() ? LCMD(KC_MS_WH_UP) : LCTL(KC_MS_WH_DOWN));
-            }
-        }
-        return false;
     // get dynamic macros to work even with oneshot layers
     case DM_REC1:
     case DM_REC2:
@@ -907,6 +908,69 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             }
         }
         break;
+    case SSMENU:
+        if (record->event.pressed) {
+           // send shift + command + 5 (for screenshot with options menus)
+           send_string(SS_LSFT(SS_LCMD("5")));
+        }
+        return false;
+    case GNEWS:
+        if (record->event.pressed) {
+           // open browser tab to google news
+           send_string_with_delay(SS_LCMD(SS_TAP(X_L)) SS_DELAY(150) "news.google.com" SS_DELAY(50) SS_LOPT(SS_TAP(X_ENT)),5);
+        }
+        return false;
+    // move mouse cursor for per-monitor mission control
+    case KC_UP:
+    case KC_LEFT:
+    case KC_RIGHT:
+        if (record->event.pressed) {
+           // check which control is being held and mouse mouse to monitor with CatchMouse
+           if (get_mods() == MOD_BIT(KC_LCTL)) {
+               send_string(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_P1)))));
+           }
+           else if (get_mods() == MOD_BIT(KC_RCTL)) {
+               send_string(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_P2)))));
+           }
+        }
+        break;
+    // custom keycode to move cursor to left mon with CatchMouse
+    case CURSORL:
+        if (record->event.pressed) {
+           send_string(SS_LCTL(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_P1))))));
+        }
+        return false;
+    // custom keycode to move cursor to right mon with CatchMouse
+    case CURSORR:
+        if (record->event.pressed) {
+           send_string(SS_LCTL(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_P2))))));
+        }
+        return false;
+    case OPT_HOLD:
+        if (record->event.pressed) {
+            if (!is_lopt_held) {
+                register_code(KC_LOPT);
+                is_lopt_held = true;
+            }
+            else {
+                unregister_code(KC_LOPT);
+                is_lopt_held = false;
+            }
+        }
+        return false;
+    // use cmd + screenshot as key lock start
+    case DUAL_SNAP:
+        if (record->event.pressed) {
+            if (get_mods() & MOD_MASK_GUI)
+                set_key_lock_watching();
+            else
+                send_string(SS_LSFT(SS_LCMD(SS_TAP(X_4)))); // KC_SNAP wasn't working here
+        }
+        return false;
+    case AP_GLOB:
+        // setup for apple globe key to work
+        host_consumer_send(record->event.pressed ? AC_NEXT_KEYBOARD_LAYOUT_SELECT : 0);
+        return false;
     case COLORTEST:
         if (record->event.pressed) {
             color_test_timer = timer_read();

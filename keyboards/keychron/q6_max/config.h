@@ -89,7 +89,8 @@
 #endif
 
 /* Factory test keys */
-#define FN_KEY_1 MO(1)
-#define FN_KEY_2 MO(3)
+// these are changed from MO(1) and MO(3) to prevent FN-J-Z reset sequences
+#define FN_KEY_1 MO(98)
+#define FN_KEY_2 MO(99)
 
 #define MATRIX_IO_DELAY 10

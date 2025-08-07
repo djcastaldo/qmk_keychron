@@ -22,7 +22,6 @@
 #include "wireless/battery.h"
 #include "wireless/bat_level_animation.h"
 #include "wireless/wireless.h"
-#include "users/djcastaldo/features/layer_lock.h"
 #include "users/djcastaldo/process_record_userspace.h"
 
 __attribute__ ((weak))
@@ -53,13 +52,7 @@ enum layers {
 //  ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~ */
 
 enum custom_keycodes {
-    LLOCK = USERSPACE_END,
-    GNEWS,
-    SSMENU,
-    CURSORL,
-    CURSORR,
-    OPT_HOLD,
-    DUAL_SNAP,
+    CUSTOM_KEYCODE = USERSPACE_END,
 };
 
 // custom tap dances
@@ -480,11 +473,6 @@ bool is_leader_error;
 bool is_leader_error_led_on;
 static uint16_t leader_error_timer;
 
-// for tracking if oneshot layer is active
-bool oneshot_layer_active;
-
-bool is_lopt_held = false;
-
 // tap dance setup
 typedef struct {
     bool is_press_action;
@@ -595,80 +583,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     }
 
-    // layer lock
-    if (!process_layer_lock(keycode, record, LLOCK)) {
-       return false;
-    }
-
     switch (keycode) {
-    case SSMENU:
-    	if (record->event.pressed) {
-    	   // send shift + command + 5 (for screenshot with options menus) 
-    	   send_string(SS_LSFT(SS_LCMD("5")));
-    	}
-    	break;
-    case GNEWS:
-    	if (record->event.pressed) {
-	   // open browser tab to google news 
-    	   send_string_with_delay(SS_LCMD(SS_TAP(X_L)) SS_DELAY(150) "news.google.com" SS_DELAY(50) SS_LOPT(SS_TAP(X_ENT)),5);
-	}
-    	break;
-    // move mouse cursor for per-monitor mission control
-    case KC_UP:
-    case KC_LEFT:
-    case KC_RIGHT:
-    	if (record->event.pressed) {
-    	   // check which control is being held and mouse mouse to monitor with CatchMouse 
-           if (get_mods() == MOD_BIT(KC_LCTL)) {
-               send_string(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_P1)))));
-           }
-           else if (get_mods() == MOD_BIT(KC_RCTL)) {
-               send_string(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_P2)))));
-           }
-    	}
-    	break;
-    // custom keycode to move cursor to left mon with CatchMouse
-    case CURSORL:
-    	if (record->event.pressed) {
-           send_string(SS_LCTL(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_P1))))));
-    	}
-    	break;
-    // custom keycode to move cursor to right mon with CatchMouse
-    case CURSORR:
-    	if (record->event.pressed) {
-           send_string(SS_LCTL(SS_LOPT(SS_LCMD(SS_LSFT(SS_TAP(X_P2))))));
-    	}
-    	break;
-    case OPT_HOLD:
-        if (record->event.pressed) {
-            if (!is_lopt_held) {
-                register_code(KC_LOPT);
-                is_lopt_held = true;
-            }
-            else {
-                unregister_code(KC_LOPT);
-                is_lopt_held = false;
-            }
-        }
-        break;
-    // use cmd + esc as alternate leader start 
-    case KC_ESC:
-    	if (record->event.pressed) {
-            if (get_mods() & MOD_MASK_GUI) { 
-                leader_start();
-                return false;
-            }
-    	}
-    	break;
-    // use cmd + screenshot as key lock start 
-    case DUAL_SNAP:
-    	if (record->event.pressed) {
-            if (get_mods() & MOD_MASK_GUI) 
-                set_key_lock_watching();
-            else
-                send_string(SS_LSFT(SS_LCMD(SS_TAP(X_4)))); // KC_SNAP wasn't working here
-    	}
-    	break;
     // functionality for opt keys with holds for SFT_LAYR and MSYM_LAYR
     case KC_LOPT:
         if (!record->event.pressed) {

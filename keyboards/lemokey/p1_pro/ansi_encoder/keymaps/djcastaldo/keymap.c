@@ -9,7 +9,6 @@
 #include "wireless/battery.h"
 #include "wireless/wireless.h"
 #include "wireless/bat_level_animation.h"
-#include "users/djcastaldo/features/layer_lock.h"
 #include "users/djcastaldo/process_record_userspace.h"
 
 __attribute__ ((weak))
@@ -42,8 +41,7 @@ enum layers {
 
 // custom keycodes
 enum custom_keycodes {
-    LLOCK = USERSPACE_END,
-    DUAL_F12,
+    DUAL_F12 = USERSPACE_END,
     DUAL_ESC,
     SCROLL_UP,
     SCROLL_DN,
@@ -580,11 +578,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // userspace
     if (!process_record_userspace(keycode,record)) {
         return false;
-    }
-
-    // layer lock
-    if (!process_layer_lock(keycode, record, LLOCK)) {
-       return false;
     }
 
     switch (keycode) {
