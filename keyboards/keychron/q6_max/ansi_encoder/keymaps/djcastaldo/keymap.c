@@ -1491,10 +1491,10 @@ void layer_lock_set_user(layer_state_t locked_layers) {
 void keyboard_post_init_user(void) {
     // read the user config from EEPROM
     user_config.raw = eeconfig_read_user();
+    // need to track dip switch changes after userspace move is complete
+    set_single_persistent_default_layer(MAC_BASE);
     // and set this so layers switch correctly on user's first os change
     layer_state_set(default_layer_state);
-    // need to track dip switch changes after userspace move is complete
-    layer_move(MAC_BASE);
 }
 
 void eeconfig_init_user(void) {  // EEPROM is getting reset!
