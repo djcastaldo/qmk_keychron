@@ -382,6 +382,7 @@ void symbol_key_win(const char *alt_code, const char *shift_alt_code);
 void symbol_key_linux(const char *hex_code, const char *shift_hex_code);
 void type_numpad_keys_from_string(const char *stringnum);
 bool is_mac_base(void);
+bool is_base_layer(uint8_t layer);
 bool app_switch_active(void);
 uint32_t osl_macro_callback(uint32_t trigger_time, void *cb_arg);
 uint32_t sim_osl_callback(uint32_t trigger_time, void* cb_arg);

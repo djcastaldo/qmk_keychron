@@ -1008,20 +1008,6 @@ bool key_should_fade(keytracker key, uint8_t layer) {
     return should_fade;
 }
 
-// fade the rgb animation when layer is changed so that the layer keys are more prominent
-layer_state_t layer_state_set_user(layer_state_t state) {
-if (get_highest_layer(state) <  2) {
-    rgb_matrix_reload_from_eeprom();
-}
-else if (get_highest_layer(state) != LOCK_LAYR) {
-    HSV hsv = rgb_matrix_get_hsv();
-    if (hsv.v >= 180) {
-            rgb_matrix_sethsv_noeeprom(hsv.h, hsv.s, 180);
-        }
-    }
-    return state;
-}
-
 // determine the current tap dance state
 int cur_dance (tap_dance_state_t *state) {
   if (state->count == 1) {

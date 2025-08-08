@@ -10,6 +10,8 @@
 user_config_t user_config;
 const uint8_t monitored_macos_base_layers[] = MONITORED_MACOS_BASE_LAYERS;
 const uint8_t monitored_macos_base_count = MONITORED_MACOS_BASE_COUNT;
+const uint8_t all_base_layers[] = CONFIG_ALL_BASE_LAYERS;
+const uint8_t all_base_layers_count = CONFIG_ALL_BASE_LAYERS_COUNT;
 
 // setup keytracker
 deferred_token key_token = INVALID_DEFERRED_TOKEN;
@@ -2993,6 +2995,20 @@ void leader_start_user(void) {
     is_in_leader_sequence = true;
 }
 
+// fade the rgb animation when layer is changed so that the layer keys are more prominent
+layer_state_t layer_state_set_user(layer_state_t state) {
+    if (is_base_layer(get_highest_layer(state))) {
+        rgb_matrix_reload_from_eeprom();
+    }
+    else if (get_highest_layer(state) != LOCK_LAYR) {
+        HSV hsv = rgb_matrix_get_hsv();
+        if (hsv.v >= 180) {
+            rgb_matrix_sethsv_noeeprom(hsv.h, hsv.s, 180);
+        }
+    }
+    return state;
+}
+
 void layer_lock_set_user(layer_state_t locked_layers) {
     static bool opt_is_held_for_symbol = false;
     if (is_layer_locked(MSYM_LAYR)) {
@@ -3009,6 +3025,16 @@ void layer_lock_set_user(layer_state_t locked_layers) {
 bool is_mac_base(void) {
     for (uint8_t i = 0; i < monitored_macos_base_count; i++) {
         if (IS_LAYER_ON(monitored_macos_base_layers[i])) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// for tracking if base is mac
+bool is_base_layer(uint8_t layer) {
+    for (uint8_t i = 0; i < all_base_layers_count; i++) {
+        if (layer == all_base_layers[i]) {
             return true;
         }
     }

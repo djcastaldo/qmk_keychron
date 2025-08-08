@@ -99,6 +99,10 @@
 #    define MONITORED_MACOS_BASE_LAYERS { MAC_BASE }
 #    define MONITORED_MACOS_BASE_COUNT 1
 
+/* monitored base layers for macos */
+#    define CONFIG_ALL_BASE_LAYERS { MAC_BASE, WIN_BASE }
+#    define CONFIG_ALL_BASE_LAYERS_COUNT 2
+
 /* key indexes that changed to shifted version when caps is used */
 #    define CONFIG_CAPSLOCK_SHIFTED ((i > 29 && i < 40) || (i > 44 && i < 54) || (i > 58 && i < 66))
 #    define CONFIG_CAPSWORD_EXTRA (i == 25)
