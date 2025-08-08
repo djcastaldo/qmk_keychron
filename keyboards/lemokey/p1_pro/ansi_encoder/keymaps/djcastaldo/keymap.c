@@ -1,4 +1,5 @@
 // 05/13/2025 (@davex)
+// Dave Castaldo
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
@@ -41,14 +42,7 @@ enum layers {
 
 // custom keycodes
 enum custom_keycodes {
-    DUAL_F12 = USERSPACE_END,
-    DUAL_ESC,
-    SCROLL_UP,
-    SCROLL_DN,
-    ENC_DUALPUSH,
-    ENC_MAINL,
-    ENC_MAINR,
-    ENC_RGBRESET,
+    CUSTOM_KEYCODE = USERSPACE_END,
 };
 
 // custom tap dances
@@ -91,7 +85,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |_________||________||_________||______________________________________________||______||______|______|  |______||______||______| :
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
     [WIN_BASE] = LAYOUT_ansi_82(
-        DUAL_ESC,  KC_F1, KC_F2, KC_F3,  KC_F4,  KC_F5,  KC_F6,  KC_F7,  KC_F8,  KC_F9, KC_F10, KC_F11, DUAL_F12,  KC_APP, ENC_DUALPUSH,
+        DUAL_ESC,  KC_F1, KC_F2, KC_F3,  KC_F4,  KC_F5,  KC_F6,  KC_F7,  KC_F8,  KC_F9, KC_F10, KC_F11, DUAL_F12,  KC_APP, ENC_MUTEPLAY,
         KC_GRV,  KC_1,   KC_2,   KC_3,   KC_4,   KC_5,   KC_6,   KC_7,   KC_8,   KC_9,   KC_0, KC_MINS, KC_EQL,   BSPCFAST,      KC_DEL,
         LT(TMUX_LAYR,KC_TAB),  KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y,   KC_U,   KC_I,   KC_O,   KC_P, KC_LBRC, KC_RBRC, KC_BSLS,   KC_PGUP,
         TD(CAPS_LAYR),  KC_A,   KC_S,   KC_D,   KC_F,   KC_G,   KC_H,   KC_J,    KC_K,  KC_L,  KC_SCLN, KC_QUOT,      KC_ENT,   KC_PGDN,
@@ -117,7 +111,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |_________||________||_________||______________________________________________||______||______|______|  |______||______||______| :
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
     [MAC_BASE] = LAYOUT_ansi_82(
-        DUAL_ESC,  KC_F1, KC_F2, KC_F3,  KC_F4,   KC_F5, KC_F6,  KC_F7,  KC_F8,  KC_F9, KC_F10, KC_F11, DUAL_F12, KC_LPAD, ENC_DUALPUSH,
+        DUAL_ESC,  KC_F1, KC_F2, KC_F3,  KC_F4,   KC_F5, KC_F6,  KC_F7,  KC_F8,  KC_F9, KC_F10, KC_F11, DUAL_F12, KC_LPAD, ENC_MUTEPLAY,
         KC_GRV,  KC_1,   KC_2,   KC_3,   KC_4,   KC_5,   KC_6,   KC_7,   KC_8,   KC_9,   KC_0, KC_MINS, KC_EQL,   BSPCFAST,      KC_DEL,
         LT(TMUX_LAYR,KC_TAB),  KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y,   KC_U,   KC_I,   KC_O,   KC_P, KC_LBRC, KC_RBRC, KC_BSLS,   KC_PGUP,
         TD(CAPS_LAYR),  KC_A,   KC_S,   KC_D,   KC_F,   KC_G,   KC_H,   KC_J,    KC_K,  KC_L,  KC_SCLN, KC_QUOT,      KC_ENT,   KC_PGDN,
@@ -195,7 +189,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |_________||________||_________||______________________________________________||______||______|______|  |______||______||______| :
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
     [KCTL_LAYR] = LAYOUT_ansi_82(
-        _______, RGB_MOD,RGB_RMOD,_______,_______, RGB_HUI,RGB_HUD,RGB_SAI,RGB_SAD,_______,_______,COLORTEST,DB_TOGG,LLOCK,ENC_RGBRESET,
+        _______, RGB_MOD,RGB_RMOD,_______,_______, RGB_HUI,RGB_HUD,RGB_SAI,RGB_SAD,_______,_______,COLORTEST,DB_TOGG,LLOCK, ENC_RGBPUSH,
         _______, BT_HST1, BT_HST2, BT_HST3, P2P4G, _______,_______,_______,_______, _______,_______, _______, _______, _______, RGB_TOG,
         _______,_______,_______,_______, QK_RBT, _______,_______, _______, _______, _______,_______, _______, _______, _______, _______,
         _______,_______,_______,_______, FLASH_KB, _______,_______, _______, _______, _______, KTRACK, FJLIGHT,   HROWLIGHT,    _______,
@@ -360,11 +354,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
-    [WIN_BASE]  = {ENCODER_CCW_CW(ENC_MAINL, ENC_MAINR)},
-    [MAC_BASE]  = {ENCODER_CCW_CW(ENC_MAINL, ENC_MAINR)},
+    [WIN_BASE]  = {ENCODER_CCW_CW(ENC_VOLD, ENC_VOLU)},
+    [MAC_BASE]  = {ENCODER_CCW_CW(ENC_VOLD, ENC_VOLU)},
     [FN_LAYR]   = {ENCODER_CCW_CW(DUAL_ZOOMO, DUAL_ZOOMI)},
-    [SFT_LAYR]  = {ENCODER_CCW_CW(SCROLL_UP, SCROLL_DN)},
-    [KCTL_LAYR]  = {ENCODER_CCW_CW(RGB_RMOD, RGB_MOD)},
+    [SFT_LAYR]  = {ENCODER_CCW_CW(ENC_SCROLLAPPL, ENC_SCROLLAPPR)},
+    [KCTL_LAYR] = {ENCODER_CCW_CW(ENC_RGBL, ENC_RGBR)},
     [TMUX_LAYR] = {ENCODER_CCW_CW(ENC_TSIZEL, ENC_TSIZER)},
     [WSYM_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [MSYM_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
@@ -467,21 +461,6 @@ bool is_leader_error;
 bool is_leader_error_led_on;
 static uint16_t leader_error_timer;
 
-// setup a way to delay oneshot deactivation after a keycode that keeps oneshot active
-// a one-shot extended time can be simulated by simply turning a layer on and using the
-// callback to turn the layer off after a specified delay
-bool sim_osl;
-static deferred_token sim_osl_token = INVALID_DEFERRED_TOKEN;
-uint32_t sim_osl_callback(uint32_t trigger_time, void* cb_arg) {
-    dprintf("sim_osl_callback running\n");
-    uint8_t layer = get_highest_layer(layer_state);
-    if (!is_layer_locked(layer)) {
-        layer_off(layer);
-    }
-    sim_osl = false;
-    return 0;
-}
-
 // if a leader seuqence errored, rgbs can be set to blink for a time until this callback is used 
 static deferred_token leader_error_token = INVALID_DEFERRED_TOKEN;
 uint32_t leader_error_callback(uint32_t trigger_time, void* cb_arg) {
@@ -508,19 +487,6 @@ static uint16_t os_change_timer;
 
 // for tracking if an accent char tap dance should light up a particular key to show what the tap will send
 int act_char_led_index = 0;
-
-// use this to highlight keyboard shortcuts with rgb when winkey (or linux super) is held
-// split some of these into another color since they are used rarely
-bool is_winkey_held;
-int winkey_scut_keys[] = {I_INDICATOR, I_N0, I_N1, I_N2, I_N3, I_N4, I_N5, I_N6, I_N7, I_N8, I_N9, I_TAB, I_Q, I_E, I_R, I_A, I_D, I_L,
-                          I_X, I_B, I_N, I_LEFT, I_RIGHT, I_UP, I_DOWN};
-int winkey_scut_altcolor[] = {I_MIN, I_PLUS, I_T, I_U, I_I, I_P, I_S, I_F, I_G, I_H, I_K, I_SEMI, I_Z, I_V, I_M, I_COMMA, I_DOT};
-int winkey_scut_keys_size = sizeof(winkey_scut_keys) / sizeof(winkey_scut_keys[0]);
-int winkey_scut_altcolor_size = sizeof(winkey_scut_altcolor) / sizeof(winkey_scut_altcolor[0]);
-int super_scut_keys[] = {I_INDICATOR, I_N1, I_N2, I_N3, I_N4, I_N5, I_N6, I_N7, I_N8, I_N9, I_N0, I_TAB, I_Q, I_A, I_D, I_L, I_PGUP, I_PGDN, I_V};
-int super_scut_altcolor[] = {I_GRV, I_UP, I_DOWN, I_LEFT, I_RIGHT};
-int super_scut_keys_size = sizeof(super_scut_keys) / sizeof(super_scut_keys[0]);
-int super_scut_altcolor_size = sizeof(super_scut_altcolor) / sizeof(super_scut_altcolor[0]);
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // record key index pressed for rgb reactive changes
@@ -580,123 +546,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     }
 
-    switch (keycode) {
-    case ENC_RGBRESET:
-        if (record->event.pressed) {
-            rgb_matrix_mode(RGB_MATRIX_BAND_VAL);
-            rgb_matrix_set_speed(80);
-            rgb_matrix_sethsv(170, 235, RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-        }
-        break;
-    //  insert delay if recording or playing a macro. otherwise, send mute
-    case ENC_DUALPUSH:
-        if (record->event.pressed) {
-            if (macro_recording || is_macro_playing) {
-                send_string(SS_DELAY(150));
-            }
-            else {
-                const uint8_t mods = get_mods();
-                const uint8_t oneshot_mods = get_oneshot_mods();
-                if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                    tap_code(KC_MPLY);
-                }
-                else {
-                    tap_code(KC_MUTE);
-                }
-            }
-        }
-        break;
-    // keycodes for encoder l/r to do either volume or media control
-    case ENC_MAINL:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods)  & MOD_MASK_CTRL) {
-                tap_code(KC_MPRV);
-            }
-            else {
-                tap_code(KC_VOLD);
-            }
-        }
-        break;
-    case ENC_MAINR:
-        if (record->event.pressed) {
-            const uint8_t mods = get_mods();
-            const uint8_t oneshot_mods = get_oneshot_mods();
-            if ((mods | oneshot_mods) & MOD_MASK_CTRL) {
-                tap_code(KC_MNXT);
-            }
-            else {
-                tap_code(KC_VOLU);
-            }
-        }
-        break;
-    // set up so rotary encoder works right with mac set to natural scrolling
-    case SCROLL_UP:
-        if (record->event.pressed) {
-            tap_code16(is_mac_base() ? KC_MS_WH_DOWN : KC_MS_WH_UP);
-        }
-        break;
-    case SCROLL_DN:
-        if (record->event.pressed) {
-            tap_code16(is_mac_base() ? KC_MS_WH_UP : KC_MS_WH_DOWN);
-        }
-        break;
-    case DUAL_ESC:
-        if (record->event.pressed) {
-           if (!macro_recording) {
-               // send escapse
-               register_code(KC_ESC);
-           }
-           else {
-               // if macro is recording, stop it
-               dynamic_macro_stop_recording();
-           }
-        }
-        else {
-            unregister_code(KC_ESC);
-        }
-        break;
-    // this is setup so I can use F12 key to insert a delay while recording a macro
-    case DUAL_F12:
-        if (record->event.pressed) {
-           if (!macro_recording && !is_macro_playing) { 
-               // send F12 
-               register_code(KC_F12);
-           }
-           else {
-               // if macro is recording or playing, insert a delay
-               // wait_ms(150); // this only works when wired
-               send_string(SS_DELAY(150)); // this works wired and wireless
-           }
-        }
-        else {
-           if (!macro_recording && !is_macro_playing) {
-               unregister_code(KC_F12);
-           }
-        }
-        break; 
-    // volume up and down should be able to be pressed multiple times without cancelling a oneshot layer
-    case KC_VOLD:
-    case KC_VOLU:
-        if (oneshot_layer_active || sim_osl) {
-          reset_oneshot_layer();
-          if (sim_osl_token) {
-              cancel_deferred_exec(sim_osl_token);
-              sim_osl_token = INVALID_DEFERRED_TOKEN;
-          }
-          if (record->event.pressed) {
-              sim_osl = true;
-              uint8_t layer = get_highest_layer(layer_state);
-              layer_on(layer); // simulate that oneshot is still going
-          }
-          else {   // key release should use a delay for layer deactivation
-              // this turns off the layer if further volume controls are not used within 500ms
-              sim_osl_token = defer_exec(500, sim_osl_callback, NULL);
-          }
-        }
-        break;
-    }
     return process_record_secrets(keycode, record);
 }
 

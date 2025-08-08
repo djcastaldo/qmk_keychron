@@ -114,6 +114,8 @@ enum userspace_keycodes {
     DUAL_ZOOMO,
     DUAL_PLUSMIN,
     DUAL_MULTDIV,
+    DUAL_ESC,
+    DUAL_F12,
     DUAL_F13,
     DUAL_F14,
     DUAL_PMNS,
@@ -337,9 +339,20 @@ extern bool is_macro_led_on;
 extern uint16_t macro_timer;
 extern deferred_token osl_macro_token;
 extern bool oneshot_layer_active;
+extern bool sim_osl;
+extern deferred_token sim_osl_token;
 extern bool is_cmd_tab_active;
 extern bool is_cmd_shift_tab_active;
 extern deferred_token cmd_tab_token;
+extern bool is_winkey_held;
+extern uint8_t winkey_scut_keys[];
+extern uint8_t winkey_scut_altcolor[];
+extern uint8_t winkey_scut_keys_size;
+extern uint8_t winkey_scut_altcolor_size;
+extern uint8_t super_scut_keys[];
+extern uint8_t super_scut_altcolor[];
+extern uint8_t super_scut_keys_size;
+extern uint8_t super_scut_altcolor_size;
 
 bool process_record_userspace(uint16_t keycode, keyrecord_t *record);
 bool process_leader_userspace(void);
@@ -350,6 +363,7 @@ void symbol_key_mac(const char *unicode, const char *shift_unicode);
 void symbol_key_win(const char *alt_code, const char *shift_alt_code);
 void symbol_key_linux(const char *hex_code, const char *shift_hex_code);
 void type_numpad_keys_from_string(const char *stringnum);
-uint32_t osl_macro_callback(uint32_t trigger_time, void *cb_arg);
 bool app_switch_active(void);
+uint32_t osl_macro_callback(uint32_t trigger_time, void *cb_arg);
+uint32_t sim_osl_callback(uint32_t trigger_time, void* cb_arg);
 uint32_t cmd_tab_callback(uint32_t trigger_time, void* cb_arg);

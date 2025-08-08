@@ -409,7 +409,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [FN_LAYR]   = {ENCODER_CCW_CW(DUAL_ZOOMO, DUAL_ZOOMI)},
     [WIN_BASE]  = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [SFT_LAYR]  = {ENCODER_CCW_CW(ENC_SCROLLAPPL, ENC_SCROLLAPPR)},
-    [KCTL_LAYR]  = {ENCODER_CCW_CW(ENC_RGBL, ENC_RGBR)},
+    [KCTL_LAYR] = {ENCODER_CCW_CW(ENC_RGBL, ENC_RGBR)},
     [TMUX_LAYR] = {ENCODER_CCW_CW(ENC_TSIZEL, ENC_TSIZER)},
     [MSYM_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [WIDE_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
@@ -584,27 +584,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     switch (keycode) {
-    // functionality for opt keys with holds for SFT_LAYR and MSYM_LAYR
-    case KC_LOPT:
-        if (!record->event.pressed) {
-            is_lopt_held = false;
-        }
-    // intentionally no break here
-    case KC_ROPT:
-        if (record->event.pressed) {
-            if (get_highest_layer(layer_state) < 3) {
-                layer_on(MSYM_LAYR);
-            }
-        }
-        else {
-            if (is_layer_locked(MSYM_LAYR)) {
-                return false;
-            }
-            else {
-                layer_off(MSYM_LAYR);
-            }
-        }
-        break;
     // for bt mode change, stop fade for a little while so can see the connection status lights
     case BT_HST1:
     case BT_HST2:

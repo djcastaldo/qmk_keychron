@@ -46,11 +46,29 @@ uint16_t macro_timer;
 deferred_token osl_macro_token = INVALID_DEFERRED_TOKEN;
 // for tracking if oneshot layer is active
 bool oneshot_layer_active;
+// setup a way to delay oneshot deactivation after a keycode that keeps oneshot active
+// a one-shot extended time can be simulated by simply turning a layer on and using the
+// callback to turn the layer off after a specified delay
+bool sim_osl;
+deferred_token sim_osl_token = INVALID_DEFERRED_TOKEN;
 // for tracking cmd-tab app switching
 bool is_cmd_tab_active;
 bool is_cmd_shift_tab_active;
 // setup cmd-tab app switching
 deferred_token cmd_tab_token = INVALID_DEFERRED_TOKEN;
+// use this to highlight keyboard shortcuts with rgb when winkey (or linux super) is held
+// split some of these into another color since they are used rarely
+bool is_winkey_held;
+uint8_t winkey_scut_keys[] = {I_INDICATOR, I_N0, I_N1, I_N2, I_N3, I_N4, I_N5, I_N6, I_N7, I_N8, I_N9, I_TAB,
+                              I_Q, I_E, I_R, I_A, I_D, I_L, I_X, I_B, I_N, I_LEFT, I_RIGHT, I_UP, I_DOWN};
+uint8_t winkey_scut_altcolor[] = {I_MIN, I_PLUS, I_T, I_U, I_I, I_P, I_S, I_F, I_G, I_H, I_K, I_SEMI,
+                                  I_Z, I_V, I_M, I_COMMA, I_DOT};
+uint8_t winkey_scut_keys_size = sizeof(winkey_scut_keys) / sizeof(winkey_scut_keys[0]);
+uint8_t winkey_scut_altcolor_size = sizeof(winkey_scut_altcolor) / sizeof(winkey_scut_altcolor[0]);
+uint8_t super_scut_keys[] = {I_INDICATOR, I_N1, I_N2, I_N3, I_N4, I_N5, I_N6, I_N7, I_N8, I_N9, I_N0, I_TAB, I_Q, I_A, I_D, I_L, I_PGUP, I_PGDN, I_V};
+uint8_t super_scut_altcolor[] = {I_GRV, I_UP, I_DOWN, I_LEFT, I_RIGHT};
+uint8_t super_scut_keys_size = sizeof(super_scut_keys) / sizeof(super_scut_keys[0]);
+uint8_t super_scut_altcolor_size = sizeof(super_scut_altcolor) / sizeof(super_scut_altcolor[0]);
 
 bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
     static uint32_t key_timer;
@@ -488,39 +506,44 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
         }
         return false;
     case ENC_MUTEPLAY:
+        //  insert delay if recording or playing a macro. otherwise, send mute or play/pause
         if (record->event.pressed) {
-            // standard: mute, while command is held: play/pause
-            dual_key(KC_MUTE,KC_MPLY,MOD_MASK_GUI);
+            if (macro_recording || is_macro_playing) {
+                send_string(SS_DELAY(150));
+            }
+            else {
+                dual_key(KC_MUTE,KC_MPLY,MOD_MASK_GUI | MOD_MASK_CTRL);
+            }
         }
-        return false;
+        break;
     case ENC_VOLD:
         if (record->event.pressed) {
-            // standard: volume down, while command is held: keypad up
-            dual_key(KC_VOLD,KC_UP,MOD_MASK_GUI);
+            // standard: volume down, while command or control is held: keypad up
+            dual_key(KC_VOLD,KC_UP,MOD_MASK_GUI | MOD_MASK_CTRL);
         }
         return false;
     case ENC_VOLU:
         if (record->event.pressed) {
-            // standard: volume up, while command is held: keypad down
-            dual_key(KC_VOLU,KC_DOWN,MOD_MASK_GUI);
+            // standard: volume up, while command or control is held: keypad down
+            dual_key(KC_VOLU,KC_DOWN,MOD_MASK_GUI | MOD_MASK_CTRL);
         }
         return false;
     case ENC_UNIMENU:
         if (record->event.pressed) {
-            // standard: unicode menu, while command is held: enter
-            dual_key(UNICODE,KC_ENT,MOD_MASK_GUI);
+            // standard: unicode menu, while command or control is held: enter
+            dual_key(UNICODE,KC_ENT,MOD_MASK_GUI | MOD_MASK_CTRL);
         }
         return false;
     case ENC_MENUL:
         if (record->event.pressed) {
-            // standard: key up, while command is held: keypad left
-            dual_key(KC_UP,KC_LEFT,MOD_MASK_GUI);
+            // standard: key up, while command or control is held: keypad left
+            dual_key(KC_UP,KC_LEFT,MOD_MASK_GUI | MOD_MASK_CTRL);
         }
         return false;
     case ENC_MENUR:
         if (record->event.pressed) {
-            // standard: key down, while command is held: keypad right
-            dual_key(KC_DOWN,KC_RIGHT,MOD_MASK_GUI);
+            // standard: key down, while command or control is held: keypad right
+            dual_key(KC_DOWN,KC_RIGHT,MOD_MASK_GUI | MOD_MASK_CTRL);
         }
         return false;
     case ENC_APPHIDE:
@@ -579,7 +602,7 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             else {
-                tap_code16(KC_MS_WH_DOWN);
+                tap_code16(is_mac_base() ? KC_MS_WH_DOWN : KC_MS_WH_UP);
             }
         }
         return false;
@@ -610,7 +633,7 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             else {
-                tap_code16(KC_MS_WH_UP);
+                tap_code16(is_mac_base() ? KC_MS_WH_UP : KC_MS_WH_DOWN);
             }
         }
         return false;
@@ -769,6 +792,35 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             dual_key(KC_PAST, KC_PSLS, MOD_MASK_CTRL);
         }
         return false;
+    case DUAL_ESC:
+        if (record->event.pressed) {
+           if (!macro_recording) {
+               // send escapse
+               register_code(KC_ESC);
+           }
+           else {
+               // if macro is recording, stop it
+               dynamic_macro_stop_recording();
+           }
+        }
+        else {
+            unregister_code(KC_ESC);
+        }
+        return false;
+    // this is setup so I can use F12 key to insert a delay while recording a macro
+    case DUAL_F12:
+        if (record->event.pressed) {
+           if (!macro_recording && !is_macro_playing) {
+               // send F12
+               tap_code(KC_F12);
+           }
+           else {
+               // if macro is recording or playing, insert a delay
+               // wait_ms(150); // this only works when wired
+               send_string(SS_DELAY(150)); // this works wired and wireless
+           }
+        }
+        return false;
     // this allows a running macro to be stopped using the macro key
     case DUAL_F13:
         if (record->event.pressed) {
@@ -923,6 +975,49 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             if (oneshot_layer_active) {
                 reset_oneshot_layer();
                 osl_macro_token = defer_exec(100, osl_macro_callback, NULL);
+            }
+        }
+        break;
+    // volume up and down should be able to be pressed multiple times without cancelling a oneshot layer
+    case KC_VOLD:
+    case KC_VOLU:
+        if (oneshot_layer_active || sim_osl) {
+          reset_oneshot_layer();
+          if (sim_osl_token) {
+              cancel_deferred_exec(sim_osl_token);
+              sim_osl_token = INVALID_DEFERRED_TOKEN;
+          }
+          if (record->event.pressed) {
+              sim_osl = true;
+              uint8_t layer = get_highest_layer(layer_state);
+              layer_on(layer); // simulate that oneshot is still going
+          }
+          else {   // key release should use a delay for layer deactivation
+              // this turns off the layer if further volume controls are not used within 500ms
+              sim_osl_token = defer_exec(500, sim_osl_callback, NULL);
+          }
+        }
+        break;
+    // functionality for opt keys that may use lopt with holds for mouse control or on MSYM_LAYR
+    case KC_LOPT:
+        if (is_mac_base() && !record->event.pressed) {
+            is_lopt_held = false;
+        }
+    // intentionally no break here
+    case KC_ROPT:
+        if (is_mac_base()) {
+            if (record->event.pressed) {
+                if (get_highest_layer(layer_state) < 3) {
+                    layer_on(MSYM_LAYR);
+                }
+            }
+            else {
+                if (is_layer_locked(MSYM_LAYR)) {
+                    return false;
+                }
+                else {
+                    layer_off(MSYM_LAYR);
+                }
             }
         }
         break;
@@ -2763,6 +2858,16 @@ void type_numpad_keys_from_string(const char *stringnum) {
 // callback for when a mcaro on osl is run (to turn off the layer)
 uint32_t osl_macro_callback(uint32_t trigger_time, void *cb_arg) {
     layer_off(FN_LAYR);
+    return 0;
+}
+// callback to deactivate a simulated osl layer
+uint32_t sim_osl_callback(uint32_t trigger_time, void* cb_arg) {
+    dprintf("sim_osl_callback running\n");
+    uint8_t layer = get_highest_layer(layer_state);
+    if (!is_layer_locked(layer)) {
+        layer_off(layer);
+    }
+    sim_osl = false;
     return 0;
 }
 // callback to turn off app-switch mode
