@@ -94,3 +94,6 @@
 /* key indexes that changed to shifted version when caps is used */
 #    define CONFIG_CAPSLOCK_SHIFTED ((i > 39 && i < 50) || (i > 59 && i < 70) || (i > 79 && i < 87))
 #    define CONFIG_CAPSWORD_EXTRA (i == 30)
+
+/* any nonstandard condition for keys that should not fade when pressed */
+#    define CONFIG_CUSTOM_DO_NOT_FADE (key.index < 19 || key.index == 72)

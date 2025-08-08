@@ -471,9 +471,6 @@ void macl_reset (tap_dance_state_t *state, void *user_data);
 void kbunlock_finished (tap_dance_state_t *state, void *user_data);
 void kbunlock_reset (tap_dance_state_t *state, void *user_data);
 
-// function for determining if a key should fade
-bool key_should_fade(keytracker key, uint8_t layer);
-
 // setup this token to be used to create a delay from when wireless mode is changed until when key fade turns back on
 // to see the wireless status indicator
 static deferred_token wireless_mode_token = INVALID_DEFERRED_TOKEN;
@@ -1024,28 +1021,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
     }
     return false;
-}
-
-// a function to check for if a key press should fade the rgb
-bool key_should_fade(keytracker key, uint8_t layer) {
-    bool should_fade = true;
-    if ((key.fade < 1) ||
-       (key.index < 19) || (key.index == 72) ||                                                                     // top row
-       (key.index == I_TAB) ||                                                                                      // tab
-       (layer < 2 && key.index == I_CAPS) ||                                                                        // caps lock
-       (key.index == I_INS || key.index == I_ENT) ||                                                                // ins, enter
-       ((layer == 1 || layer == 3 || layer == WIDE_LAYR || layer == CIRC_LAYR || is_caps_word_on()) &&
-         (key.index == I_LSFT || key.index == I_RSFT)) ||                                                           // shift
-       (layer == WIDE_LAYR && (key.index == I_BARTEXT || key.index == I_STHRU ||
-         key.index == I_UNDERLN || key.index == I_BBRTEXT)) ||                                                      // wide-text toggles
-       (layer == KCTL_LAYR && (key.index >= I_N1 && key.index <= I_N4)) ||                                          // wireless mode keys
-       (layer < 2 && key.index > 94 && key.index < 103) ||                                                          // bottom row mods
-       (layer == 4 && (key.index == I_LCMD || key.index == I_RCMD || key.index == I_HOME || key.index == I_END ||
-         key.index == I_SEMI || key.index == I_APOS)) ||                                                            // cmd, mode keys
-       ((layer == 5 || layer == MSYM_LAYR) && (key.index == I_LOPT || key.index == I_ROPT))) {                      // option
- 	 should_fade = false;
-       }
-    return should_fade; 
 }
 
 //Determine the current tap dance state

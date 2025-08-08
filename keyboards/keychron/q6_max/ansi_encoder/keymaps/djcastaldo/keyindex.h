@@ -41,6 +41,7 @@ enum key_indexes {
     I_SIRI = 14,
     I_KTRACK = 14,
     I_RGB = 15,
+    I_SLOCK = 16,
     I_CIRC = 16,
     I_TRI = 17,
     I_SQR = 18,

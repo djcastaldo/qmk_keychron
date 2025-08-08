@@ -435,9 +435,6 @@ void rcmd_reset (tap_dance_state_t *state, void *user_data);
 void lopt_finished (tap_dance_state_t *state, void *user_data);
 void lopt_reset (tap_dance_state_t *state, void *user_data);
 
-// function for determining if a key should fade
-bool key_should_fade(keytracker key, uint8_t layer);
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // record key index pressed for rgb reactive changes
     if (enable_keytracker && !is_macro_playing && keycode != QK_LEAD) {
@@ -979,33 +976,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
     }
     return false;
-}
-
-// a function to check for if a key press should fade the rgb
-bool key_should_fade(keytracker key, uint8_t layer) {
-    bool should_fade = true;
-    if ((key.fade < 1) ||
-      ((layer == FN_LAYR || layer == SFT_LAYR || layer == WIDE_LAYR ||
-        layer == CIRC_LAYR || is_caps_word_on()) &&
-        (key.index == I_LSFT || key.index == I_RSFT)) ||                                                         // l/r shift
-      ((layer == FN_LAYR || layer == KCTL_LAYR) && (key.index == I_LALT || key.index == I_RALT)) ||              // l/r alt
-      (macro_recording && (key.index == I_MREC1 || key.index == I_MREC2)) ||                                     // macro recording keys
-      (is_layer_locked(layer) && key.index == I_LLOCK) ||                                                        // home (layer lock key)
-      (is_in_leader_sequence && key.index == I_L) ||                                                             // leader key
-      (layer == SFT_LAYR && (key.index == I_NUMLOCK || key.index == I_PGUP)) ||                                  // num lock, mouse hold
-      (layer == FN_LAYR && key.index == I_SLOCK) ||                                                              // scroll lock
-      (layer == WIDE_LAYR && (key.index == I_BARTEXT || key.index == I_STHRU ||
-        key.index == I_UNDERLN || key.index == I_BBRTEXT)) ||                                                    // wide-text toggles
-      (layer == KCTL_LAYR && (key.index == I_FJLIGHT || key.index == I_HROWLIGHT)) ||                            // hrow/fj indicators
-      (layer == KCTL_LAYR && (key.index >= I_N1 && key.index <= I_N4)) ||                                        // wireless mode keys
-      (os_changed) ||                                                                                            // mac/win/lin change
-      (layer == WSYM_LAYR && (key.index == I_GRV || key.index == I_N1 || key.index == I_E ||
-                                key.index == I_I || key.index == I_U || key.index == I_N ||                      // accent keys
-                                key.index == I_RALT || key.index == I_LGUI)) ||                                  // sym_layr ralt, lgui
-      (key.index == I_CAPS) || (key.index == I_FN || key.index == I_TAB)) {                                      // caps lock, fn, tab
-          should_fade = false;
-      }
-    return should_fade;
 }
 
 // determine the current tap dance state

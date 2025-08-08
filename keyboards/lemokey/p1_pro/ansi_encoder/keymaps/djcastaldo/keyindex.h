@@ -99,5 +99,6 @@ enum key_indexes {
     I_RCTL = 77,
     I_LEFT = 78,
     I_DOWN = 79,
-    I_RIGHT = 80
+    I_RIGHT = 80,
+    I_ROPT = 200,
 };

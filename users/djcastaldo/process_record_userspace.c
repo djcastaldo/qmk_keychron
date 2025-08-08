@@ -2881,6 +2881,37 @@ void type_numpad_keys_from_string(const char *stringnum) {
     }
 }
 
+// a function to check for if a key press should fade the rgb
+bool key_should_fade(keytracker key, uint8_t layer) {
+    bool should_fade = true;
+    if ((key.fade < 1) ||
+#ifdef CONFIG_CUSTOM_DO_NOT_FADE
+        CONFIG_CUSTOM_DO_NOT_FADE ||
+#endif
+        ((layer == FN_LAYR || layer == SFT_LAYR || layer == WIDE_LAYR ||
+        layer == CIRC_LAYR || is_caps_word_on()) &&
+        (key.index == I_LSFT || key.index == I_RSFT)) ||                                              // l/r shift
+        ((layer == FN_LAYR || layer == KCTL_LAYR) && (key.index == I_LALT || key.index == I_RALT)) || // l/r alt
+        (macro_recording && (key.index == I_MREC1 || key.index == I_MREC2)) ||                        // macro recording keys
+        (is_layer_locked(layer) && key.index == I_LLOCK) ||                                           // home (layer lock key)
+        (is_in_leader_sequence && key.index == I_L) ||                                                // leader key
+        (layer == SFT_LAYR && (key.index == I_NUMLOCK || key.index == I_PGUP)) ||                     // num lock, mouse hold
+        (layer == FN_LAYR && key.index == I_SLOCK) ||                                                 // scroll lock
+        (layer == WIDE_LAYR && (key.index == I_BARTEXT || key.index == I_STHRU ||
+        key.index == I_UNDERLN || key.index == I_BBRTEXT)) ||                                         // wide-text toggles
+        (layer == KCTL_LAYR && (key.index == I_FJLIGHT || key.index == I_HROWLIGHT)) ||               // hrow/fj indicators
+        (layer == KCTL_LAYR && (key.index >= I_N1 && key.index <= I_N4)) ||                           // wireless mode keys
+        (os_changed) ||                                                                               // mac/win/lin change
+        (layer == WSYM_LAYR && (key.index == I_GRV || key.index == I_N1 || key.index == I_E ||
+                                key.index == I_I || key.index == I_U || key.index == I_N ||           // accent keys
+                                key.index == I_RALT || key.index == I_LGUI)) ||                       // sym_layr ralt, lgui
+        (layer == MSYM_LAYR && (key.index == I_LOPT || key.index == I_ROPT)) ||                       // sym_layr lopt, ropt
+        (key.index == I_CAPS) || (key.index == I_FN || key.index == I_TAB)) {                         // caps lock, fn, tab
+            should_fade = false;
+        }
+    return should_fade;
+}
+
 // led indexes for keys that get capitalized when caps lock is on
 bool is_capslock_shifted(uint8_t i) {
 #ifdef CONFIG_CAPSLOCK_SHIFTED

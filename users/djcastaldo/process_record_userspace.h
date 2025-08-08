@@ -373,6 +373,7 @@ extern uint8_t super_scut_altcolor_size;
 
 bool process_record_userspace(uint16_t keycode, keyrecord_t *record);
 bool process_leader_userspace(void);
+bool key_should_fade(keytracker key, uint8_t layer);
 bool is_capslock_shifted(uint8_t i);
 bool is_capsword_shifted(uint8_t i);
 void jiggle_mouse(void);
