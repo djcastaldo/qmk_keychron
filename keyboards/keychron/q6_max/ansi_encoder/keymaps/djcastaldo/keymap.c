@@ -562,10 +562,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return process_record_secrets(keycode, record);
 }
 
-void leader_start_user(void) {
-    is_in_leader_sequence = true;
-}
-
 void leader_end_user(void) {
     if (leader_sequence_two_keys(KC_L, KC_K)) {                // key lock watch for key to lock
         set_key_lock_watching();
@@ -1389,41 +1385,6 @@ tap_dance_action_t tap_dance_actions[] = {
   [MOUSE_ACCEL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, macl_finished, macl_reset),
   [KB_UNLOCK] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, kbunlock_finished, kbunlock_reset),
 };
-
-// this is needed to prevent CAPS_WORD from breaking when some custom key commands are used
-bool caps_word_press_user(uint16_t keycode) {
-    switch (keycode) {
-        // Keycodes that continue Caps Word, with shift applied.
-        case KC_A ... KC_Z:
-        case KC_MINS:
-            add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
-            return true;
-
-        // Keycodes that continue Caps Word, without shifting.
-        case KC_1 ... KC_0:
-        case KC_BSPC:
-        case KC_DEL:
-        case KC_UNDS:
-        case BSPCFAST:
-            return true;
-
-        default:
-            return false;  // Deactivate Caps Word.
-    }
-}
-
-// use this for special layer lock handling
-void layer_lock_set_user(layer_state_t locked_layers) {
-    static bool opt_is_held_for_symbol = false;
-    if (is_layer_locked(MSYM_LAYR)) {
-        register_code(KC_LOPT);
-        opt_is_held_for_symbol = true;
-    }
-    else if (opt_is_held_for_symbol) {
-        unregister_code(KC_LOPT);
-        opt_is_held_for_symbol = false;
-    }
-}
 
 void keyboard_post_init_user(void) {
     // read the user config from EEPROM

@@ -2900,6 +2900,28 @@ bool is_capsword_shifted(uint8_t i) {
     return false;
 }
 
+// this is needed to prevent CAPS_WORD from breaking when some custom key commands are used
+bool caps_word_press_user(uint16_t keycode) {
+    switch (keycode) {
+        // Keycodes that continue Caps Word, with shift applied.
+        case KC_A ... KC_Z:
+        case KC_MINS:
+            add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+            return true;
+
+        // Keycodes that continue Caps Word, without shifting.
+        case KC_1 ... KC_0:
+        case KC_BSPC:
+        case KC_DEL:
+        case KC_UNDS:
+        case BSPCFAST:
+            return true;
+
+        default:
+            return false;  // Deactivate Caps Word.
+    }
+}
+
 // callback for when a mcaro on osl is run (to turn off the layer)
 uint32_t osl_macro_callback(uint32_t trigger_time, void *cb_arg) {
     layer_off(FN_LAYR);
@@ -2964,6 +2986,22 @@ void oneshot_layer_changed_user(uint8_t layer) {
     }
     else {
         oneshot_layer_active = false;
+    }
+}
+
+void leader_start_user(void) {
+    is_in_leader_sequence = true;
+}
+
+void layer_lock_set_user(layer_state_t locked_layers) {
+    static bool opt_is_held_for_symbol = false;
+    if (is_layer_locked(MSYM_LAYR)) {
+        register_code(KC_LOPT);
+        opt_is_held_for_symbol = true;
+    }
+    else if (opt_is_held_for_symbol) {
+        unregister_code(KC_LOPT);
+        opt_is_held_for_symbol = false;
     }
 }
 

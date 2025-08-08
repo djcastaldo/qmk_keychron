@@ -1918,44 +1918,6 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-// this is needed to prevent CAPS_WORD from breaking when some custom key commands are used
-bool caps_word_press_user(uint16_t keycode) {
-    switch (keycode) {
-        // Keycodes that continue Caps Word, with shift applied.
-        case KC_A ... KC_Z:
-        case KC_MINS:
-            add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
-            return true;
-
-        // Keycodes that continue Caps Word, without shifting.
-        case KC_1 ... KC_0:
-        case KC_BSPC:
-        case KC_DEL:
-        case KC_UNDS:
-        case BSPCFAST:
-            return true;
-
-        default:
-            return false;  // Deactivate Caps Word.
-    }
-}
-
-void layer_lock_set_user(layer_state_t locked_layers) {
-    static bool opt_is_held_for_symbol = false;
-    if (is_layer_locked(MSYM_LAYR)) {
-        register_code(KC_LOPT);
-        opt_is_held_for_symbol = true;
-    }
-    else if (opt_is_held_for_symbol) {
-        unregister_code(KC_LOPT);
-        opt_is_held_for_symbol = false;
-    }
-}
-
-void leader_start_user(void) {
-    is_in_leader_sequence = true;
-}
-
 void leader_end_user(void) {
     if (leader_sequence_three_keys(KC_L, KC_L, KC_S)) {        // layer lock SFT_LAYR
         if (is_layer_locked(SFT_LAYR)) {
