@@ -439,21 +439,6 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
 //`-------------------------------------------------------------------------------------------------------------------------------------`
 
-// led indexes for keys that get capitalized when caps lock is on
-bool is_capslock_shifted(uint8_t i) {
-    if ((i > 39 && i < 50) || (i > 59 && i < 69) || (i > 79 && i < 87)) {
-        return true;
-    }
-    return false;
-}
-// led indexes for keys that get shifted when caps word is on
-bool is_capsword_shifted(uint8_t i) {
-    if (i == 30 || is_capslock_shifted(i)) {
-        return true;
-    }
-    return false;
-}
-
 // tap dance setup
 typedef struct {
     bool is_press_action;

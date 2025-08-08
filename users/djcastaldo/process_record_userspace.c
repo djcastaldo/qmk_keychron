@@ -2879,6 +2879,27 @@ void type_numpad_keys_from_string(const char *stringnum) {
     }
 }
 
+// led indexes for keys that get capitalized when caps lock is on
+bool is_capslock_shifted(uint8_t i) {
+#ifdef CONFIG_CAPSLOCK_SHIFTED
+    if (CONFIG_CAPSLOCK_SHIFTED) {
+        return true;
+    }
+#endif
+    return false;
+}
+// led indexes for keys that get shifted when caps word is on
+bool is_capsword_shifted(uint8_t i) {
+#ifdef CONFIG_CAPSWORD_EXTRA
+    if (CONFIG_CAPSWORD_EXTRA || is_capslock_shifted(i)) {
+#else
+    if (is_capslock_shifted(i)) {
+#endif
+        return true;
+    }
+    return false;
+}
+
 // callback for when a mcaro on osl is run (to turn off the layer)
 uint32_t osl_macro_callback(uint32_t trigger_time, void *cb_arg) {
     layer_off(FN_LAYR);
