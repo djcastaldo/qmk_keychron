@@ -56,6 +56,30 @@ bool is_cmd_tab_active;
 bool is_cmd_shift_tab_active;
 // setup cmd-tab app switching
 deferred_token cmd_tab_token = INVALID_DEFERRED_TOKEN;
+// for tracking if leader sequence is started
+bool is_in_leader_sequence;
+bool is_leader_led_on;
+uint16_t leader_timer;
+bool is_leader_error;
+bool is_leader_error_led_on;
+uint16_t leader_error_timer;
+deferred_token leader_error_token = INVALID_DEFERRED_TOKEN;
+// for tracking whether to blink an led as an indicator, used to show which layer is active
+bool is_led_on;
+uint16_t layer_timer;
+// for tracking layer lock in order to flash the layer lock indicator
+bool is_layer_lock_led_on;
+uint16_t layer_lock_timer;
+// for tracking key lock blinking
+bool is_key_lock_led_on;
+uint16_t key_lock_timer;
+// for tracking os and base layer changes
+bool os_changed;
+uint16_t os_change_timer;
+// for storing the last rgb_mode to return to after returning from LOCK_LAYR
+uint8_t saved_rgb_mode;
+// for tracking if an accent char tap dance should light up a particular key to show what the tap will send
+uint8_t act_char_led_index = 0;
 // use this to highlight keyboard shortcuts with rgb when winkey (or linux super) is held
 // split some of these into another color since they are used rarely
 bool is_winkey_held;
@@ -2878,6 +2902,13 @@ uint32_t cmd_tab_callback(uint32_t trigger_time, void* cb_arg) {
     is_cmd_shift_tab_active = false;
     return 0;
 }
+// if a leader seuqence errored, rgbs can be set to blink for a time until this callback is used
+uint32_t leader_error_callback(uint32_t trigger_time, void* cb_arg) {
+    is_leader_error = false;
+    is_leader_error_led_on = false;
+    return 0;
+}
+
 // setup to store vars when macro recording starts or ends. then can flash some rgb
 void dynamic_macro_record_start_user(int8_t direction) {
     macro_direction = direction;

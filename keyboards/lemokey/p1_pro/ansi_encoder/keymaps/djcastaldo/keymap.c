@@ -453,41 +453,6 @@ void lopt_reset (tap_dance_state_t *state, void *user_data);
 // function for determining if a key should fade
 bool key_should_fade(keytracker key, uint8_t layer);
 
-// for tracking if leader sequence is started
-bool is_in_leader_sequence;
-bool is_leader_led_on;
-static uint16_t leader_timer;
-bool is_leader_error;
-bool is_leader_error_led_on;
-static uint16_t leader_error_timer;
-
-// if a leader seuqence errored, rgbs can be set to blink for a time until this callback is used 
-static deferred_token leader_error_token = INVALID_DEFERRED_TOKEN;
-uint32_t leader_error_callback(uint32_t trigger_time, void* cb_arg) {
-    is_leader_error = false;
-    is_leader_error_led_on = false;
-    return 0;
-}
-
-// for tracking whether to blink an led as an indicator, used to show which layer is active
-bool is_led_on;
-static uint16_t layer_timer;
-
-// for tracking layer lock in order to flash the layer lock indicator
-bool is_layer_lock_led_on;
-static uint16_t layer_lock_timer;
-
-// for tracking key lock blinking
-bool is_key_lock_led_on;
-static uint16_t key_lock_timer;
-
-// for tracking os and base layer changes
-bool os_changed;
-static uint16_t os_change_timer;
-
-// for tracking if an accent char tap dance should light up a particular key to show what the tap will send
-int act_char_led_index = 0;
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // record key index pressed for rgb reactive changes
     if (enable_keytracker && !is_macro_playing && keycode != QK_LEAD) {

@@ -454,25 +454,6 @@ bool is_capsword_shifted(uint8_t i) {
     return false;
 }
 
-// for tracking whether to blink an led as an indicator
-bool is_led_on;
-static uint16_t layer_timer;
-
-// for storing the last rgb_mode to return to after returning from LOCK_LAYR
-uint8_t saved_rgb_mode;
-
-// for tracking key lock blinking
-bool is_key_lock_led_on;
-static uint16_t key_lock_timer;
-
-// for tracking if leader sequence is started
-bool is_in_leader_sequence;
-bool is_leader_led_on;
-static uint16_t leader_timer;
-bool is_leader_error;
-bool is_leader_error_led_on;
-static uint16_t leader_error_timer;
-
 // tap dance setup
 typedef struct {
     bool is_press_action;
@@ -507,14 +488,6 @@ void kbunlock_reset (tap_dance_state_t *state, void *user_data);
 
 // function for determining if a key should fade
 bool key_should_fade(keytracker key, uint8_t layer);
-
-// setup leader sequence error blinking callback 
-static deferred_token leader_error_token = INVALID_DEFERRED_TOKEN;
-uint32_t leader_error_callback(uint32_t trigger_time, void* cb_arg) {
-    is_leader_error = false;
-    is_leader_error_led_on = false;
-    return 0;
-}
 
 // setup this token to be used to create a delay from when wireless mode is changed until when key fade turns back on
 // to see the wireless status indicator
@@ -1470,10 +1443,10 @@ void layer_lock_set_user(layer_state_t locked_layers) {
 void keyboard_post_init_user(void) {
     // read the user config from EEPROM
     user_config.raw = eeconfig_read_user();
-    // need to track dip switch changes after userspace move is complete
-    set_single_persistent_default_layer(MAC_BASE);
     // and set this so layers switch correctly on user's first os change
     layer_state_set(default_layer_state);
+    // need to track dip switch changes after userspace move is complete
+    layer_move(MAC_BASE);
 }
 
 void eeconfig_init_user(void) {  // EEPROM is getting reset!
