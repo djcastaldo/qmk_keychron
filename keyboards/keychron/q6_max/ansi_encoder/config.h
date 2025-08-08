@@ -97,3 +97,8 @@
 
 /* any nonstandard condition for keys that should not fade when pressed */
 #    define CONFIG_CUSTOM_DO_NOT_FADE (key.index < 19 || key.index == 72)
+
+/* keyfade settings */
+#    define CONFIG_KEYFADE_START_DELAY 16
+#    define CONFIG_KEYFADE_START_VAL 250
+#    define CONFIG_KEYFADE_CALLBACK_INTERVAL 15

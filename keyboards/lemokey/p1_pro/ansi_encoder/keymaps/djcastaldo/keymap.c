@@ -436,60 +436,13 @@ void lopt_finished (tap_dance_state_t *state, void *user_data);
 void lopt_reset (tap_dance_state_t *state, void *user_data);
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    // record key index pressed for rgb reactive changes
-    if (enable_keytracker && !is_macro_playing && keycode != QK_LEAD) {
-#include "keyindex.h"
-        int key_idx = g_led_config.matrix_co[record->event.key.row][record->event.key.col];
-        if (record->event.pressed) {
-            dprintf("%u \n", key_idx);
-            for (int i = tk_length - 1; i > 0; i--) {
-                tracked_keys[i] = tracked_keys[i-1];
-                if (tracked_keys[i].index == key_idx) {
-                    tracked_keys[i].press = true;
-                    tracked_keys[i].fade = 255;
-                }
-            }
-            tracked_keys[0].press = true;
-            tracked_keys[0].fade = 255;
-            tracked_keys[0].index = key_idx;
-        }
-        else {
-            for (int i = 0; i < tk_length; i++) {
-                if (tracked_keys[i].index == key_idx) {
-                    tracked_keys[i].press = false;
-                    tracked_keys[i].fade = 119;
-                }
-            }
-            // setup the key fade
-            if (key_token) {
-                cancel_deferred_exec(key_token);
-                key_token = INVALID_DEFERRED_TOKEN;
-            }
-            uint32_t keytracker_callback(uint32_t trigger_time, void* cb_arg) {
-                bool fade_changed = false;
-                for (int i = 0; i < tk_length; i++) {
-                    if (!tracked_keys[i].press && tracked_keys[i].fade > 0) {
-                        tracked_keys[i].fade--;
-                        fade_changed = true;
-                    }
-                }
-                if (fade_changed) {
-                    return 12;  // Call the callback every 12ms
-                }
-                else {
-                    return 0;
-                }
-            }
-            key_token = defer_exec(10, keytracker_callback, NULL);  // Schedule callback.
-        }
-    }
-    // lemokey common
-    if (!process_record_lemokey_common(keycode,record)) {
+    // userspace
+    if (!process_record_userspace(keycode,record)) {
         return false;
     }
 
-    // userspace
-    if (!process_record_userspace(keycode,record)) {
+    // lemokey common
+    if (!process_record_lemokey_common(keycode,record)) {
         return false;
     }
 

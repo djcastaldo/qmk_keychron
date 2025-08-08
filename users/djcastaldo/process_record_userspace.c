@@ -98,6 +98,64 @@ uint8_t super_scut_altcolor_size = sizeof(super_scut_altcolor) / sizeof(super_sc
 
 bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
     static uint32_t key_timer;
+    // record key index pressed for rgb reactive changes
+    if (enable_keytracker && !is_macro_playing && keycode != QK_LEAD) {
+        int key_idx = g_led_config.matrix_co[record->event.key.row][record->event.key.col];
+        if (record->event.pressed) {
+            dprintf("%u \n", key_idx);
+            for (int i = tk_length - 1; i > 0; i--) {
+                tracked_keys[i] = tracked_keys[i-1];
+                if (tracked_keys[i].index == key_idx) {
+                    tracked_keys[i].press = true;
+                    tracked_keys[i].fade = 255;
+                }
+            }
+            tracked_keys[0].press = true;
+            tracked_keys[0].fade = 255;
+            tracked_keys[0].index = key_idx;
+        }
+        else {
+            for (int i = 0; i < tk_length; i++) {
+                if (tracked_keys[i].index == key_idx) {
+                    tracked_keys[i].press = false;
+#ifdef CONFIG_KEYFADE_START_VAL
+                    tracked_keys[i].fade = CONFIG_KEYFADE_START_VAL;
+#else
+                    tracked_keys[i].fade = 119;
+#endif
+                }
+            }
+            // setup the key fade
+            if (key_token) {
+                cancel_deferred_exec(key_token);
+                key_token = INVALID_DEFERRED_TOKEN;
+            }
+            uint32_t keytracker_callback(uint32_t trigger_time, void* cb_arg) {
+                bool fade_changed = false;
+                for (int i = 0; i < tk_length; i++) {
+                    if (!tracked_keys[i].press && tracked_keys[i].fade > 0) {
+                        tracked_keys[i].fade--;
+                        fade_changed = true;
+                    }
+                }
+                if (fade_changed) {
+#ifdef CONFIG_KEYFADE_CALLBACK_INTERVAL
+                    return CONFIG_KEYFADE_CALLBACK_INTERVAL;
+#else
+                    return 12;  // Call the callback every 12ms
+#endif
+                }
+                else {
+                    return 0;
+                }
+            }
+#ifdef CONFIG_KEYFADE_START_DELAY
+            key_token = defer_exec(CONFIG_KEYFADE_START_DELAY, keytracker_callback, NULL);
+#else
+            key_token = defer_exec(10, keytracker_callback, NULL);  // Schedule callback.
+#endif
+        }
+    }
 
     // stop color test if active and a key is pressed
     if (color_test && record->event.pressed) {

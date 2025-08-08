@@ -106,3 +106,8 @@
 /* key indexes that changed to shifted version when caps is used */
 #    define CONFIG_CAPSLOCK_SHIFTED ((i > 29 && i < 40) || (i > 44 && i < 54) || (i > 58 && i < 66))
 #    define CONFIG_CAPSWORD_EXTRA (i == 25)
+
+/* keyfade settings */
+#    define CONFIG_KEYFADE_START_DELAY 10
+#    define CONFIG_KEYFADE_START_VAL 119
+#    define CONFIG_KEYFADE_CALLBACK_INTERVAL 12
