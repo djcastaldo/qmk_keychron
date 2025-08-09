@@ -3216,6 +3216,7 @@ void kbunlock_finished (tap_dance_state_t *state, void *user_data) {
             break;
         case TRIPLE_TAP:
             layer_off(LOCK_LAYR); // three taps unlocks the LOCK_LAYR
+            rgblight_mode(saved_rgb_mode);
             break;
         case SINGLE_HOLD:
             break;
@@ -4194,7 +4195,7 @@ bool is_mac_base(void) {
     return false;
 }
 
-// for tracking if base is mac
+// for checking if the layer is one of the possible base layers
 bool is_base_layer(uint8_t layer) {
     for (uint8_t i = 0; i < all_base_layers_count; i++) {
         if (layer == all_base_layers[i]) {
