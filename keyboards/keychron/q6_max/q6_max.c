@@ -26,6 +26,7 @@
 #    include "keychron_wireless_common.h"
 #    include "battery.h"
 #endif
+#    include "layers.h"
 
 #define POWER_ON_LED_DURATION 3000
 static uint32_t power_on_indicator_timer;
@@ -33,11 +34,11 @@ static uint32_t power_on_indicator_timer;
 #ifdef DIP_SWITCH_ENABLE
 bool dip_switch_update_kb(uint8_t index, bool active) {
     if (index == 0) {
-        default_layer_set(1UL << (active ? 2 : 0));
+        default_layer_set(1UL << (active ? WIN_BASE : MAC_BASE)); // djc: modified
     }
     dip_switch_update_user(index, active);
 
-    return true;
+    return dip_switch_update_keymap(index, active);
 }
 #endif
 

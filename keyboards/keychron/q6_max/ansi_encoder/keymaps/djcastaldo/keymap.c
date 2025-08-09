@@ -37,8 +37,8 @@ bool process_leader_secrets(void) {
 /*  ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 enum layers {
     MAC_BASE,
-    FN_LAYR,
     WIN_BASE,
+    FN_LAYR,
     SFT_LAYR,
     KCTL_LAYR,
     TMUX_LAYR,
@@ -83,6 +83,33 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         TD(CAPS_LAYR),KC_A,KC_S,KC_D,KC_F,KC_G,KC_H,KC_J,KC_K,KC_L,KC_SCLN,KC_QUOT, KC_ENT,                 KC_P4, KC_P5, KC_P6, KC_PPLS,
         KC_LSFT, KC_Z,KC_X,KC_C,KC_V,KC_B,KC_N,KC_M,KC_COMM,KC_DOT,KC_SLSH, TD(RSFT_OSL),         KC_UP,        KC_P1, KC_P2, KC_P3,
         KC_LCTL, KC_LOPT, KC_LCMD,  KC_SPC,  TD(RCMD_OSL),TD(ROPT_OSL),TD(FN_OSL),KC_RCTL,KC_LEFT,KC_DOWN,KC_RGHT,KC_P0,KC_PDOT,KC_PENT),
+//  [WIN_BASE]
+//,-------------------------------------------------------------------------------------------------------------------------------------,
+//: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
+//:|Esc | | F1 || F2 || F3 || F4 | | F5 || F6 || F7 || F8 | | F9 || F10|| F11|| F12| : Vol : |PScr||Ctan||RGB | |DF13||DF14||Calc||Lock|:
+//:|____| |____||____||____||____| |____||____||____||____| |____||____||____||____| `.___.  |____||____||____| |____||____||____||____|:
+//: _______________________________________________________________________________________   ________________   ______________________ :
+//:| `  || 1  || 2  || 3  || 4  || 5  || 6  || 7  || 8  || 9  || 0  || -  || =  || Bkspace | |Ins ||Home||PgUp| |Num || /  || *  || D- |:
+//:|____||____||____||____||____||____||____||____||____||____||____||____||____||_________| |____||____||____| |____||____||____||____|:
+//:| Tab   || Q  || W  || E  || R  || T  || Y  || U  || I  || O  || P  || [  || ]  || \    | |Del ||End ||PgDn| | 7  || 8  || 9  ||    |:
+//:|_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____|| +  |:
+//:| Caps   || A  || S  || D  || F  || G  || H  || J  || K  || L  || ;  || '  || Enter     |                    | 4  || 5  || 6  ||    |:
+//:|________||____||____||____||____||____||____||____||____||____||____||____||___________|        ____        |____||____||____||____|:
+//:| Shift     || Z  || X  || C  || V  || B  || N  || M  || ,  || .  || /  || TD(RSFT_OSL) |       |Up  |       | 1  || 2  || 3  ||    |:
+//:|___________||____||____||____||____||____||____||____||____||____||____||______________|  ____ |____| ____  |____||____||____||Ent |:
+//:|LCtrl||TLGUI||LAlt ||                Space                ||TRAlt||RWin ||TDFn ||RCtrl | |Left||Down||Rigt| |    0     || .  ||    |:
+//:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
+//`-------------------------------------------------------------------------------------------------------------------------------------`
+    [WIN_BASE] = LAYOUT_109_ansi(
+        KC_ESC,KC_F1,KC_F2,KC_F3,KC_F4, KC_F5,KC_F6,KC_F7,KC_F8, KC_F9,KC_F10,KC_F11,KC_F12,ENC_MUTEPLAY,
+                                                                            KC_PSCR,KC_CTANA,RGB_MOD,  DUAL_F13,DUAL_F14,KC_CALC,LOCKSCR,
+        KC_GRV,KC_1,KC_2,KC_3,KC_4,KC_5,KC_6,KC_7,KC_8,KC_9,KC_0,KC_MINS,KC_EQL,BSPCFAST,KC_INS,KC_HOME,KC_PGUP,
+                                                                                                        KC_NUM,KC_PSLS,KC_PAST,DUAL_PMNS,
+        LT(TMUX_LAYR,KC_TAB),KC_Q,KC_W,KC_E,KC_R,KC_T,KC_Y,KC_U,KC_I,KC_O,KC_P,KC_LBRC,KC_RBRC,KC_BSLS,
+                                                                                                 KC_DEL,KC_END,KC_PGDN,KC_P7,KC_P8,KC_P9,
+        TD(CAPS_LAYR),KC_A,KC_S,KC_D,KC_F,KC_G,KC_H,KC_J,KC_K,KC_L, KC_SCLN, KC_QUOT,   KC_ENT,             KC_P4, KC_P5, KC_P6, KC_PPLS,
+        KC_LSFT,KC_Z,KC_X,KC_C,KC_V,KC_B,KC_N,KC_M,KC_COMM,KC_DOT, KC_SLSH,         TD(RSFT_OSL),        KC_UP,      KC_P1, KC_P2, KC_P3,
+        KC_LCTL, TD(LGUI_OSL),KC_LALT,  KC_SPC, TD(RALT_OSL),KC_RWIN,TD(FN_OSL),KC_RCTL, KC_LEFT,KC_DOWN,KC_RGHT, KC_P0,KC_PDOT,KC_PENT),
 //  [FN_LAYR]
 //,-------------------------------------------------------------------------------------------------------------------------------------,
 //: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
@@ -113,32 +140,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                                       _______,   SECRET7,SECRET8,SECRET9,
         _______, WM_SYM, MO(KCTL_LAYR),          _______,          MO(KCTL_LAYR), WM_SYM, _______, _______,
                                                                                   _______, _______, _______, TIMESTAMP, _______,_______),
-//  [WIN_BASE]
-//,-------------------------------------------------------------------------------------------------------------------------------------,
-//: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
-//:|Esc | | F1 || F2 || F3 || F4 | | F5 || F6 || F7 || F8 | | F9 || F10|| F11|| F12| : Vol : |PScr||Ctan||RGB | |    ||    ||    ||    |:
-//:|____| |____||____||____||____| |____||____||____||____| |____||____||____||____| `.___.  |____||____||____| |____||____||____||____|:
-//: _______________________________________________________________________________________   ________________   ______________________ :
-//:| `  || 1  || 2  || 3  || 4  || 5  || 6  || 7  || 8  || 9  || 0  || -  || =  || Bkspace | |Ins ||Home||PgUp| |Num || /  || *  || -  |:
-//:|____||____||____||____||____||____||____||____||____||____||____||____||____||_________| |____||____||____| |____||____||____||____|:
-//:| Tab   || Q  || W  || E  || R  || T  || Y  || U  || I  || O  || P  || [  || ]  || \    | |Del ||End ||PgDn| | 7  || 8  || 9  ||    |:
-//:|_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____|| +  |:
-//:| Caps   || A  || S  || D  || F  || G  || H  || J  || K  || L  || ;  || '  || Enter     |                    | 4  || 5  || 6  ||    |:
-//:|________||____||____||____||____||____||____||____||____||____||____||____||___________|        ____        |____||____||____||____|:
-//:| Shift     || Z  || X  || C  || V  || B  || N  || M  || ,  || .  || /  ||    Shift     |       |Up  |       | 1  || 2  || 3  ||    |:
-//:|___________||____||____||____||____||____||____||____||____||____||____||______________|  ____ |____| ____  |____||____||____||Ent |:
-//:|LCtrl||LWin ||LAlt ||                Space                ||RAlt ||RWin ||MOSft||RCtrl | |Left||Down||Rigt| |    0     || .  ||    |:
-//:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
-//`-------------------------------------------------------------------------------------------------------------------------------------`
-    [WIN_BASE] = LAYOUT_109_ansi(
-        KC_ESC,KC_F1,KC_F2,KC_F3,KC_F4, KC_F5,KC_F6,KC_F7,KC_F8, KC_F9,KC_F10,KC_F11,KC_F12,KC_MUTE,
-                                                                              KC_PSCR,KC_CTANA,RGB_MOD,  _______,_______,_______,_______,
-        KC_GRV,KC_1,KC_2,KC_3,KC_4,KC_5,KC_6,KC_7,KC_8,KC_9,KC_0,KC_MINS,KC_EQL,KC_BSPC,KC_INS,KC_HOME,KC_PGUP,
-                                                                                                          KC_NUM,KC_PSLS,KC_PAST,KC_PMNS,
-        KC_TAB,KC_Q,KC_W,KC_E,KC_R,KC_T,KC_Y,KC_U,KC_I,KC_O,KC_P,KC_LBRC,KC_RBRC, KC_BSLS, KC_DEL, KC_END, KC_PGDN,  KC_P7, KC_P8, KC_P9,
-        KC_CAPS,KC_A,KC_S,KC_D,KC_F,KC_G,KC_H,KC_J,KC_K,KC_L, KC_SCLN, KC_QUOT,   KC_ENT,                   KC_P4, KC_P5, KC_P6, KC_PPLS,
-        KC_LSFT,KC_Z,KC_X,KC_C,KC_V,KC_B,KC_N,KC_M,KC_COMM,KC_DOT,KC_SLSH,         KC_RSFT,        KC_UP,     KC_P1, KC_P2, KC_P3,
-        KC_LCTL, KC_LWIN, KC_LALT,     KC_SPC,    KC_RALT,KC_RWIN,MO(EMO_LAYR),KC_RCTL, KC_LEFT,KC_DOWN,KC_RGHT, KC_P0,KC_PDOT,KC_PENT),
 //  [SFT_LAYR]
 //,-------------------------------------------------------------------------------------------------------------------------------------,
 //: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
@@ -394,8 +395,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [MAC_BASE]  = {ENCODER_CCW_CW(ENC_VOLD, ENC_VOLU)},
+    [WIN_BASE]  = {ENCODER_CCW_CW(ENC_VOLD, ENC_VOLU)},
     [FN_LAYR]   = {ENCODER_CCW_CW(DUAL_ZOOMO, DUAL_ZOOMI)},
-    [WIN_BASE]  = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [SFT_LAYR]  = {ENCODER_CCW_CW(ENC_SCROLLAPPL, ENC_SCROLLAPPR)},
     [KCTL_LAYR] = {ENCODER_CCW_CW(ENC_RGBL, ENC_RGBR)},
     [TMUX_LAYR] = {ENCODER_CCW_CW(ENC_TSIZEL, ENC_TSIZER)},
@@ -442,59 +443,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 void leader_end_user(void) {
-    if (leader_sequence_two_keys(KC_L, KC_K)) {                // key lock watch for key to lock
-        set_key_lock_watching();
-    } 
-    else if (leader_sequence_three_keys(KC_L, KC_L, KC_C)) {   // layer lock KCTL_LAYR
-        if (is_layer_locked(KCTL_LAYR)) {
-            layer_lock_off(KCTL_LAYR);
-        }
-        else {
-            layer_lock_on(KCTL_LAYR);
-        }
-    }
-    else if (leader_sequence_three_keys(KC_L, KC_L, KC_F)) {   // layer lock FN_LAYR
-        if (is_layer_locked(FN_LAYR)) {
-            layer_lock_off(FN_LAYR);
-        }
-        else {
-            layer_lock_on(FN_LAYR);
-        }
-    }
-    else if (leader_sequence_three_keys(KC_L, KC_L, KC_S)) {   // layer lock SFT_LAYR
-        if (is_layer_locked(SFT_LAYR)) {
-            layer_lock_off(SFT_LAYR);
-        }
-        else {
-            layer_lock_on(SFT_LAYR);
-        }
-    }
-    else if (leader_sequence_three_keys(KC_L, KC_L, KC_E)) {   // layer lock EMO_LAYR
-        if (is_layer_locked(EMO_LAYR)) {
-            layer_lock_off(EMO_LAYR);
-        }
-        else {
-            layer_lock_on(EMO_LAYR);
-        }
-    }
-    else if (leader_sequence_three_keys(KC_L, KC_L, KC_T)) {   // layer lock TMUX_LAYR
-        if (is_layer_locked(TMUX_LAYR)) {
-            layer_lock_off(TMUX_LAYR);
-        }
-        else {
-            layer_lock_on(TMUX_LAYR);
-        }
-    }
-    else if (leader_sequence_four_keys(KC_L, KC_O, KC_C, KC_K)) {   // switch to LOCK_LAYR
-        // need to store current mode now, because a change to the band with no eeprom will not keep the effect
-        // after wireless retuns from sleep
-        saved_rgb_mode = rgb_matrix_get_mode();
-        rgblight_mode(RGB_MATRIX_BAND_VAL);
-        layer_on(LOCK_LAYR);
-    } 
-    // if process_leader_secrets returns false, a secret leader sequence ran and leader matching should stop
-    // if true, no secrets match and leader matching continues here.
-    else if (process_leader_userspace() && process_leader_secrets()) {
+    // if userspace or secrets return false, leader matching stops there
+    if (process_leader_userspace() && process_leader_secrets()) {
         // if leader sequence failed, set var from rgb_matrix to blink the rgb red a few times
         is_leader_error = true;
         leader_error_token = defer_exec(1500, leader_error_callback, NULL);  // schedule callback to stop blinking
@@ -903,6 +853,25 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         }
     }
     return false;
+}
+
+bool dip_switch_update_keymap(uint8_t index, bool active) {
+    if (index == 0) {
+        if (active) {
+            set_single_persistent_default_layer(WIN_BASE);
+            layer_move(WIN_BASE);
+        }
+        else {
+            set_single_persistent_default_layer(MAC_BASE);
+            layer_move(MAC_BASE);
+            if (user_config.is_linux_base) {
+                user_config.is_linux_base = false;
+                eeconfig_update_user(user_config.raw);
+            }
+        }
+        os_changed = true;
+    }
+    return true;
 }
 
 void keyboard_post_init_user(void) {

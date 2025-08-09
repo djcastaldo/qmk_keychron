@@ -2664,7 +2664,122 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
 
 bool process_leader_userspace(void) {
     bool continue_leader_process = false;
-    if (leader_sequence_five_keys(KC_C, KC_O, KC_L, KC_O, KC_R)) { // start the color test
+    if (leader_sequence_two_keys(KC_O, KC_S)) {                   // show current os
+        // just show which os is currently set
+        os_changed = true;
+    }
+    else if (leader_sequence_three_keys(KC_M, KC_A, KC_C)) {      // change to mac os
+        if (!is_mac_base()) {
+            set_single_persistent_default_layer(MAC_BASE);
+            layer_move(MAC_BASE);
+        }
+        os_changed = true;
+    }
+    else if (leader_sequence_three_keys(KC_W, KC_I, KC_N)) {      // change to windows os
+        if (is_mac_base()) {
+            set_single_persistent_default_layer(WIN_BASE);
+            layer_move(WIN_BASE);
+        }
+        if (user_config.is_linux_base) {
+            user_config.is_linux_base = false;
+            eeconfig_update_user(user_config.raw);
+        }
+        os_changed = true;
+    }
+    else if (leader_sequence_three_keys(KC_L, KC_I, KC_N)) {      // change to linux os
+        if (is_mac_base()) {
+            set_single_persistent_default_layer(WIN_BASE);
+            layer_move(WIN_BASE);
+        }
+        if (!user_config.is_linux_base) {
+            user_config.is_linux_base = true;
+            eeconfig_update_user(user_config.raw);
+        }
+        os_changed = true;
+    }
+    else if (leader_sequence_three_keys(KC_L, KC_L, KC_F)) {      // layer lock FN_LAYR
+        if (is_layer_locked(FN_LAYR)) {
+            layer_lock_off(FN_LAYR);
+        }
+        else {
+            layer_lock_on(FN_LAYR);
+        }
+    }
+    else if (leader_sequence_three_keys(KC_L, KC_L, KC_T)) {      // layer lock TMUX_LAYR
+        if (is_layer_locked(TMUX_LAYR)) {
+            layer_lock_off(TMUX_LAYR);
+        }
+        else {
+            layer_lock_on(TMUX_LAYR);
+        }
+    }
+    else if (leader_sequence_three_keys(KC_L, KC_L, KC_S)) {      // layer lock SFT_LAYR
+        if (is_layer_locked(SFT_LAYR)) {
+            layer_lock_off(SFT_LAYR);
+        }
+        else {
+            layer_lock_on(SFT_LAYR);
+        }
+    }
+    else if (leader_sequence_three_keys(KC_L, KC_L, KC_K)) {      // layer lock KCTL_LAYR
+        if (is_layer_locked(KCTL_LAYR)) {
+            layer_lock_off(KCTL_LAYR);
+        }
+        else {
+            layer_lock_on(KCTL_LAYR);
+        }
+    }
+    else if (leader_sequence_four_keys(KC_L, KC_L, KC_S, KC_M)) { // layer lock M/W SYM_LAYR
+        if (is_mac_base()) {
+            if (is_layer_locked(MSYM_LAYR)) {
+                layer_lock_off(MSYM_LAYR);
+            }
+            else {
+                layer_lock_on(MSYM_LAYR);
+            }
+        }
+        else {
+            if (is_layer_locked(WSYM_LAYR)) {
+                layer_lock_off(WSYM_LAYR);
+            }
+            else {
+                layer_lock_on(WSYM_LAYR);
+            }
+        }
+    }
+    else if (leader_sequence_three_keys(KC_L, KC_L, KC_W)) {      // layer lock WIDE_LAYR
+        if (is_layer_locked(WIDE_LAYR)) {
+            layer_lock_off(WIDE_LAYR);
+        }
+        else {
+            layer_lock_on(WIDE_LAYR);
+        }
+    }
+    else if (leader_sequence_three_keys(KC_L, KC_L, KC_C)) {      // layer lock CIRC_LAYR
+        if (is_layer_locked(CIRC_LAYR)) {
+            layer_lock_off(CIRC_LAYR);
+        }
+        else {
+            layer_lock_on(CIRC_LAYR);
+        }
+    }
+    else if (leader_sequence_three_keys(KC_L, KC_L, KC_E)) {      // layer lock EMO_LAYR
+        if (is_layer_locked(EMO_LAYR)) {
+            layer_lock_off(EMO_LAYR);
+        }
+        else {
+            layer_lock_on(EMO_LAYR);
+        }
+    }
+    else if (leader_sequence_four_keys(KC_L, KC_O, KC_C, KC_K)) { // switch to LOCK_LAYR
+        saved_rgb_mode = rgb_matrix_get_mode();
+        rgblight_mode(RGB_MATRIX_BAND_VAL);
+        layer_on(LOCK_LAYR);
+    }
+    else if (leader_sequence_two_keys(KC_L, KC_K)) {              // key lock watch for key to lock
+        set_key_lock_watching();
+    }
+    else if (leader_sequence_five_keys(KC_C, KC_O, KC_L, KC_O, KC_R)) { // start the color test
         color_test_timer = timer_read();
         color_test = true;
     }
@@ -4112,6 +4227,7 @@ uint32_t leader_error_callback(uint32_t trigger_time, void* cb_arg) {
 // callback to return enbale keytracker after a delay to see the wireless status indicator
 uint32_t wireless_mode_callback(uint32_t trigger_time, void *cb_arg) {
     enable_keytracker = true;
+    wireless_mode_token = INVALID_DEFERRED_TOKEN;
     return 0;
 }
 

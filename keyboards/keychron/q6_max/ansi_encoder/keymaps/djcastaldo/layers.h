@@ -4,8 +4,8 @@
 
 enum layers {
     MAC_BASE,
-    FN_LAYR,
     WIN_BASE,
+    FN_LAYR,
     SFT_LAYR,
     KCTL_LAYR,
     TMUX_LAYR,
@@ -16,3 +16,5 @@ enum layers {
     EMO_LAYR,
     LOCK_LAYR
 };
+
+bool dip_switch_update_keymap(uint8_t index, bool active);
