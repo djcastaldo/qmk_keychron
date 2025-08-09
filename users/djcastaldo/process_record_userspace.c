@@ -2641,7 +2641,7 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
         }
         else if (enable_keytracker) {
             enable_keytracker = false;
-            wireless_mode_token = defer_exec(3000, wireless_mode_callback, NULL);
+            wireless_mode_token = defer_exec(4000, wireless_mode_callback, NULL);
         }
         break;
 #endif
