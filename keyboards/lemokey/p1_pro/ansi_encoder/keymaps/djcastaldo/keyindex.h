@@ -70,6 +70,7 @@ enum key_indexes {
     I_L = 53,
     I_SEMI = 54,
     I_SLOCK = 54,
+    I_APOS = 55,
     I_FJLIGHT = 55,
     I_HROWLIGHT = 56,
     I_PGDN = 57,

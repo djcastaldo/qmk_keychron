@@ -65,7 +65,7 @@
 #endif
 
 /* increase layer count above the default of 4 */
-#    define DYNAMIC_KEYMAP_LAYER_COUNT 10
+#    define DYNAMIC_KEYMAP_LAYER_COUNT 15
 
 /* force enable NKRO */
 #    define FORCE_NKRO
@@ -96,8 +96,8 @@
 #    define TMUX_DELAY 35
 
 /* monitored base layers for macos */
-#    define MONITORED_MACOS_BASE_LAYERS { MAC_BASE }
-#    define MONITORED_MACOS_BASE_COUNT 1
+#    define CONFIG_MACOS_BASE_LAYERS { MAC_BASE }
+#    define CONFIG_MACOS_BASE_LAYERS_COUNT 1
 
 /* monitored base layers for macos */
 #    define CONFIG_ALL_BASE_LAYERS { MAC_BASE, WIN_BASE }

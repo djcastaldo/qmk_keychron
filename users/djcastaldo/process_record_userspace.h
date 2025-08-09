@@ -290,6 +290,43 @@ enum userspace_keycodes {
     USERSPACE_END
 };
 
+// custom tap dances
+enum {
+    CAPS_LAYR   = 0,
+    FN_OSL      = 1,
+    RSFT_OSL    = 2,
+    RALT_OSL    = 3,
+    KB_UNLOCK   = 4,
+    ACT_GRV     = 5,
+    ACT_1       = 6,
+    ACT_E       = 7,
+    ACT_U       = 8,
+    ACT_I       = 9,
+    ACT_N       = 10,
+    LGUI_OSL    = 11,
+    RCMD_OSL    = 12,
+    LOPT_OSL    = 13,
+    ROPT_OSL    = 14,
+    MOUSE_ACCEL = 15
+};
+
+// tap dance setup
+typedef struct {
+    bool is_press_action;
+    int state;
+} tap;
+// tap dance states
+enum {
+    SINGLE_TAP = 1,
+    SINGLE_HOLD = 2,
+    DOUBLE_TAP = 3,
+    DOUBLE_HOLD = 4,
+    TRIPLE_TAP = 5,
+    QUAD_TAP = 6,
+    PENT_TAP = 7,
+    HEXA_TAP = 8
+};
+
 typedef union {
     uint32_t raw;
     struct {
@@ -321,6 +358,42 @@ enum {
 };
 extern uint8_t wide_text_mode;
 extern bool wide_firstchar;
+
+// functions associated with all tap dances
+int cur_dance (tap_dance_state_t *state);
+// functions associated with individual tap dances
+void caps_finished (tap_dance_state_t *state, void *user_data);
+void caps_reset (tap_dance_state_t *state, void *user_data);
+void ralt_finished (tap_dance_state_t *state, void *user_data);
+void ralt_reset (tap_dance_state_t *state, void *user_data);
+void fn_finished (tap_dance_state_t *state, void *user_data);
+void fn_reset (tap_dance_state_t *state, void *user_data);
+void rsft_finished (tap_dance_state_t *state, void *user_data);
+void rsft_reset (tap_dance_state_t *state, void *user_data);
+void kbunlock_finished (tap_dance_state_t *state, void *user_data);
+void kbunlock_reset (tap_dance_state_t *state, void *user_data);
+void actgrv_finished (tap_dance_state_t *state, void *user_data);
+void actgrv_reset (tap_dance_state_t *state, void *user_data);
+void act1_finished (tap_dance_state_t *state, void *user_data);
+void act1_reset (tap_dance_state_t *state, void *user_data);
+void acte_finished (tap_dance_state_t *state, void *user_data);
+void acte_reset (tap_dance_state_t *state, void *user_data);
+void actu_finished (tap_dance_state_t *state, void *user_data);
+void actu_reset (tap_dance_state_t *state, void *user_data);
+void acti_finished (tap_dance_state_t *state, void *user_data);
+void acti_reset (tap_dance_state_t *state, void *user_data);
+void actn_finished (tap_dance_state_t *state, void *user_data);
+void actn_reset (tap_dance_state_t *state, void *user_data);
+void lgui_finished (tap_dance_state_t *state, void *user_data);
+void lgui_reset (tap_dance_state_t *state, void *user_data);
+void rcmd_finished (tap_dance_state_t *state, void *user_data);
+void rcmd_reset (tap_dance_state_t *state, void *user_data);
+void lopt_finished (tap_dance_state_t *state, void *user_data);
+void lopt_reset (tap_dance_state_t *state, void *user_data);
+void ropt_finished (tap_dance_state_t *state, void *user_data);
+void ropt_reset (tap_dance_state_t *state, void *user_data);
+void macl_finished (tap_dance_state_t *state, void *user_data);
+void macl_reset (tap_dance_state_t *state, void *user_data);
 
 extern deferred_token jiggler_token;
 extern report_mouse_t jiggler_report;
@@ -370,6 +443,7 @@ extern uint8_t super_scut_keys[];
 extern uint8_t super_scut_altcolor[];
 extern uint8_t super_scut_keys_size;
 extern uint8_t super_scut_altcolor_size;
+extern deferred_token wireless_mode_token;
 
 bool process_record_userspace(uint16_t keycode, keyrecord_t *record);
 bool process_leader_userspace(void);
@@ -389,3 +463,4 @@ uint32_t osl_macro_callback(uint32_t trigger_time, void *cb_arg);
 uint32_t sim_osl_callback(uint32_t trigger_time, void* cb_arg);
 uint32_t cmd_tab_callback(uint32_t trigger_time, void* cb_arg);
 uint32_t leader_error_callback(uint32_t trigger_time, void* cb_arg);
+uint32_t wireless_mode_callback(uint32_t trigger_time, void *cb_arg);

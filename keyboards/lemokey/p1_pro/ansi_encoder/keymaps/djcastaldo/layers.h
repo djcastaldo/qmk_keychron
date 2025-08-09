@@ -13,5 +13,6 @@ enum layers {
     MSYM_LAYR,
     WIDE_LAYR,
     CIRC_LAYR,
+    EMO_LAYR,
     LOCK_LAYR
 };

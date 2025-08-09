@@ -8,10 +8,26 @@
 #include "keyindex.h"
 
 user_config_t user_config;
-const uint8_t monitored_macos_base_layers[] = MONITORED_MACOS_BASE_LAYERS;
-const uint8_t monitored_macos_base_count = MONITORED_MACOS_BASE_COUNT;
+#ifdef CONFIG_MACOS_BASE_LAYERS
+const uint8_t macos_base_layers[] = CONFIG_MACOS_BASE_LAYERS;
+#else
+const uint8_t macos_base_layers[0];
+#endif
+#ifdef CONFIG_MACOS_BASE_LAYERS_COUNT
+const uint8_t macos_base_layers_count = CONFIG_MACOS_BASE_LAYERS_COUNT;
+#else
+const uint8_t macos_base_layers_count = 0;
+#endif
+#ifdef CONFIG_ALL_BASE_LAYERS
 const uint8_t all_base_layers[] = CONFIG_ALL_BASE_LAYERS;
+#else
+const uint8_t all_base_layers[] = {0};
+#endif
+#ifdef CONFIG_ALL_BASE_LAYERS_COUNT
 const uint8_t all_base_layers_count = CONFIG_ALL_BASE_LAYERS_COUNT;
+#else
+const uint8_t all_base_layers_count = 1;
+#endif
 
 // setup keytracker
 deferred_token key_token = INVALID_DEFERRED_TOKEN;
@@ -95,6 +111,10 @@ uint8_t super_scut_keys[] = {I_INDICATOR, I_N1, I_N2, I_N3, I_N4, I_N5, I_N6, I_
 uint8_t super_scut_altcolor[] = {I_GRV, I_UP, I_DOWN, I_LEFT, I_RIGHT};
 uint8_t super_scut_keys_size = sizeof(super_scut_keys) / sizeof(super_scut_keys[0]);
 uint8_t super_scut_altcolor_size = sizeof(super_scut_altcolor) / sizeof(super_scut_altcolor[0]);
+
+// setup this token to be used to create a delay from when wireless mode is changed until when key fade turns back on
+// to see the wireless status indicator
+deferred_token wireless_mode_token = INVALID_DEFERRED_TOKEN;
 
 bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
     static uint32_t key_timer;
@@ -2607,6 +2627,24 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
            soft_reset_keyboard();
         }
         return false;
+#ifdef LK_WIRELESS_ENABLE
+    // for keychron or lemokey bt mode change, stop fade for a little while so can see the connection status lights
+    case BT_HST1:
+    case BT_HST2:
+    case BT_HST3:
+    case P2P4G:
+        if (record->event.pressed) {
+            if (wireless_mode_token) {
+                cancel_deferred_exec(wireless_mode_token);
+                wireless_mode_token = INVALID_DEFERRED_TOKEN;
+            }
+        }
+        else if (enable_keytracker) {
+            enable_keytracker = false;
+            wireless_mode_token = defer_exec(3000, wireless_mode_callback, NULL);
+        }
+        break;
+#endif
     case FLASH_KB:
         if (record->event.pressed) {
            // command to flash this keyboard
@@ -2793,6 +2831,1030 @@ bool process_leader_userspace(void) {
     return continue_leader_process;
 }
 
+// determine the current tap dance state
+int cur_dance (tap_dance_state_t *state) {
+    if (state->count == 1) {
+        if (!state->pressed) {
+            return SINGLE_TAP;
+        } else {
+            return SINGLE_HOLD;
+        }
+    } else if (state->count == 2) {
+        if (!state->pressed) {
+            return DOUBLE_TAP;
+        } else {
+            return DOUBLE_HOLD;
+        }
+    } else if (state->count == 3) {
+        return TRIPLE_TAP;
+    } else if (state->count == 4) {
+        return QUAD_TAP;
+    } else if (state->count == 5) {
+        return PENT_TAP;
+    } else if (state->count == 6) {
+        return HEXA_TAP;
+    }
+    else return 9;
+}
+
+// initialize tap structure associated with each tap dance key
+static tap caps_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+static tap ralt_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+static tap fn_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+static tap rsft_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+static tap kbunlock_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+static tap actgrv_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+static tap act1_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+static tap acte_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+static tap actu_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+static tap acti_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+static tap actn_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+static tap lgui_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+static tap rcmd_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+static tap lopt_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+static tap ropt_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+static tap macl_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+
+// caps tap dance key function
+void caps_finished (tap_dance_state_t *state, void *user_data) {
+    caps_tap_state.state = cur_dance(state);
+    switch (caps_tap_state.state) {
+        case SINGLE_TAP:
+            tap_code(KC_CAPS);
+            break;
+        case SINGLE_HOLD:
+            layer_on(FN_LAYR);
+            break;
+        case DOUBLE_TAP:
+            if (layer_state_is(FN_LAYR)) {
+                //if already set, then switch it off
+                layer_lock_off(FN_LAYR);
+            } else {
+                //if not already set, then switch the layer on
+                layer_lock_on(FN_LAYR);
+            }
+            break;
+        case TRIPLE_TAP:
+            if (layer_state_is(SFT_LAYR)) {
+                //if already set, then switch it off
+                layer_lock_off(SFT_LAYR);
+            } else {
+                //if not already set, then switch the layer on
+                layer_lock_on(SFT_LAYR);
+            }
+            break;
+        case QUAD_TAP:
+            if (layer_state_is(KCTL_LAYR)) {
+                //if already set, then switch it off
+                layer_lock_off(KCTL_LAYR);
+            } else {
+                //if not already set, then switch the layer on
+                layer_lock_on(KCTL_LAYR);
+            }
+            break;
+        case PENT_TAP:
+            if (layer_state_is(TMUX_LAYR)) {
+                //if already set, then switch it off
+                layer_lock_off(TMUX_LAYR);
+            } else {
+                //if not already set, then switch the layer on
+                layer_lock_on(TMUX_LAYR);
+            }
+            break;
+        case HEXA_TAP:
+            if (!is_mac_base()) {
+                if (layer_state_is(WSYM_LAYR)) {
+                    //if already set, then switch it off
+                    layer_lock_off(WSYM_LAYR);
+                } else {
+                    //if not already set, then switch the layer on
+                    layer_lock_on(WSYM_LAYR);
+                }
+            }
+            break;
+    }
+}
+
+void caps_reset (tap_dance_state_t *state, void *user_data) {
+    //if the key was held down and now is released then switch off the layer
+    if (caps_tap_state.state==SINGLE_HOLD && !is_layer_locked(FN_LAYR)) {
+        layer_off(FN_LAYR);
+    }
+    caps_tap_state.state = 0;
+}
+
+// function for ralt tap dance
+void ralt_finished (tap_dance_state_t *state, void *user_data) {
+    ralt_tap_state.state = cur_dance(state);
+    switch (ralt_tap_state.state) {
+        case SINGLE_TAP:
+            set_oneshot_layer(KCTL_LAYR, ONESHOT_START);
+            clear_oneshot_layer_state(ONESHOT_PRESSED);
+            break;
+        case SINGLE_HOLD:
+            register_code(KC_RALT);
+            break;
+        case DOUBLE_TAP:
+            set_oneshot_layer(WSYM_LAYR, ONESHOT_START);
+            clear_oneshot_layer_state(ONESHOT_PRESSED);
+            break;
+        case DOUBLE_HOLD:
+            layer_on(WSYM_LAYR);
+            break;
+    }
+}
+
+void ralt_reset (tap_dance_state_t *state, void *user_data) {
+    switch (ralt_tap_state.state) {
+        case SINGLE_TAP:
+            break;
+        case SINGLE_HOLD:
+            unregister_code(KC_RALT);
+            break;
+        case DOUBLE_TAP:
+            break;
+        case DOUBLE_HOLD:
+            if (!is_layer_locked(WSYM_LAYR)) {
+                layer_off(WSYM_LAYR);
+            }
+            break;
+    }
+    ralt_tap_state.state = 0;
+}
+
+// function for rcmd tap dance
+void rcmd_finished (tap_dance_state_t *state, void *user_data) {
+    rcmd_tap_state.state = cur_dance(state);
+    switch (rcmd_tap_state.state) {
+        case SINGLE_TAP:
+            set_oneshot_layer(KCTL_LAYR, ONESHOT_START);
+            clear_oneshot_layer_state(ONESHOT_PRESSED);
+            break;
+        case SINGLE_HOLD:
+            register_code(KC_RCMD);
+            break;
+        case DOUBLE_TAP:
+            set_oneshot_layer(EMO_LAYR, ONESHOT_START);
+            clear_oneshot_layer_state(ONESHOT_PRESSED);
+            break;
+        case DOUBLE_HOLD:
+            layer_on(EMO_LAYR);
+            break;
+    }
+}
+
+void rcmd_reset (tap_dance_state_t *state, void *user_data) {
+    switch (rcmd_tap_state.state) {
+        case SINGLE_TAP:
+            break;
+        case SINGLE_HOLD:
+            unregister_code(KC_RCMD);
+            break;
+        case DOUBLE_TAP:
+            break;
+        case DOUBLE_HOLD:
+            if (!is_layer_locked(EMO_LAYR)) {
+                layer_off(EMO_LAYR);
+            }
+            break;
+    }
+    rcmd_tap_state.state = 0;
+}
+
+// function for fn tap dance
+void fn_finished (tap_dance_state_t *state, void *user_data) {
+    fn_tap_state.state = cur_dance(state);
+    switch (fn_tap_state.state) {
+        case SINGLE_TAP:
+            set_oneshot_layer(FN_LAYR, ONESHOT_START);
+            clear_oneshot_layer_state(ONESHOT_PRESSED);
+            break;
+        case SINGLE_HOLD:
+            layer_on(FN_LAYR);
+            break;
+        case DOUBLE_TAP:
+            if (is_mac_base()) {
+                set_oneshot_layer(MSYM_LAYR, ONESHOT_START);
+                add_oneshot_mods(MOD_BIT(KC_LOPT));
+                clear_oneshot_layer_state(ONESHOT_PRESSED);
+            }
+            else {
+                set_oneshot_layer(WSYM_LAYR, ONESHOT_START);
+                clear_oneshot_layer_state(ONESHOT_PRESSED);
+            }
+            break;
+        case DOUBLE_HOLD:
+            if (is_mac_base()) {
+                register_code(KC_LOPT);
+                layer_on(MSYM_LAYR);
+            }
+            else {
+                layer_on(WSYM_LAYR);
+            }
+            break;
+    }
+}
+
+void fn_reset (tap_dance_state_t *state, void *user_data) {
+    switch (fn_tap_state.state) {
+        case SINGLE_TAP:
+            break;
+        case SINGLE_HOLD:
+            if (!is_layer_locked(FN_LAYR)) {
+                layer_off(FN_LAYR);
+            }
+            break;
+        case DOUBLE_TAP:
+            break;
+        case DOUBLE_HOLD:
+            if (is_mac_base()) {
+                if (!is_layer_locked(MSYM_LAYR)) {
+                    unregister_code(KC_LOPT);
+                    layer_off(MSYM_LAYR);
+                }
+            }
+            else {
+                if (!is_layer_locked(WSYM_LAYR)) {
+                    layer_off(WSYM_LAYR);
+                }
+            }
+            break;
+    }
+    fn_tap_state.state = 0;
+}
+
+// function for each press of rsft
+// this is needed so that pressing both shifts will activate caps_word, even when one of the shifts is a tap dance
+void rsft_each(tap_dance_state_t *state, void *user_data) {
+    if (get_mods() & MOD_BIT(KC_LSFT)) {
+        caps_word_on();
+    }
+}
+
+// function for rsft tap dance
+void rsft_finished (tap_dance_state_t *state, void *user_data) {
+    rsft_tap_state.state = cur_dance(state);
+    switch (rsft_tap_state.state) {
+        case SINGLE_TAP:
+            // check if this is caps word activation, otherwise set the osl
+            if (!is_caps_word_on()) {
+                set_oneshot_layer(SFT_LAYR, ONESHOT_START);
+                clear_oneshot_layer_state(ONESHOT_PRESSED);
+            }
+            break;
+        case SINGLE_HOLD:
+            // check if this is caps word activation, otherwise regular shift
+            if (get_mods() & MOD_BIT(KC_LSFT)) {
+                caps_word_on();
+            }
+            else {
+                register_code(KC_RSFT);
+            }
+            break;
+        case DOUBLE_TAP:
+            // activate WIDE_LAYR
+            if (IS_LAYER_ON(WIDE_LAYR)) {
+                layer_lock_off(WIDE_LAYR);
+            }
+            else {
+                layer_lock_on(WIDE_LAYR);
+                wide_firstchar = true;
+            }
+            break;
+        case TRIPLE_TAP:
+            // activate CIRC_LAYR
+            if (IS_LAYER_ON(CIRC_LAYR)) {
+                layer_lock_off(CIRC_LAYR);
+            }
+            else {
+                layer_lock_on(CIRC_LAYR);
+            }
+            break;
+    }
+}
+
+void rsft_reset (tap_dance_state_t *state, void *user_data) {
+    switch (rsft_tap_state.state) {
+        case SINGLE_TAP:
+            // check if this is caps word activation
+            if (get_mods() & MOD_BIT(KC_LSFT)) {
+                reset_oneshot_layer();
+                caps_word_on();
+            }
+            break;
+        case SINGLE_HOLD:
+            if (get_mods() & MOD_BIT(KC_LSFT)) {
+                caps_word_on();
+            }
+            else {
+                unregister_code(KC_RSFT);
+            }
+            break;
+        case DOUBLE_TAP:
+            break;
+        case TRIPLE_TAP:
+            break;
+    }
+    rsft_tap_state.state = 0;
+}
+
+// function for kbunlock tap dance
+void kbunlock_finished (tap_dance_state_t *state, void *user_data) {
+    kbunlock_tap_state.state = cur_dance(state);
+    switch (kbunlock_tap_state.state) {
+        case SINGLE_TAP:
+            break;
+        case DOUBLE_TAP:
+            break;
+        case TRIPLE_TAP:
+            layer_off(LOCK_LAYR); // three taps unlocks the LOCK_LAYR
+            break;
+        case SINGLE_HOLD:
+            break;
+    }
+}
+
+void kbunlock_reset (tap_dance_state_t *state, void *user_data) {
+    kbunlock_tap_state.state = 0;
+}
+
+// function for each press of grv on symbol layer
+void actgrv_each(tap_dance_state_t *state, void *user_data) {
+    switch (state->count) {
+        case 1:
+            act_char_led_index = I_A;
+            break;
+        case 2:
+            act_char_led_index = I_E;
+            break;
+        case 3:
+            act_char_led_index = I_I;
+            break;
+        case 4:
+            act_char_led_index = I_O;
+            break;
+        case 5:
+            act_char_led_index = I_U;
+            break;
+        default:
+            act_char_led_index = 0;
+            break;
+    }
+}
+
+// function for symbol layer grv key tap dance
+void actgrv_finished (tap_dance_state_t *state, void *user_data) {
+    actgrv_tap_state.state = cur_dance(state);
+    switch (actgrv_tap_state.state) {
+        case SINGLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00e0","00c0");
+            }
+            else {
+                symbol_key_win("0224","0192"); // a
+            }
+            break;
+        case DOUBLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00e8","00c8");
+            }
+            else {
+                symbol_key_win("0232","0200"); // e
+            }
+            break;
+        case TRIPLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00ec","00cc");
+            }
+            else {
+                symbol_key_win("0236","0204"); // i
+            }
+            break;
+        case QUAD_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00f2","00d2");
+            }
+            else {
+                symbol_key_win("0242","0210"); // o
+            }
+            break;
+        case PENT_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00f9","00d9");
+            }
+            else {
+                symbol_key_win("0249","0217"); // u
+            }
+            break;
+        case HEXA_TAP:
+            break;
+    }
+}
+
+void actgrv_reset (tap_dance_state_t *state, void *user_data) {
+    act_char_led_index = 0;
+    actgrv_tap_state.state = 0;
+}
+
+// function for each press of 1 on symbol layer
+void act1_each(tap_dance_state_t *state, void *user_data) {
+    switch (state->count) {
+        case 1:
+            act_char_led_index = I_N1;
+            break;
+        case 2:
+            act_char_led_index = I_N2;
+            break;
+        case 3:
+            act_char_led_index = I_N3;
+            break;
+        default:
+            act_char_led_index = 0;
+            break;
+    }
+}
+// function for symbol layer 1 key tap dance
+void act1_finished (tap_dance_state_t *state, void *user_data) {
+    act1_tap_state.state = cur_dance(state);
+    switch (act1_tap_state.state) {
+        case SINGLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00a1","00bc");
+            }
+            else {
+                symbol_key_win("173","0188");  // inverted ! or 1/4
+            }
+            break;
+        case DOUBLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00bd","00bd");
+            }
+            else {
+                symbol_key_win("0189","0189"); // 1/2
+            }
+            break;
+        case TRIPLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00be","00be");
+            }
+            else {
+                symbol_key_win("0190","0190"); // 3/4
+            }
+            break;
+        case QUAD_TAP:
+            break;
+        case PENT_TAP:
+            break;
+        case HEXA_TAP:
+            break;
+  }
+}
+
+void act1_reset (tap_dance_state_t *state, void *user_data) {
+    act_char_led_index = 0;
+    act1_tap_state.state = 0;
+}
+
+// function for each press of e on symbol layer
+void acte_each(tap_dance_state_t *state, void *user_data) {
+    switch (state->count) {
+        case 1:
+            act_char_led_index = I_E;
+            break;
+        case 2:
+            act_char_led_index = I_A;
+            break;
+        case 3:
+            act_char_led_index = I_I;
+            break;
+        case 4:
+            act_char_led_index = I_O;
+            break;
+        case 5:
+            act_char_led_index = I_U;
+            break;
+        case 6:
+            act_char_led_index = I_Y;
+            break;
+        default:
+            act_char_led_index = 0;
+            break;
+    }
+}
+
+// function for symbol layer e key tap dance
+void acte_finished (tap_dance_state_t *state, void *user_data) {
+    acte_tap_state.state = cur_dance(state);
+    switch (acte_tap_state.state) {
+        case SINGLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00e9","00c9");
+            }
+            else {
+                symbol_key_win("0233","0201"); // e
+            }
+            break;
+        case DOUBLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00e1","00c1");
+            }
+            else {
+                symbol_key_win("0225","0193"); // a
+            }
+            break;
+        case TRIPLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00ed","00cd");
+            }
+            else {
+                symbol_key_win("0237","0205"); // i
+            }
+            break;
+        case QUAD_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00f3","00d3");
+            }
+            else {
+                symbol_key_win("0243","0211"); // o
+            }
+            break;
+        case PENT_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00fa","00da");
+            }
+            else {
+                symbol_key_win("0250","0218"); // u
+            }
+            break;
+        case HEXA_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00fd","00dd");
+            }
+            else {
+                symbol_key_win("0253","0221"); // y
+            }
+            break;
+    }
+}
+
+void acte_reset (tap_dance_state_t *state, void *user_data) {
+    act_char_led_index = 0;
+    acte_tap_state.state = 0;
+}
+
+// function for each press of u on symbol layer
+void actu_each(tap_dance_state_t *state, void *user_data) {
+    switch (state->count) {
+        case 1:
+            act_char_led_index = I_A;
+            break;
+        case 2:
+            act_char_led_index = I_E;
+            break;
+        case 3:
+            act_char_led_index = I_I;
+            break;
+        case 4:
+            act_char_led_index = I_O;
+            break;
+        case 5:
+            act_char_led_index = I_U;
+            break;
+        case 6:
+            act_char_led_index = I_Y;
+            break;
+        default:
+            act_char_led_index = 0;
+            break;
+    }
+}
+
+// function for symbol layer u key tap dance
+void actu_finished (tap_dance_state_t *state, void *user_data) {
+    actu_tap_state.state = cur_dance(state);
+    switch (actu_tap_state.state) {
+        case SINGLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00e4","00c4");
+            }
+            else {
+                symbol_key_win("0228","0196"); // a
+            }
+            break;
+        case DOUBLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00eb","00cb");
+            }
+            else {
+                symbol_key_win("0235","0203"); // e
+            }
+            break;
+        case TRIPLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00ef","00cf");
+            }
+            else {
+                symbol_key_win("0239","0207"); // i
+            }
+            break;
+        case QUAD_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00f6","00d6");
+            }
+            else {
+                symbol_key_win("0246","0214"); // o
+            }
+            break;
+        case PENT_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00fc","00dc");
+            }
+            else {
+                symbol_key_win("0252","0220"); // u
+            }
+            break;
+        case HEXA_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00ff","0178");
+            }
+            else {
+                symbol_key_win("0255","0159"); // y
+            }
+            break;
+    }
+}
+
+void actu_reset (tap_dance_state_t *state, void *user_data) {
+    act_char_led_index = 0;
+    actu_tap_state.state = 0;
+}
+
+// function for each press of i on symbol layer
+void acti_each(tap_dance_state_t *state, void *user_data) {
+    switch (state->count) {
+        case 1:
+            act_char_led_index = I_I;
+            break;
+        case 2:
+            act_char_led_index = I_A;
+            break;
+        case 3:
+            act_char_led_index = I_E;
+            break;
+        case 4:
+            act_char_led_index = I_O;
+            break;
+        case 5:
+            act_char_led_index = I_U;
+            break;
+        default:
+            act_char_led_index = 0;
+            break;
+    }
+}
+// function for symbol layer i key tap dance
+void acti_finished (tap_dance_state_t *state, void *user_data) {
+    acti_tap_state.state = cur_dance(state);
+    switch (acti_tap_state.state) {
+        case SINGLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00ee","00ce");
+            }
+            else {
+                symbol_key_win("0238","0206"); // i
+            }
+            break;
+        case DOUBLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00e2","00c2");
+            }
+            else {
+                symbol_key_win("0226","0194"); // a
+            }
+            break;
+        case TRIPLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00ea","00ca");
+            }
+            else {
+                symbol_key_win("0234","0202"); // e
+            }
+            break;
+        case QUAD_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00f4","00d4");
+            }
+            else {
+                symbol_key_win("0244","0212"); // o
+            }
+            break;
+        case PENT_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00fb","00db");
+            }
+            else {
+                symbol_key_win("0251","0219"); // u
+            }
+            break;
+        case HEXA_TAP:
+            break;
+    }
+}
+
+void acti_reset (tap_dance_state_t *state, void *user_data) {
+    act_char_led_index = 0;
+    acti_tap_state.state = 0;
+}
+
+// function for each press of n on symbol layer
+void actn_each(tap_dance_state_t *state, void *user_data) {
+    switch (state->count) {
+        case 1:
+            act_char_led_index = I_N;
+            break;
+        case 2:
+            act_char_led_index = I_A;
+            break;
+        case 3:
+            act_char_led_index = I_O;
+            break;
+        default:
+            act_char_led_index = 0;
+            break;
+    }
+}
+// function for symbol layer n key tap dance
+void actn_finished (tap_dance_state_t *state, void *user_data) {
+    actn_tap_state.state = cur_dance(state);
+    switch (actn_tap_state.state) {
+        case SINGLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00f1","00d1");
+            }
+            else {
+                symbol_key_win("164","165");   // n
+            }
+            break;
+        case DOUBLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00e3","00c3");
+            }
+            else {
+                symbol_key_win("0227","0195"); // a
+            }
+            break;
+        case TRIPLE_TAP:
+            if (user_config.is_linux_base) {
+                symbol_key_linux("00f5","00d5");
+            }
+            else {
+                symbol_key_win("0245","0213"); // o
+            }
+            break;
+    }
+}
+
+void actn_reset (tap_dance_state_t *state, void *user_data) {
+    act_char_led_index = 0;
+    actn_tap_state.state = 0;
+}
+
+// function for lgui tap dance
+void lgui_finished (tap_dance_state_t *state, void *user_data) {
+    lgui_tap_state.state = cur_dance(state);
+    switch (lgui_tap_state.state) {
+        case SINGLE_TAP:
+            tap_code(KC_LGUI);
+            break;
+        case SINGLE_HOLD:
+            register_code(KC_LGUI);
+            if (!is_mac_base()) {
+                is_winkey_held = true;
+            }
+            break;
+        case DOUBLE_TAP:
+            set_oneshot_layer(WSYM_LAYR, ONESHOT_START);
+            clear_oneshot_layer_state(ONESHOT_PRESSED);
+            break;
+        case DOUBLE_HOLD:
+            layer_on(WSYM_LAYR);
+            break;
+    }
+}
+
+void lgui_reset (tap_dance_state_t *state, void *user_data) {
+    switch (lgui_tap_state.state) {
+        case SINGLE_TAP:
+            break;
+        case SINGLE_HOLD:
+            unregister_code(KC_LGUI);
+            if (!is_mac_base()) {
+                is_winkey_held = false;
+            }
+            break;
+        case DOUBLE_TAP:
+            break;
+        case DOUBLE_HOLD:
+            if (!is_layer_locked(WSYM_LAYR)) {
+                layer_off(WSYM_LAYR);
+            }
+            break;
+    }
+    lgui_tap_state.state = 0;
+}
+
+// function for lopt tap dance
+void lopt_finished (tap_dance_state_t *state, void *user_data) {
+    lopt_tap_state.state = cur_dance(state);
+    switch (lopt_tap_state.state) {
+        case SINGLE_TAP:
+            tap_code(KC_LOPT);
+            break;
+        case SINGLE_HOLD:
+        case DOUBLE_HOLD:
+            register_code(KC_LOPT);
+            if (get_highest_layer(layer_state) < FN_LAYR) {
+                layer_on(MSYM_LAYR);
+            }
+            break;
+        case DOUBLE_TAP:
+            set_oneshot_layer(MSYM_LAYR, ONESHOT_START);
+            add_oneshot_mods(MOD_BIT(KC_LOPT));
+            clear_oneshot_layer_state(ONESHOT_PRESSED);
+            break;
+    }
+}
+
+void lopt_reset (tap_dance_state_t *state, void *user_data) {
+    switch (lopt_tap_state.state) {
+        case SINGLE_TAP:
+            break;
+        case SINGLE_HOLD:
+        case DOUBLE_HOLD:
+            if (!is_layer_locked(MSYM_LAYR)) {
+                unregister_code(KC_LOPT);
+                layer_off(MSYM_LAYR);
+            }
+            break;
+        case DOUBLE_TAP:
+            break;
+    }
+    lopt_tap_state.state = 0;
+}
+
+// function for ropt tap dance
+void ropt_finished (tap_dance_state_t *state, void *user_data) {
+    ropt_tap_state.state = cur_dance(state);
+    switch (ropt_tap_state.state) {
+        case SINGLE_TAP:
+            set_oneshot_layer(MSYM_LAYR, ONESHOT_START);
+            add_oneshot_mods(MOD_BIT(KC_LOPT));
+            clear_oneshot_layer_state(ONESHOT_PRESSED);
+            break;
+        case SINGLE_HOLD:
+            register_code(KC_LOPT);
+            if (is_base_layer(get_highest_layer(layer_state))) {
+                layer_on(MSYM_LAYR);
+            }
+            break;
+        case DOUBLE_TAP:
+            set_oneshot_layer(EMO_LAYR, ONESHOT_START);
+            clear_oneshot_layer_state(ONESHOT_PRESSED);
+            break;
+        case DOUBLE_HOLD:
+            layer_on(EMO_LAYR);
+            break;
+    }
+}
+
+void ropt_reset (tap_dance_state_t *state, void *user_data) {
+    switch (ropt_tap_state.state) {
+        case SINGLE_TAP:
+            break;
+        case SINGLE_HOLD:
+            if (!is_layer_locked(MSYM_LAYR)) {
+                unregister_code(KC_LOPT);
+                layer_off(MSYM_LAYR);
+            }
+            break;
+        case DOUBLE_TAP:
+            break;
+        case DOUBLE_HOLD:
+            if (!is_layer_locked(EMO_LAYR)) {
+                layer_off(EMO_LAYR);
+            }
+            break;
+    }
+    ropt_tap_state.state = 0;
+}
+
+// function for macl tap dance
+void macl_finished (tap_dance_state_t *state, void *user_data) {
+    macl_tap_state.state = cur_dance(state);
+    switch (macl_tap_state.state) {
+        case SINGLE_TAP:
+        case SINGLE_HOLD:
+            tap_code(KC_MS_ACCEL0);
+            break;
+        case DOUBLE_TAP:
+            tap_code(KC_MS_ACCEL1);
+            break;
+        case TRIPLE_TAP:
+            tap_code(KC_MS_ACCEL2);
+            break;
+    }
+}
+
+void macl_reset (tap_dance_state_t *state, void *user_data) {
+    if (macl_tap_state.state == SINGLE_HOLD) {
+        tap_code(KC_MS_ACCEL1);
+    }
+    macl_tap_state.state = 0;
+}
+
+// associate the tap dance keys with their funcitons
+tap_dance_action_t tap_dance_actions[] = {
+    [CAPS_LAYR] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, caps_finished, caps_reset),
+    [FN_OSL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, fn_finished, fn_reset),
+    [RALT_OSL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ralt_finished, ralt_reset),
+    [RSFT_OSL] = ACTION_TAP_DANCE_FN_ADVANCED(rsft_each, rsft_finished, rsft_reset),
+    [KB_UNLOCK] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, kbunlock_finished, kbunlock_reset),
+    [ACT_GRV] = ACTION_TAP_DANCE_FN_ADVANCED(actgrv_each, actgrv_finished, actgrv_reset),
+    [ACT_1] = ACTION_TAP_DANCE_FN_ADVANCED(act1_each, act1_finished, act1_reset),
+    [ACT_E] = ACTION_TAP_DANCE_FN_ADVANCED(acte_each, acte_finished, acte_reset),
+    [ACT_U] = ACTION_TAP_DANCE_FN_ADVANCED(actu_each, actu_finished, actu_reset),
+    [ACT_I] = ACTION_TAP_DANCE_FN_ADVANCED(acti_each, acti_finished, acti_reset),
+    [ACT_N] = ACTION_TAP_DANCE_FN_ADVANCED(actn_each, actn_finished, actn_reset),
+    [LGUI_OSL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lgui_finished, lgui_reset),
+    [RCMD_OSL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, rcmd_finished, rcmd_reset),
+    [LOPT_OSL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lopt_finished, lopt_reset),
+    [ROPT_OSL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ropt_finished, ropt_reset),
+    [MOUSE_ACCEL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, macl_finished, macl_reset)
+};
+
+// accent tap dances should give a little bit longer to see the leds
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case TD(ACT_GRV):
+        case TD(ACT_1):
+        case TD(ACT_E):
+        case TD(ACT_U):
+        case TD(ACT_I):
+        case TD(ACT_N):
+            return TAPPING_TERM + 400;
+        default:
+            return TAPPING_TERM;
+    }
+}
+
 // jiggler to keep from screen timeout without adjusting power settings
 void jiggle_mouse(void) {
     uint32_t jiggler_callback(uint32_t trigger_time, void* cb_arg) {
@@ -2949,21 +4011,25 @@ bool key_should_fade(keytracker key, uint8_t layer) {
         ((layer == FN_LAYR || layer == SFT_LAYR || layer == WIDE_LAYR ||
         layer == CIRC_LAYR || is_caps_word_on()) &&
         (key.index == I_LSFT || key.index == I_RSFT)) ||                                              // l/r shift
-        ((layer == FN_LAYR || layer == KCTL_LAYR) && (key.index == I_LALT || key.index == I_RALT)) || // l/r alt
+        ((layer == FN_LAYR || layer == KCTL_LAYR) && 
+                                ((key.index == I_LALT || key.index == I_RALT) ||
+                                (is_mac_base() && (key.index == I_LCMD || key.index == I_RCMD)))) ||  // l/r alt cmd
         (macro_recording && (key.index == I_MREC1 || key.index == I_MREC2)) ||                        // macro recording keys
-        (is_layer_locked(layer) && key.index == I_LLOCK) ||                                           // home (layer lock key)
+        (is_layer_locked(layer) && key.index == I_LLOCK) ||                                           // layer lock key
         (is_in_leader_sequence && key.index == I_L) ||                                                // leader key
         (layer == SFT_LAYR && (key.index == I_NUMLOCK || key.index == I_PGUP)) ||                     // num lock, mouse hold
         (layer == FN_LAYR && key.index == I_SLOCK) ||                                                 // scroll lock
         (layer == WIDE_LAYR && (key.index == I_BARTEXT || key.index == I_STHRU ||
         key.index == I_UNDERLN || key.index == I_BBRTEXT)) ||                                         // wide-text toggles
-        (layer == KCTL_LAYR && (key.index == I_FJLIGHT || key.index == I_HROWLIGHT)) ||               // hrow/fj indicators
+        (layer == KCTL_LAYR && (key.index == I_FJLIGHT || key.index == I_HROWLIGHT || 
+                                key.index == I_SEMI || key.index == I_APOS || key.index == I_ENT)) || // ktrack/hrow/fj indicators
         (layer == KCTL_LAYR && (key.index >= I_N1 && key.index <= I_N4)) ||                           // wireless mode keys
         (os_changed) ||                                                                               // mac/win/lin change
         (layer == WSYM_LAYR && (key.index == I_GRV || key.index == I_N1 || key.index == I_E ||
                                 key.index == I_I || key.index == I_U || key.index == I_N ||           // accent keys
                                 key.index == I_RALT || key.index == I_LGUI)) ||                       // sym_layr ralt, lgui
         (layer == MSYM_LAYR && (key.index == I_LOPT || key.index == I_ROPT)) ||                       // sym_layr lopt, ropt
+        (layer == EMO_LAYR && (key.index == I_RCMD || key.index == I_ROPT)) ||                        // emo_layr rcmd, rpot
         (key.index == I_CAPS) || (key.index == I_FN || key.index == I_TAB)) {                         // caps lock, fn, tab
             should_fade = false;
         }
@@ -3042,6 +4108,11 @@ uint32_t leader_error_callback(uint32_t trigger_time, void* cb_arg) {
     is_leader_error_led_on = false;
     return 0;
 }
+// callback to return enbale keytracker after a delay to see the wireless status indicator
+uint32_t wireless_mode_callback(uint32_t trigger_time, void *cb_arg) {
+    enable_keytracker = true;
+    return 0;
+}
 
 // setup to store vars when macro recording starts or ends. then can flash some rgb
 void dynamic_macro_record_start_user(int8_t direction) {
@@ -3100,6 +4171,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 void layer_lock_set_user(layer_state_t locked_layers) {
     static bool opt_is_held_for_symbol = false;
+    reset_oneshot_layer();
+    clear_oneshot_mods();
     if (is_layer_locked(MSYM_LAYR)) {
         register_code(KC_LOPT);
         opt_is_held_for_symbol = true;
@@ -3112,8 +4185,9 @@ void layer_lock_set_user(layer_state_t locked_layers) {
 
 // for tracking if base is mac
 bool is_mac_base(void) {
-    for (uint8_t i = 0; i < monitored_macos_base_count; i++) {
-        if (IS_LAYER_ON(monitored_macos_base_layers[i])) {
+    uint8_t base = get_highest_layer(default_layer_state);
+    for (uint8_t i = 0; i < macos_base_layers_count; i++) {
+        if (base == macos_base_layers[i]) {
             return true;
         }
     }

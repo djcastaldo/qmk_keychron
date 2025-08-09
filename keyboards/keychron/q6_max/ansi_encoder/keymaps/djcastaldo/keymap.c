@@ -55,18 +55,6 @@ enum custom_keycodes {
     CUSTOM_KEYCODE = USERSPACE_END,
 };
 
-// custom tap dances
-enum {
-   CAPS_LAYR = 0,
-   FN_OSL = 1,
-   ROPT_OSL = 2,
-   RCMD_OSL = 3,
-   RSFT_OSL = 4,
-   MOUSE_ACCEL = 5,
-   KB_UNLOCK = 6
-};
-
-// clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  [MAC_BASE]
 //,-------------------------------------------------------------------------------------------------------------------------------------,
@@ -94,7 +82,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                                  KC_DEL,KC_END,KC_PGDN,KC_P7,KC_P8,KC_P9,
         TD(CAPS_LAYR),KC_A,KC_S,KC_D,KC_F,KC_G,KC_H,KC_J,KC_K,KC_L,KC_SCLN,KC_QUOT, KC_ENT,                 KC_P4, KC_P5, KC_P6, KC_PPLS,
         KC_LSFT, KC_Z,KC_X,KC_C,KC_V,KC_B,KC_N,KC_M,KC_COMM,KC_DOT,KC_SLSH, TD(RSFT_OSL),         KC_UP,        KC_P1, KC_P2, KC_P3,
-        KC_LCTL, KC_LOPT, KC_LCMD,   KC_SPC,  TD(RCMD_OSL), KC_ROPT,TD(FN_OSL),KC_RCTL,KC_LEFT,KC_DOWN,KC_RGHT, KC_P0, KC_PDOT, KC_PENT),
+        KC_LCTL, KC_LOPT, KC_LCMD,  KC_SPC,  TD(RCMD_OSL),TD(ROPT_OSL),TD(FN_OSL),KC_RCTL,KC_LEFT,KC_DOWN,KC_RGHT,KC_P0,KC_PDOT,KC_PENT),
 //  [FN_LAYR]
 //,-------------------------------------------------------------------------------------------------------------------------------------,
 //: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
@@ -439,47 +427,6 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
 //`-------------------------------------------------------------------------------------------------------------------------------------`
 
-// tap dance setup
-typedef struct {
-    bool is_press_action;
-    int state;
-} tap;
-// tap dance states
-enum {
-    SINGLE_TAP = 1,
-    SINGLE_HOLD = 2,
-    DOUBLE_TAP = 3,
-    TRIPLE_TAP = 4,
-    QUAD_TAP = 5,
-    PENT_TAP = 6
-};
-// functions associated with all tap dances
-int cur_dance (tap_dance_state_t *state);
-// functions associated with individual tap dances
-void caps_finished (tap_dance_state_t *state, void *user_data);
-void caps_reset (tap_dance_state_t *state, void *user_data);
-void fn_finished (tap_dance_state_t *state, void *user_data);
-void fn_reset (tap_dance_state_t *state, void *user_data);
-void ropt_finished (tap_dance_state_t *state, void *user_data);
-void ropt_reset (tap_dance_state_t *state, void *user_data);
-void rcmd_finished (tap_dance_state_t *state, void *user_data);
-void rcmd_reset (tap_dance_state_t *state, void *user_data);
-void rsft_finished (tap_dance_state_t *state, void *user_data);
-void rsft_reset (tap_dance_state_t *state, void *user_data);
-void macl_finished (tap_dance_state_t *state, void *user_data);
-void macl_reset (tap_dance_state_t *state, void *user_data);
-void kbunlock_finished (tap_dance_state_t *state, void *user_data);
-void kbunlock_reset (tap_dance_state_t *state, void *user_data);
-
-// setup this token to be used to create a delay from when wireless mode is changed until when key fade turns back on
-// to see the wireless status indicator
-static deferred_token wireless_mode_token = INVALID_DEFERRED_TOKEN;
-uint32_t wireless_mode_callback(uint32_t trigger_time, void *cb_arg) {
-    enable_keytracker = true;
-    return 0;
-}
-
-// clang-format on
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // userspace
     if (!process_record_userspace(keycode,record)) {
@@ -491,24 +438,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     }
 
-    switch (keycode) {
-    // for bt mode change, stop fade for a little while so can see the connection status lights
-    case BT_HST1:
-    case BT_HST2:
-    case BT_HST3:
-    case P2P4G:
-        if (record->event.pressed) {
-            if (wireless_mode_token) {
-                cancel_deferred_exec(wireless_mode_token);
-                wireless_mode_token = INVALID_DEFERRED_TOKEN;
-            }
-        }
-        else if (enable_keytracker) {
-            enable_keytracker = false;
-            wireless_mode_token = defer_exec(3000, wireless_mode_callback, NULL);
-        }
-        break;
-    }
     return process_record_secrets(keycode, record);
 }
 
@@ -686,11 +615,11 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                     rgb_matrix_set_color(I_RSFT, RGB_TURQUOISE);   // rshift
                     break;
                 case CIRC_LAYR:
-                    rgb_matrix_set_color(I_RSFT, RGB_CORAL);      // rshift
+                    rgb_matrix_set_color(I_RSFT, RGB_CORAL);       // rshift
                     break;
 	        case EMO_LAYR:
-                    rgb_matrix_set_color(I_LSFT, RGB_ORANGE);      // lshift
-                    rgb_matrix_set_color(I_RSFT, RGB_ORANGE);      // rshift
+                    rgb_matrix_set_color(I_RCMD, RGB_ORANGE);      // rcmd
+                    rgb_matrix_set_color(I_ROPT, RGB_ORANGE);      // ropt
 		    break;
 	        case LOCK_LAYR:
                     rgb_matrix_set_color(I_EKS, RGB_RED);          // X
@@ -964,8 +893,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 break;
             }
         }
-        // show wireless connection on KCTL_LAYR if in bt or 2.4g modes
-	if (layer == KCTL_LAYR)
+        // show wireless connection if just switched modes or on KCTL_LAYR if in bt or 2.4g modes
+	if (wireless_mode_token || layer == KCTL_LAYR)
 	{
             if (wireless_get_state() == WT_CONNECTED) {
                 // host_index is set to 24 for 2.4g, bt is 1,2,3
@@ -976,338 +905,11 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     return false;
 }
 
-//Determine the current tap dance state
-int cur_dance (tap_dance_state_t *state) {
-  if (state->count == 1) {
-    if (!state->pressed) {
-      return SINGLE_TAP;
-    } else {
-      return SINGLE_HOLD;
-    }
-  } else if (state->count == 2) {
-    return DOUBLE_TAP;
-  } else if (state->count == 3) {
-    return TRIPLE_TAP;
-  } else if (state->count == 4) {
-    return QUAD_TAP;
-  } else if (state->count == 5) {
-    return PENT_TAP;
-  }
-  else return 8;
-}
-
-//Initialize tap structure associated with example tap dance key
-static tap caps_tap_state = {
-  .is_press_action = true,
-  .state = 0
-};
-static tap fn_tap_state = {
-  .is_press_action = true,
-  .state = 0
-};
-static tap ropt_tap_state = {
-  .is_press_action = true,
-  .state = 0
-};
-static tap rcmd_tap_state = {
-  .is_press_action = true,
-  .state = 0
-};
-static tap rsft_tap_state = {
-  .is_press_action = true,
-  .state = 0
-};
-static tap macl_tap_state = {
-  .is_press_action = true,
-  .state = 0
-};
-static tap kbunlock_tap_state = {
-  .is_press_action = true,
-  .state = 0
-};
-
-// caps tap dance key function
-void caps_finished (tap_dance_state_t *state, void *user_data) {
-  caps_tap_state.state = cur_dance(state);
-  switch (caps_tap_state.state) {
-    case SINGLE_TAP: 
-      tap_code(KC_CAPS); 
-      break;
-    case SINGLE_HOLD: 
-      layer_on(FN_LAYR);
-      break;
-    case DOUBLE_TAP: 
-      if (layer_state_is(FN_LAYR)) {
-        //if already set, then switch it off
-        layer_lock_off(FN_LAYR);
-      } else { 
-        //if not already set, then switch the layer on
-        layer_lock_on(FN_LAYR);
-      }
-      break;
-    case TRIPLE_TAP: 
-      if (layer_state_is(KCTL_LAYR)) {
-        //if already set, then switch it off
-        layer_lock_off(KCTL_LAYR);
-      } else { 
-        //if not already set, then switch the layer on
-        layer_lock_on(KCTL_LAYR);
-      }
-      break;
-    case QUAD_TAP: 
-      if (layer_state_is(SFT_LAYR)) {
-        //if already set, then switch it off
-        layer_lock_off(SFT_LAYR);
-      } else { 
-        //if not already set, then switch the layer on
-        layer_lock_on(SFT_LAYR);
-      }
-      break;
-    case PENT_TAP:
-      if (layer_state_is(TMUX_LAYR)) {
-        //if already set, then switch it off
-        layer_lock_off(TMUX_LAYR);
-      } else {
-        //if not already set, then switch the layer on
-        layer_lock_on(TMUX_LAYR);
-      }
-      break;
-  }
-}
-
-void caps_reset (tap_dance_state_t *state, void *user_data) {
-  //if the key was held down and now is released then switch off the layer
-  if (caps_tap_state.state==SINGLE_HOLD && !is_layer_locked(FN_LAYR)) {
-    layer_off(FN_LAYR);
-  }
-  caps_tap_state.state = 0;
-}
-
-// function for fn tap dance
-// this is used instead of just standard OSL because its easier to
-// hold it down and run multiple dynamic macros, which are otherwise
-// setup to turn of the layer if OSL is detected as active
-void fn_finished (tap_dance_state_t *state, void *user_data) {
-  fn_tap_state.state = cur_dance(state);
-  switch (fn_tap_state.state) {
-    case SINGLE_TAP: 
-      set_oneshot_layer(FN_LAYR, ONESHOT_START);
-      clear_oneshot_layer_state(ONESHOT_PRESSED);
-      break;
-    case SINGLE_HOLD: 
-      layer_on(FN_LAYR);
-      break;
-  }
-}
-
-void fn_reset (tap_dance_state_t *state, void *user_data) {
-  switch (fn_tap_state.state) {
-    case SINGLE_TAP:
-      break;
-    case SINGLE_HOLD:
-      if (!is_layer_locked(FN_LAYR)) {
-        layer_off(FN_LAYR);
-      }
-      break;
-  }
-  fn_tap_state.state = 0;
-}
-
-// function for ropt tap dance
-void ropt_finished (tap_dance_state_t *state, void *user_data) {
-  ropt_tap_state.state = cur_dance(state);
-  switch (ropt_tap_state.state) {
-    case SINGLE_TAP: 
-      set_oneshot_layer(SFT_LAYR, ONESHOT_START);
-      clear_oneshot_layer_state(ONESHOT_PRESSED);
-      break;
-    case SINGLE_HOLD: 
-      register_code(KC_ROPT); 
-      if (get_highest_layer(layer_state) < 3) {
-          layer_on(MSYM_LAYR);
-      }
-      break;
-  }
-}
-
-void ropt_reset (tap_dance_state_t *state, void *user_data) {
-  switch (ropt_tap_state.state) {
-    case SINGLE_TAP:
-      break;
-    case SINGLE_HOLD:
-      unregister_code(KC_ROPT);
-      if (!is_layer_locked(MSYM_LAYR)) {
-          layer_off(MSYM_LAYR);
-      }
-      break;
-  }
-  ropt_tap_state.state = 0;
-}
-
-// function for rctl tap dance
-void rcmd_finished (tap_dance_state_t *state, void *user_data) {
-  rcmd_tap_state.state = cur_dance(state);
-  switch (rcmd_tap_state.state) {
-    case SINGLE_TAP: 
-      set_oneshot_layer(KCTL_LAYR, ONESHOT_START);
-      clear_oneshot_layer_state(ONESHOT_PRESSED);
-      break;
-    case SINGLE_HOLD: 
-      register_code(KC_RCMD);
-      break;
-    case DOUBLE_TAP:
-      leader_start();
-      break;
-  }
-}
-
-void rcmd_reset (tap_dance_state_t *state, void *user_data) {
-  switch (rcmd_tap_state.state) {
-    case SINGLE_TAP:
-      break;
-    case SINGLE_HOLD:
-      unregister_code(KC_RCMD);
-      break;
-  }
-  rcmd_tap_state.state = 0;
-}
-
-// function for each press of rsft
-void rsft_each(tap_dance_state_t *state, void *user_data) {
-    if (get_mods() & MOD_BIT(KC_LSFT)) {
-        caps_word_on();
-    }
-}
-
-// function for rsft tap dance
-void rsft_finished (tap_dance_state_t *state, void *user_data) {
-  rsft_tap_state.state = cur_dance(state);
-  switch (rsft_tap_state.state) {
-    case SINGLE_TAP: 
-      // check if this is caps word activation, otherwise set the osl
-      if (!is_caps_word_on()) {
-          set_oneshot_layer(SFT_LAYR, ONESHOT_START);
-          clear_oneshot_layer_state(ONESHOT_PRESSED);
-      }
-      break;
-    case SINGLE_HOLD:
-      // check if this is caps word activation, otherwise regular shift
-      if (get_mods() & MOD_BIT(KC_LSFT)) {
-          caps_word_on();
-      }
-      else {
-          register_code(KC_RSFT);
-      }
-      break;
-    case DOUBLE_TAP:
-      // activate WIDE_LAYR
-      if (IS_LAYER_ON(WIDE_LAYR)) {
-          layer_lock_off(WIDE_LAYR);
-      }
-      else {
-          layer_lock_on(WIDE_LAYR);
-          wide_firstchar = true;
-      }
-      break;
-    case TRIPLE_TAP:
-      // activate CIRC_LAYR
-      if (IS_LAYER_ON(CIRC_LAYR)) {
-          layer_lock_off(CIRC_LAYR);
-      }
-      else {
-          layer_lock_on(CIRC_LAYR);
-      }
-      break;
-  }
-}
-
-void rsft_reset (tap_dance_state_t *state, void *user_data) {
-  switch (rsft_tap_state.state) {
-    case SINGLE_TAP:
-      // check if this is caps word activation  
-      if (get_mods() & MOD_BIT(KC_LSFT)) {
-          reset_oneshot_layer();
-          caps_word_on();
-      }
-      break;
-    case SINGLE_HOLD:
-      if (get_mods() & MOD_BIT(KC_LSFT)) {
-          caps_word_on(); 
-      }
-      else {
-          unregister_code(KC_RSFT);
-      } 
-      break;
-    case DOUBLE_TAP:
-      break;
-    case TRIPLE_TAP:
-      break;
-  }
-  rsft_tap_state.state = 0;
-}
-
-// function for macl tap dance
-void macl_finished (tap_dance_state_t *state, void *user_data) {
-  macl_tap_state.state = cur_dance(state);
-  switch (macl_tap_state.state) {
-    case SINGLE_TAP: 
-    case SINGLE_HOLD:
-      tap_code(KC_MS_ACCEL0);
-      break;
-    case DOUBLE_TAP: 
-      tap_code(KC_MS_ACCEL1);
-      break;
-    case TRIPLE_TAP: 
-      tap_code(KC_MS_ACCEL2);
-      break;
-  }
-}
-
-void macl_reset (tap_dance_state_t *state, void *user_data) {
-  if (macl_tap_state.state == SINGLE_HOLD) {
-      tap_code(KC_MS_ACCEL1);
-  }
-  macl_tap_state.state = 0;
-}
-
-// function for kbunlock tap dance
-void kbunlock_finished (tap_dance_state_t *state, void *user_data) {
-  kbunlock_tap_state.state = cur_dance(state);
-  switch (kbunlock_tap_state.state) {
-    case SINGLE_TAP:
-      break;
-    case DOUBLE_TAP:
-      break;
-    case TRIPLE_TAP:
-      layer_off(LOCK_LAYR);
-      rgblight_mode(saved_rgb_mode);
-      break;
-    case SINGLE_HOLD:
-      break;
-  }
-}
-void kbunlock_reset (tap_dance_state_t *state, void *user_data) {
-  kbunlock_tap_state.state = 0;
-}
-
-// associate the tap dance keys with their funcitons 
-tap_dance_action_t tap_dance_actions[] = {
-  [CAPS_LAYR] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, caps_finished, caps_reset),
-  [FN_OSL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, fn_finished, fn_reset),
-  [ROPT_OSL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ropt_finished, ropt_reset),
-  [RCMD_OSL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, rcmd_finished, rcmd_reset),
-  [RSFT_OSL] = ACTION_TAP_DANCE_FN_ADVANCED(rsft_each, rsft_finished, rsft_reset),
-  [MOUSE_ACCEL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, macl_finished, macl_reset),
-  [KB_UNLOCK] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, kbunlock_finished, kbunlock_reset),
-};
-
 void keyboard_post_init_user(void) {
     // read the user config from EEPROM
     user_config.raw = eeconfig_read_user();
     // and set this so layers switch correctly on user's first os change
     layer_state_set(default_layer_state);
-    // need to track dip switch changes after userspace move is complete
-    layer_move(MAC_BASE);
 }
 
 void eeconfig_init_user(void) {  // EEPROM is getting reset!
