@@ -11,7 +11,7 @@ user_config_t user_config;
 #ifdef CONFIG_MACOS_BASE_LAYERS
 const uint8_t macos_base_layers[] = CONFIG_MACOS_BASE_LAYERS;
 #else
-const uint8_t macos_base_layers[0];
+const uint8_t macos_base_layers[] = {};
 #endif
 #ifdef CONFIG_MACOS_BASE_LAYERS_COUNT
 const uint8_t macos_base_layers_count = CONFIG_MACOS_BASE_LAYERS_COUNT;
@@ -4132,8 +4132,8 @@ bool key_should_fade(keytracker key, uint8_t layer) {
                                 (is_mac_base() && (key.index == I_LCMD || key.index == I_RCMD)))) ||  // l/r alt cmd
         (macro_recording && (key.index == I_MREC1 || key.index == I_MREC2)) ||                        // macro recording keys
         (is_layer_locked(layer) && key.index == I_LLOCK) ||                                           // layer lock key
-        (is_in_leader_sequence && key.index == I_L) ||                                                // leader key
-        (layer == SFT_LAYR && (key.index == I_NUMLOCK || key.index == I_PGUP)) ||                     // num lock, mouse hold
+        (is_in_leader_sequence && key.index == I_LEAD) ||                                             // leader key
+        (layer == SFT_LAYR && (key.index == I_NUMLOCK || key.index == I_MHLD)) ||                     // num lock, mouse hold
         (layer == FN_LAYR && key.index == I_SLOCK) ||                                                 // scroll lock
         (layer == WIDE_LAYR && (key.index == I_BARTEXT || key.index == I_STHRU ||
         key.index == I_UNDERLN || key.index == I_BBRTEXT)) ||                                         // wide-text toggles
@@ -4144,9 +4144,14 @@ bool key_should_fade(keytracker key, uint8_t layer) {
         (layer == WSYM_LAYR && (key.index == I_GRV || key.index == I_N1 || key.index == I_E ||
                                 key.index == I_I || key.index == I_U || key.index == I_N ||           // accent keys
                                 key.index == I_RALT || key.index == I_LGUI)) ||                       // sym_layr ralt, lgui
+#ifdef HAS_ROPT_KEY
         (layer == MSYM_LAYR && (key.index == I_LOPT || key.index == I_ROPT)) ||                       // sym_layr lopt, ropt
         (layer == EMO_LAYR && (key.index == I_RCMD || key.index == I_ROPT)) ||                        // emo_layr rcmd, rpot
-        (key.index == I_CAPS) || (key.index == I_FN || key.index == I_TAB)) {                         // caps lock, fn, tab
+#else
+        (layer == MSYM_LAYR && key.index == I_LOPT) ||                                                // sym_layr lopt, ropt
+        (layer == EMO_LAYR && key.index == I_RCMD) ||                                                 // emo_layr rcmd, rpot
+#endif
+        (key.index == I_CAPS || key.index == I_FN || key.index == I_TAB)) {                           // caps lock, fn, tab
             should_fade = false;
         }
     return should_fade;

@@ -58,6 +58,7 @@ enum key_indexes {
     I_MREC2 = 41,
     I_PGUP = 43,
     I_STHRU = 43,
+    I_MHLD = 43,
     I_CAPS = 44,
     I_A = 45,
     I_S = 46,
@@ -68,6 +69,7 @@ enum key_indexes {
     I_J = 51,
     I_K = 52,
     I_L = 53,
+    I_LEAD = 53,
     I_SEMI = 54,
     I_SLOCK = 54,
     I_APOS = 55,
@@ -102,5 +104,4 @@ enum key_indexes {
     I_LEFT = 78,
     I_DOWN = 79,
     I_RIGHT = 80,
-    I_ROPT = 200,
 };
