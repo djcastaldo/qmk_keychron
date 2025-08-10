@@ -4976,8 +4976,11 @@ bool key_should_fade(keytracker key, uint8_t layer) {
         layer == CIRC_LAYR || is_caps_word_on()) &&
         (key.index == I_LSFT || key.index == I_RSFT)) ||                                              // l/r shift
         ((layer == FN_LAYR || layer == KCTL_LAYR) && 
-                                ((key.index == I_LALT || key.index == I_RALT) ||
-                                (is_mac_base() && (key.index == I_LCMD || key.index == I_RCMD)))) ||  // l/r alt cmd
+                                (key.index == I_LOPT ||
+                                #ifdef CONFIG_HAS_ROPT_KEY
+                                 key.index == I_ROPT ||
+                                #endif
+                                 key.index == I_LCMD || key.index == I_RCMD)) ||                      // l/r alt cmd
         (macro_recording && (key.index == I_MREC1 || key.index == I_MREC2)) ||                        // macro recording keys
         (is_layer_locked(layer) && key.index == I_LLOCK) ||                                           // layer lock key
         (is_in_leader_sequence && key.index == I_LEAD) ||                                             // leader key
