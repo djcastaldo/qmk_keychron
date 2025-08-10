@@ -105,3 +105,10 @@ enum key_indexes {
     I_DOWN = 79,
     I_RIGHT = 80,
 };
+
+typedef struct {
+    uint8_t index;
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+} led_color_t;

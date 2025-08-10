@@ -102,3 +102,65 @@
 #    define CONFIG_KEYFADE_START_DELAY 16
 #    define CONFIG_KEYFADE_START_VAL 250
 #    define CONFIG_KEYFADE_CALLBACK_INTERVAL 15
+
+/* rgb_matrix_indicators_advanced_user settings */
+#    define CONFIG_HAS_ROPT_KEY
+#    define CONFIG_HAS_SECOND_KTRACK_KEY
+#    define CONFIG_HAS_SECOND_HROWLIGHT_KEY
+#    define CONFIG_HAS_SECOND_FJLIGHT_KEY
+#    define CONFIG_HAS_KCLK_BATTERY
+#    define CONFIG_HAS_LLOCK_KEY
+#    define CONFIG_FN_LAYR_COLOR RGB_GREEN
+#    define CONFIG_MREC_KEY_COLOR RGB_CORAL
+#    define CONFIG_SHIFT_LAYR_COLOR RGB_ORANGE
+#    define CONFIG_KCTL_LAYR_COLOR RGB_RED
+#    define CONFIG_TMUX_LAYR_COLOR RGB_CYAN
+#    define CONFIG_SYM_LAYR_COLOR RGB_SPRINGGREEN
+#    define CONFIG_WIDE_LAYR_COLOR RGB_TURQUOISE
+#    define CONFIG_CIRC_LAYR_COLOR RGB_CORAL 
+#    define CONFIG_EMO_LAYR_COLOR RGB_YELLOW
+#    define CONFIG_DEFUALT_LAYR_COLOR 0x77,0x77,0x77
+#    define CONFIG_EXTRA_BASE_LAYR_COLORS \
+     { \
+         { I_ESC, 255, 255, 255 }, \
+         { I_F1, 234, 234, 255 }, \
+         { I_F2, 234, 234, 255 }, \
+         { I_F3, 234, 234, 255 }, \
+         { I_F4, 234, 234, 255 }, \
+         { I_F5, 0, 255, 0 }, \
+         { I_F6, 255, 255, 0 }, \
+         { I_F7, 255, 255, 0 }, \
+         { I_F8, 255, 255, 0 }, \
+         { I_F9, 255, 255, 0 }, \
+         { I_F10, 234, 234, 255 }, \
+         { I_F11, 255, 0, 0 }, \
+         { I_F12, 234, 234, 255 }, \
+         { I_SSHOT, 234, 234, 255 }, \
+         { I_SIRI, 234, 234, 255 }, \
+         { I_RGB, 234, 234, 255 }, \
+         { I_CIRC, 234, 234, 255 }, \
+         { I_TRI, 234, 234, 255 }, \
+         { I_SQR, 234, 234, 255 }, \
+         { I_EKS, 255, 0, 0 }, \
+         { I_ENT, 255, 255, 255 }, \
+         { I_LOPT, 0x77,0x77,0x77 }, \
+         { I_ROPT, 0x77,0x77,0x77 }, \
+         { I_RCMD, RGB_RED }, \
+         { I_RSFT, RGB_ORANGE }, \
+         { I_CAPS, RGB_GREEN }, \
+         { I_FN, RGB_GREEN }, \
+         { I_TAB, 0x77,0x77,0x77 }, \
+     }
+#    define CONFIG_EXTRA_BASE_LAYR_COLORS_COUNT 28
+#    define CONFIG_ACCENT_KEY_COLOR RGB_WHITE
+#    define CONFIG_CAPS_WORD_SHIFT_COLOR 0x77,0x77,0x77
+#    define CONFIG_HROWLIGHT_COLOR RGB_GREEN
+#    define CONFIG_FJLIGHT_COLOR RGB_WHITE
+#    define CONFIG_LEADER_COLORA RGB_RED
+#    define CONFIG_LEADER_COLORB RGB_WHITE
+#    define CONFIG_KEYLIGHT_STD_COLOR RGB_WHITE
+#    define CONFIG_KEYLIGHT_ALT_COLOR_KEYS { I_ESC, I_ENT }
+#    define CONFIG_KEYLIGHT_ALT_COLOR_KEYS_COUNT 2
+#    define CONFIG_KEYLIGHT_ALT_COLOR_KEY_COLOR RGB_RED
+#    define CONFIG_KEYS_FADE_TO_BLUE
+#    define CONFIG_EEPROM_RESET_DEFAULT_LAYER MAC_BASE

@@ -6,6 +6,11 @@
 #include "config.h"
 #include "layers.h"
 #include "keyindex.h"
+#if defined(KEYBOARD_IS_KEYCHRON) || defined(KEYBOARD_IS_LEMOKEY)
+    #include "wireless/battery.h"
+    #include "wireless/bat_level_animation.h"
+    #include "wireless/wireless.h"
+#endif
 
 user_config_t user_config;
 #ifdef CONFIG_MACOS_BASE_LAYERS
@@ -27,6 +32,36 @@ const uint8_t all_base_layers[] = {0};
 const uint8_t all_base_layers_count = CONFIG_ALL_BASE_LAYERS_COUNT;
 #else
 const uint8_t all_base_layers_count = 1;
+#endif
+#ifdef CONFIG_RGB_LAYER_INDICATORS
+const uint8_t rgb_layer_indicators[] = CONFIG_RGB_LAYER_INDICATORS;
+#else
+const uint8_t rgb_layer_indicators[] = {};
+#endif
+#ifdef CONFIG_RGB_LAYER_INDICATORS_COUNT
+const uint8_t rgb_layer_indicators_count = CONFIG_RGB_LAYER_INDICATORS_COUNT;
+#else
+const uint8_t rgb_layer_indicators_count = 0;;
+#endif
+#ifdef CONFIG_EXTRA_BASE_LAYR_COLORS
+const led_color_t extra_base_layr_colors[] = CONFIG_EXTRA_BASE_LAYR_COLORS;
+#else
+const led_color_t extra_base_layr_colors[] = {};
+#endif
+#ifdef CONFIG_EXTRA_BASE_LAYR_COLORS_COUNT
+const uint8_t extra_base_layr_colors_count = CONFIG_EXTRA_BASE_LAYR_COLORS_COUNT;
+#else
+const uint8_t extra_base_layr_colors_count = 0;
+#endif
+#ifdef CONFIG_KEYLIGHT_ALT_COLOR_KEYS
+const uint8_t keylight_alt_color_keys[] = CONFIG_KEYLIGHT_ALT_COLOR_KEYS;
+#else
+const uint8_t keylight_alt_color_keys[] = {};
+#endif
+#ifdef CONFIG_KEYLIGHT_ALT_COLOR_KEYS_COUNT
+const uint8_t keylight_alt_color_keys_count = CONFIG_KEYLIGHT_ALT_COLOR_KEYS_COUNT;
+#else
+const uint8_t keylight_alt_color_keys_count = 0;
 #endif
 
 // setup keytracker
@@ -2641,7 +2676,7 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
         }
         else if (enable_keytracker) {
             enable_keytracker = false;
-            wireless_mode_token = defer_exec(4000, wireless_mode_callback, NULL);
+            wireless_mode_token = defer_exec(4500, wireless_mode_callback, NULL);
         }
         break;
 #endif
@@ -2970,6 +3005,798 @@ int cur_dance (tap_dance_state_t *state) {
         return HEXA_TAP;
     }
     else return 9;
+}
+
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    uint8_t layer = get_highest_layer(layer_state);
+#ifdef CONFIG_RGB_LAYER_INDICATORS
+    // color an indicator
+    for (uint8_t i = 0; i < rgb_layer_indicators_count; i++) {
+        switch (layer) {
+            case FN_LAYR:
+            #ifdef CONFIG_FN_LAYR_COLOR
+                rgb_matrix_set_color(rgb_layer_indicators[i], CONFIG_FN_LAYR_COLOR);
+            #else
+                rgb_matrix_set_color(rgb_layer_indicators[i], RGB_GREEN);
+            #endif
+                break;
+            case SFT_LAYR:
+            #ifdef CONFIG_SHIFT_LAYR_COLOR
+                rgb_matrix_set_color(rgb_layer_indicators[i], CONFIG_SHIFT_LAYR_COLOR);
+            #else
+                rgb_matrix_set_color(rgb_layer_indicators[i], RGB_ORANGE);
+            #endif
+                break;
+            case KCTL_LAYR:
+            #ifdef CONFIG_KCTL_LAYR_COLOR
+                rgb_matrix_set_color(rgb_layer_indicators[i], CONFIG_KCTL_LAYR_COLOR);
+            #else
+                rgb_matrix_set_color(rgb_layer_indicators[i], RGB_RED);
+            #endif
+                break;
+            case TMUX_LAYR:
+            #ifdef CONFIG_TMUX_LAYR_COLOR
+                rgb_matrix_set_color(rgb_layer_indicators[i], CONFIG_TMUX_LAYR_COLOR);
+            #else
+                rgb_matrix_set_color(rgb_layer_indicators[i], RGB_CYAN);
+            #endif
+                break;
+            case WSYM_LAYR:
+            case MSYM_LAYR:
+            #ifdef CONFIG_SYM_LAYR_COLOR
+                rgb_matrix_set_color(rgb_layer_indicators[i], CONFIG_SYM_LAYR_COLOR);
+            #else
+                rgb_matrix_set_color(rgb_layer_indicators[i], RGB_BLUE);
+            #endif
+                break;
+            case WIDE_LAYR:
+            #ifdef CONFIG_WIDE_LAYR_COLOR
+                rgb_matrix_set_color(rgb_layer_indicators[i], CONFIG_WIDE_LAYR_COLOR);
+            #else
+                rgb_matrix_set_color(rgb_layer_indicators[i], RGB_PURPLE);
+            #endif
+                break;
+            case CIRC_LAYR:
+            #ifdef CONFIG_CIRC_LAYR_COLOR
+                rgb_matrix_set_color(rgb_layer_indicators[i], CONFIG_CIRC_LAYR_COLOR);
+            #else
+                rgb_matrix_set_color(rgb_layer_indicators[i], RGB_CORAL);
+            #endif
+                break;
+            case LOCK_LAYR:
+                break;
+            default:
+                break;
+        }
+    }
+#endif
+
+#ifdef CONFIG_HAS_KCLK_BATTERY
+    if (!bat_level_animiation_actived() && !battery_is_empty()) {
+#endif
+        if (!is_base_layer(layer)) {
+            for (uint8_t row = 0; row < MATRIX_ROWS; ++row) {
+                for (uint8_t col = 0; col < MATRIX_COLS; ++col) {
+                    uint8_t index = g_led_config.matrix_co[row][col];
+        
+                    if (index >= led_min && index < led_max && index != NO_LED &&
+                    keymap_key_to_keycode(layer, (keypos_t){col,row}) > KC_TRNS) {
+                        switch (layer) {
+                        case FN_LAYR:
+                            if (index == I_MREC1 || index == I_MREC2) { // macro recording keys
+                            #ifdef CONFIG_MREC_KEY_COLOR
+                                rgb_matrix_set_color(index, CONFIG_MREC_KEY_COLOR);
+                            #else
+                                rgb_matrix_set_color(index, RGB_MAGENTA);
+                            #endif
+                            }
+                            else {
+                            #ifdef CONFIG_FN_LAYR_COLOR
+                                rgb_matrix_set_color(index, CONFIG_FN_LAYR_COLOR);
+                            #else
+                                rgb_matrix_set_color(index, RGB_GREEN);
+                            #endif
+                            }
+                            break;
+                        case SFT_LAYR:
+                        #ifdef CONFIG_SHIFT_LAYR_COLOR
+                            rgb_matrix_set_color(index, CONFIG_SHIFT_LAYR_COLOR);
+                        #else
+                            rgb_matrix_set_color(index, RGB_ORANGE);
+                        #endif
+                            break;
+                        case KCTL_LAYR:
+                        #ifdef CONFIG_KCTL_LAYR_COLOR
+                            rgb_matrix_set_color(index, CONFIG_KCTL_LAYR_COLOR);
+                        #else
+                            rgb_matrix_set_color(index, RGB_RED);
+                        #endif
+                            break;
+                        case TMUX_LAYR:
+                        #ifdef CONFIG_TMUX_LAYR_COLOR
+                            rgb_matrix_set_color(index, CONFIG_TMUX_LAYR_COLOR);
+                        #else
+                            rgb_matrix_set_color(index, RGB_CYAN);
+                        #endif
+                            break;
+                        case WSYM_LAYR:
+                        case MSYM_LAYR:
+                        #ifdef CONFIG_SYM_LAYR_COLOR
+                            rgb_matrix_set_color(index, CONFIG_SYM_LAYR_COLOR);
+                        #else
+                            rgb_matrix_set_color(index, RGB_BLUE);
+                        #endif
+                            break;
+                        case WIDE_LAYR:
+                        #ifdef CONFIG_WIDE_LAYR_COLOR
+                            rgb_matrix_set_color(index, CONFIG_WIDE_LAYR_COLOR);
+                        #else
+                            rgb_matrix_set_color(index, RGB_PURPLE);
+                        #endif
+                            break;
+                        case CIRC_LAYR:
+                        #ifdef CONFIG_CIRC_LAYR_COLOR
+                            rgb_matrix_set_color(index, CONFIG_CIRC_LAYR_COLOR);
+                        #else
+                            rgb_matrix_set_color(index, RGB_CORAL);
+                        #endif
+                            break;
+                        case EMO_LAYR:
+                        #ifdef CONFIG_EMO_LAYR_COLOR
+                            rgb_matrix_set_color(index, CONFIG_EMO_LAYR_COLOR);
+                        #else
+                            rgb_matrix_set_color(index, RGB_YELLOW);
+                        #endif
+                            break;
+                        case LOCK_LAYR:
+                            break;
+                        default:
+                        #ifdef CONFIG_DEFUALT_LAYR_COLOR
+                            rgb_matrix_set_color(index, 0x77, 0x77, 0x77);
+                        #else
+                            rgb_matrix_set_color(index, 0x77, 0x77, 0x77);
+                        #endif
+                            break;
+                        }
+                    }
+                }
+            }
+    // ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
+            // custom colors for layer keys on fn layer
+            if (layer == FN_LAYR) {
+            #ifdef CONFIG_SHIFT_LAYR_COLOR
+                rgb_matrix_set_color(I_LSFT, CONFIG_SHIFT_LAYR_COLOR); // left shift
+                rgb_matrix_set_color(I_RSFT, CONFIG_SHIFT_LAYR_COLOR); // right shift
+            #else
+                rgb_matrix_set_color(I_LSFT, RGB_ORANGE); // left shift
+                rgb_matrix_set_color(I_RSFT, RGB_ORANGE); // right shift
+            #endif
+            #ifdef CONFIG_KCTL_LAYR_COLOR
+                rgb_matrix_set_color(I_LCMD, CONFIG_KCTL_LAYR_COLOR);  // left alt / left cmd
+                rgb_matrix_set_color(I_RCMD, CONFIG_KCTL_LAYR_COLOR);  // right alt / right cmd 
+            #else
+                rgb_matrix_set_color(I_LCMD, RGB_RED);    // left alt / left cmd
+                rgb_matrix_set_color(I_RCMD, RGB_RED);    // right alt / right cmd 
+            #endif
+            #ifdef CONFIG_TMUX_LAYR_COLOR
+                rgb_matrix_set_color(I_TAB, CONFIG_TMUX_LAYR_COLOR);   // tab
+            #else
+                rgb_matrix_set_color(I_TAB, RGB_CYAN);    // tab
+            #endif
+            #ifdef CONFIG_SYM_LAYR_COLOR
+                rgb_matrix_set_color(I_LGUI, CONFIG_SYM_LAYR_COLOR);   // left win / left opt 
+                #ifdef CONFIG_HAS_ROPT_KEY
+                rgb_matrix_set_color(I_ROPT, CONFIG_SYM_LAYR_COLOR);   // right win / right opt 
+                #endif
+            #else
+                rgb_matrix_set_color(I_LGUI, RGB_BLUE);   // left win / left opt 
+                #ifdef CONFIG_HAS_ROPT_KEY
+                rgb_matrix_set_color(I_ROPT, RGB_BLUE);   // right win / right opt 
+                #endif
+            #endif
+            }
+    // ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~ 
+            // custom colors for tap dance keys on symbol layer
+            else if (layer == WSYM_LAYR || layer == MSYM_LAYR) {
+            #ifdef CONFIG_ACCENT_KEY_COLOR
+                rgb_matrix_set_color(I_GRV, CONFIG_ACCENT_KEY_COLOR); // grave
+                rgb_matrix_set_color(I_N1, CONFIG_ACCENT_KEY_COLOR);  // 1
+                rgb_matrix_set_color(I_E, CONFIG_ACCENT_KEY_COLOR);   // e
+                rgb_matrix_set_color(I_U, CONFIG_ACCENT_KEY_COLOR);   // u
+                rgb_matrix_set_color(I_I, CONFIG_ACCENT_KEY_COLOR);   // i
+                rgb_matrix_set_color(I_N, CONFIG_ACCENT_KEY_COLOR);   // n
+            #else
+                rgb_matrix_set_color(I_GRV, RGB_YELLOW); // grave
+                rgb_matrix_set_color(I_N1, RGB_YELLOW);  // 1
+                rgb_matrix_set_color(I_E, RGB_YELLOW);   // e
+                rgb_matrix_set_color(I_U, RGB_YELLOW);   // u
+                rgb_matrix_set_color(I_I, RGB_YELLOW);   // i
+                rgb_matrix_set_color(I_N, RGB_YELLOW);   // n
+            #endif
+            }
+    // ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
+            // set up the layer key blinking indicator
+            if (!layer_timer) {
+                is_led_on = true;
+                layer_timer = timer_read();
+            }
+            // toggle an led light every 500 ms while the layer is active
+            else if (timer_elapsed(layer_timer) > 500)
+            {
+                is_led_on = !is_led_on;
+                layer_timer = timer_read();
+            }
+            // the led and color to flash on each layer to show the layer is active
+            if (is_led_on)
+            {
+                switch (layer) {
+                case FN_LAYR:
+                #ifdef CONFIG_FN_LAYR_COLOR
+                    rgb_matrix_set_color(I_CAPS, CONFIG_FN_LAYR_COLOR);  // caps
+                    rgb_matrix_set_color(I_FN, CONFIG_FN_LAYR_COLOR);    // fn
+                #else
+                    rgb_matrix_set_color(I_CAPS, RGB_GREEN);  // caps
+                    rgb_matrix_set_color(I_FN, RGB_GREEN);    // fn
+                #endif
+                    break;
+                case SFT_LAYR:
+                #ifdef CONFIG_SHIFT_LAYR_COLOR
+                    rgb_matrix_set_color(I_LSFT, CONFIG_SHIFT_LAYR_COLOR); // lshift
+                    rgb_matrix_set_color(I_RSFT, CONFIG_SHIFT_LAYR_COLOR); // rshift
+                #else
+                    rgb_matrix_set_color(I_LSFT, RGB_ORANGE); // lshift
+                    rgb_matrix_set_color(I_RSFT, RGB_ORANGE); // rshift
+                #endif
+                    break;
+                case KCTL_LAYR:
+                #ifdef CONFIG_KCTL_LAYR_COLOR
+                    rgb_matrix_set_color(I_LALT, CONFIG_KCTL_LAYR_COLOR);  // lalt
+                    rgb_matrix_set_color(I_RALT, CONFIG_KCTL_LAYR_COLOR);  // ralt
+                #else
+                    rgb_matrix_set_color(I_LALT, RGB_RED);    // lalt
+                    rgb_matrix_set_color(I_RALT, RGB_RED);    // ralt
+                #endif
+                    break;
+                case TMUX_LAYR:
+                #ifdef CONFIG_TMUX_LAYR_COLOR
+                    rgb_matrix_set_color(I_TAB, CONFIG_TMUX_LAYR_COLOR);   // tab
+                #else
+                    rgb_matrix_set_color(I_TAB, RGB_CYAN);    // tab
+                #endif
+                    break;
+                case WSYM_LAYR:
+                    if (timer_elapsed(layer_timer) > 250) {
+                    #ifdef CONFIG_ACCENT_KEY_COLOR
+                        rgb_matrix_set_color(I_RALT, CONFIG_ACCENT_KEY_COLOR); // ralt
+                        rgb_matrix_set_color(I_LGUI, CONFIG_ACCENT_KEY_COLOR); // lgui
+                    #else
+                        rgb_matrix_set_color(I_RALT, RGB_YELLOW); // ralt
+                        rgb_matrix_set_color(I_LGUI, RGB_YELLOW); // lgui
+                    #endif
+                    }
+                    else {
+                    #ifdef CONFIG_SYM_LAYR_COLOR
+                        rgb_matrix_set_color(I_RALT, CONFIG_SYM_LAYR_COLOR);   // ralt
+                        rgb_matrix_set_color(I_LGUI, CONFIG_SYM_LAYR_COLOR);   // lgui
+                    #else
+                        rgb_matrix_set_color(I_RALT, RGB_BLUE);   // ralt
+                        rgb_matrix_set_color(I_LGUI, RGB_BLUE);   // lgui
+                    #endif
+                    }
+                    break;
+                case MSYM_LAYR:
+                    if (timer_elapsed(layer_timer) > 250) {
+                    #ifdef CONFIG_ACCENT_KEY_COLOR
+                        rgb_matrix_set_color(I_LOPT, CONFIG_ACCENT_KEY_COLOR); // lopt
+                        #ifdef CONFIG_HAS_ROPT_KEY
+                        rgb_matrix_set_color(I_ROPT, CONFIG_ACCENT_KEY_COLOR); // ropt
+                        #endif
+                    #else
+                        rgb_matrix_set_color(I_LOPT, RGB_YELLOW); // lopt
+                        #ifdef CONFIG_HAS_ROPT_KEY
+                        rgb_matrix_set_color(I_ROPT, RGB_YELLOW); // ropt
+                        #endif
+                    #endif
+                    }
+                    else {
+                    #ifdef CONFIG_SYM_LAYR_COLOR
+                        rgb_matrix_set_color(I_LOPT, CONFIG_SYM_LAYR_COLOR);   // lopt
+                        #ifdef CONFIG_HAS_ROPT_KEY
+                        rgb_matrix_set_color(I_ROPT, CONFIG_SYM_LAYR_COLOR);   // ropt
+                        #endif
+                    #else
+                        rgb_matrix_set_color(I_LOPT, RGB_BLUE);   // lopt
+                        #ifdef CONFIG_HAS_ROPT_KEY
+                        rgb_matrix_set_color(I_ROPT, RGB_BLUE);   // ropt
+                        #endif
+                    #endif
+                    }
+                    break;
+                case WIDE_LAYR:
+                #ifdef CONFIG_WIDE_LAYR_COLOR
+                    rgb_matrix_set_color(I_RSFT, CONFIG_WIDE_LAYR_COLOR);     // rshift
+                #else
+                    rgb_matrix_set_color(I_RSFT, RGB_PURPLE);     // rshift
+                #endif
+                    break;
+                case CIRC_LAYR:
+                #ifdef CONFIG_CIRC_LAYR_COLOR
+                    rgb_matrix_set_color(I_RSFT, CONFIG_CIRC_LAYR_COLOR);      // rshift
+                #else
+                    rgb_matrix_set_color(I_RSFT, RGB_CORAL);      // rshift
+                #endif
+                    break;
+                case EMO_LAYR:
+                #ifdef CONFIG_EMO_LAYR_COLOR
+                    rgb_matrix_set_color(I_RCMD, CONFIG_EMO_LAYR_COLOR);      // rcmd
+                    #ifdef CONFIG_HAS_ROPT_KEY
+                    rgb_matrix_set_color(I_ROPT, CONFIG_EMO_LAYR_COLOR);      // ropt
+                    #endif
+                #else
+                    rgb_matrix_set_color(I_RCMD, RGB_YELLOW);     // rcmd
+                    #ifdef CONFIG_HAS_ROPT_KEY
+                    rgb_matrix_set_color(I_ROPT, RGB_YELLOW);     // ropt
+                    #endif
+                #endif
+                    break;
+                }
+            }
+            // blink the indicator to show layer lock in on
+            if (is_layer_locked(layer)) {
+                if (!layer_lock_timer || timer_elapsed(layer_lock_timer) > 1000) {
+                    is_layer_lock_led_on = !is_layer_lock_led_on;
+                    layer_lock_timer = timer_read();
+                }
+                if (is_layer_lock_led_on) {
+                #ifdef CONFIG_HAS_LLOCK_KEY
+                    rgb_matrix_set_color(I_LLOCK, RGB_WHITE); // just make it white
+                #endif
+                    for (uint8_t i = 0; i < rgb_layer_indicators_count; i++) {
+                        rgb_matrix_set_color(rgb_layer_indicators[i], RGB_WHITE);
+                    }
+                }
+                else if ((timer_elapsed(layer_lock_timer) > 200 && timer_elapsed(layer_lock_timer) < 400) || 
+                         (timer_elapsed(layer_lock_timer) > 600)) {
+                #ifdef CONFIG_HAS_LLOCK_KEY
+                    rgb_matrix_set_color(I_LLOCK, RGB_WHITE); // white alternate with layer color
+                #endif
+                    for (uint8_t i = 0; i < rgb_layer_indicators_count; i++) {
+                        rgb_matrix_set_color(rgb_layer_indicators[i], RGB_WHITE);
+                    }
+                }
+            }
+        }
+        else {
+            for (uint8_t i = 0; i < extra_base_layr_colors_count; i++) {
+                rgb_matrix_set_color(
+                    extra_base_layr_colors[i].index,
+                    extra_base_layr_colors[i].r,
+                    extra_base_layr_colors[i].g,
+                    extra_base_layr_colors[i].b
+                );
+            }
+            // on windows or linux, highlight some possible winkey/super shortcuts while winkey/super is held
+            if (is_winkey_held) {
+                if (user_config.is_linux_base) {
+                    for (int i = 0; i < super_scut_keys_size; i++) {
+                        rgb_matrix_set_color(super_scut_keys[i], 102, 178, 255);   // gnome super shortcut keys
+                    }
+                    for (int i = 0; i < super_scut_altcolor_size; i++) {
+                        rgb_matrix_set_color(super_scut_altcolor[i], RGB_BLUE);    // gnome super shortcut keys
+                    }
+                }
+                else {
+                    for (int i = 0; i < winkey_scut_keys_size; i++) {
+                        rgb_matrix_set_color(winkey_scut_keys[i], 102, 178, 255);  // winkey shortcut keys
+                    }
+                    for (int i = 0; i < winkey_scut_altcolor_size; i++) {
+                        rgb_matrix_set_color(winkey_scut_altcolor[i], RGB_BLUE);   // winkey shortcut keys
+                    }
+                }
+            }    
+            // color caps word keys
+            if (is_caps_word_on()) {
+                // set capitilized keys red when caps word is active
+                for (uint8_t i = led_min; i < led_max; i++) {
+                    if (is_capsword_shifted(i)) {
+                        rgb_matrix_set_color(i, RGB_RED);
+                    }
+                }
+            #ifdef CONFIG_CAPS_WORD_SHIFT_COLOR
+                rgb_matrix_set_color(I_LSFT, CONFIG_CAPS_WORD_SHIFT_COLOR); // color left shift when caps_word is active
+                rgb_matrix_set_color(I_RSFT, CONFIG_CAPS_WORD_SHIFT_COLOR); // color right shift when caps_word is active
+            #else
+                rgb_matrix_set_color(I_LSFT, 0x77, 0x77, 0x77); // color left shift when caps_word is active
+                rgb_matrix_set_color(I_RSFT, 0x77, 0x77, 0x77); // color right shift when caps_word is active
+            #endif
+            }
+            // if not caps word, nor caps lock, then do the hrow colors if hrow_light setting is turned on       
+            else if (!host_keyboard_led_state().caps_lock) {
+                if (hrow_light) {
+                #ifdef CONFIG_HROWLIGHT_COLOR
+                    rgb_matrix_set_color(I_A, CONFIG_HROWLIGHT_COLOR);    // a
+                    rgb_matrix_set_color(I_S, CONFIG_HROWLIGHT_COLOR);    // s
+                    rgb_matrix_set_color(I_D, CONFIG_HROWLIGHT_COLOR);    // d
+                    rgb_matrix_set_color(I_F, CONFIG_HROWLIGHT_COLOR);    // f
+                    rgb_matrix_set_color(I_J, CONFIG_HROWLIGHT_COLOR);    // j
+                    rgb_matrix_set_color(I_K, CONFIG_HROWLIGHT_COLOR);    // k
+                    rgb_matrix_set_color(I_L, CONFIG_HROWLIGHT_COLOR);    // l
+                    rgb_matrix_set_color(I_SEMI, CONFIG_HROWLIGHT_COLOR); // ;
+                #else
+                    rgb_matrix_set_color(I_A, RGB_GREEN);    // a
+                    rgb_matrix_set_color(I_S, RGB_GREEN);    // s
+                    rgb_matrix_set_color(I_D, RGB_GREEN);    // d
+                    rgb_matrix_set_color(I_F, RGB_GREEN);    // f
+                    rgb_matrix_set_color(I_J, RGB_GREEN);    // j
+                    rgb_matrix_set_color(I_K, RGB_GREEN);    // k
+                    rgb_matrix_set_color(I_L, RGB_GREEN);    // l
+                    rgb_matrix_set_color(I_SEMI, RGB_GREEN); // ;
+                #endif
+                }
+                if (fj_light) {
+                #ifdef CONFIG_FJLIGHT_COLOR
+                    rgb_matrix_set_color(I_F, CONFIG_FJLIGHT_COLOR); // f
+                    rgb_matrix_set_color(I_J, CONFIG_FJLIGHT_COLOR); // j
+                #else
+                    rgb_matrix_set_color(I_F, RGB_WHITE); // f
+                    rgb_matrix_set_color(I_J, RGB_WHITE); // j
+                #endif
+                }
+            }
+        }
+        // if key lock is watching for next key, flash the indicator yellow and orange
+        if (is_key_lock_watching()) {
+            if (!key_lock_timer || timer_elapsed(key_lock_timer) > 500) {
+                is_key_lock_led_on = !is_key_lock_led_on;;
+                key_lock_timer = timer_read();
+            }
+            if (is_key_lock_led_on) {
+                for (uint8_t i = 0; i < rgb_layer_indicators_count; i++) {
+                    rgb_matrix_set_color(rgb_layer_indicators[i], RGB_YELLOW);
+                }
+            }
+            else {
+                for (uint8_t i = 0; i < rgb_layer_indicators_count; i++) {
+                    rgb_matrix_set_color(rgb_layer_indicators[i], RGB_ORANGE);
+                }
+            }
+        }
+        // if key lock is activated, flash the indicator white and red
+        else if (is_key_locked) {
+            if (!key_lock_timer || timer_elapsed(key_lock_timer) > 500) {
+                is_key_lock_led_on = !is_key_lock_led_on;;
+                key_lock_timer = timer_read();
+            }
+            if (is_key_lock_led_on) {
+                for (uint8_t i = 0; i < rgb_layer_indicators_count; i++) {
+                    rgb_matrix_set_color(rgb_layer_indicators[i], RGB_WHITE);
+                }
+            }
+            else {
+                for (uint8_t i = 0; i < rgb_layer_indicators_count; i++) {
+                    rgb_matrix_set_color(rgb_layer_indicators[i], RGB_RED);
+                }
+            }
+            // and light up normal modifiers if they are currently locked
+            if (lctl_locked) {
+                rgb_matrix_set_color(I_LCTL, 0x77, 0x77, 0x77);       // lctl
+            }
+            if (lalt_locked) {
+                if (is_mac_base()) {
+                    rgb_matrix_set_color(I_LOPT, 0x77, 0x77, 0x77);   // lopt
+                }
+                else {
+                    rgb_matrix_set_color(I_LALT, 0x77, 0x77, 0x77);   // lalt
+                }
+            }
+            if (lsft_locked) {
+                rgb_matrix_set_color(I_LSFT, 0x77, 0x77, 0x77);       // lsft
+            }
+            if (lgui_locked) {
+                if (is_mac_base()) {
+                    rgb_matrix_set_color(I_LCMD, 0x77, 0x77, 0x77);   // lcmd
+                }
+                else {
+                    rgb_matrix_set_color(I_LGUI, 0x77, 0x77, 0x77);   // lgui
+                }
+            }
+            if (rsft_locked) {
+                rgb_matrix_set_color(I_RSFT, 0x77, 0x77, 0x77);       // rsft
+            }
+            if (ralt_locked) {
+                rgb_matrix_set_color(I_RALT, 0x77, 0x77, 0x77);       // ralt
+            }
+            if (rctl_locked) {
+                rgb_matrix_set_color(I_RCTL, 0x77, 0x77, 0x77);       // rctl
+            }
+        }
+
+        // check if os change happened, and flash some indicators to show the change
+        if (os_changed) {
+            // turn off all currently lit leds first
+            for (uint8_t i = led_min; i < led_max; i++) {
+                rgb_matrix_set_color(i, 0x00, 0x00, 0x00);
+            }
+            int os_key1 = is_mac_base() ? I_M : user_config.is_linux_base ? I_L : I_W;
+            int os_key2 = is_mac_base() ? I_A : I_I;
+            int os_key3 = is_mac_base() ? I_C : I_N;
+            if (!os_change_timer || timer_elapsed(os_change_timer) > 1900) {
+                os_change_timer = timer_read();
+            }
+            rgb_matrix_set_color(os_key1, RGB_WHITE);           // M | L | W
+            if (timer_elapsed(os_change_timer) > 300) {
+                rgb_matrix_set_color(os_key2, RGB_WHITE);       // A | I | I
+            }
+            if (timer_elapsed(os_change_timer) > 600) {
+                rgb_matrix_set_color(os_key3, RGB_WHITE);       // C | N | N
+            }
+            if (timer_elapsed(os_change_timer) > 1800) {
+                os_changed = false;
+            }
+        }
+
+        if (is_in_leader_sequence) {
+            if (!leader_timer || timer_elapsed(leader_timer) > 500) {
+                is_leader_led_on = !is_leader_led_on;
+                leader_timer = timer_read();
+            }
+            if (is_leader_led_on) {
+            #ifdef CONFIG_LEADER_COLORA
+                for (uint8_t i = 0; i < rgb_layer_indicators_count; i++) {
+                    rgb_matrix_set_color(rgb_layer_indicators[i], CONFIG_LEADER_COLORA);
+                }
+                rgb_matrix_set_color(I_LEAD, CONFIG_LEADER_COLORA);         // l
+            #else
+                for (uint8_t i = 0; i < rgb_layer_indicators_count; i++) {
+                    rgb_matrix_set_color(rgb_layer_indicators[i], RGB_TURQUOISE);
+                }
+                rgb_matrix_set_color(I_LEAD, RGB_TURQUOISE);         // l
+            #endif
+            }
+            else {
+            #ifdef CONFIG_LEADER_COLORB
+                for (uint8_t i = 0; i < rgb_layer_indicators_count; i++) {
+                    rgb_matrix_set_color(rgb_layer_indicators[i], CONFIG_LEADER_COLORB);
+                }
+                rgb_matrix_set_color(I_LEAD, CONFIG_LEADER_COLORB);
+            #else
+                for (uint8_t i = 0; i < rgb_layer_indicators_count; i++) {
+                    rgb_matrix_set_color(rgb_layer_indicators[i], RGB_CYAN);
+                }
+                rgb_matrix_set_color(I_LEAD, RGB_CYAN);
+            #endif
+            }
+        }
+        // if a leader sequence error occured, blink all leds red
+        else if (is_leader_error) {
+            if (!leader_error_timer || timer_elapsed(leader_error_timer) > 250) {
+                is_leader_error_led_on = !is_leader_error_led_on;
+                leader_error_timer = timer_read();
+            }
+            if (is_leader_error_led_on) {
+                for (uint8_t i = led_min; i < led_max; i++) {
+                    rgb_matrix_set_color(i, RGB_RED);
+                }
+            }
+        }
+
+        // if any rgb key highlights are on, turn the setting keys white on layer KCTL_LAYR
+        if (layer == KCTL_LAYR)
+        {
+            if (fj_light) {
+                rgb_matrix_set_color(I_FJLIGHT, RGB_WHITE);     // home (fj highlight key)
+            #ifdef CONFIG_HAS_SECOND_FJLIGHT_KEY
+                rgb_matrix_set_color(I_FJLIGHT2, RGB_WHITE);     // home (fj highlight key)
+            #endif
+            }
+            if (hrow_light) {
+                rgb_matrix_set_color(I_HROWLIGHT, RGB_WHITE);   // end (hrow highlight key)
+            #ifdef CONFIG_HAS_SECOND_HROWLIGHT_KEY
+                rgb_matrix_set_color(I_HROWLIGHT2, RGB_WHITE);   // end (hrow highlight key)
+            #endif
+            }
+            if (enable_keytracker) {
+                rgb_matrix_set_color(I_KTRACK, RGB_WHITE);        // semi (keytracker set key)
+            #ifdef CONFIG_HAS_SECOND_KTRACK_KEY
+                rgb_matrix_set_color(I_KTRACK2, RGB_WHITE);        // semi (keytracker set key)
+            #endif
+            }
+        }
+
+        // calculate the reactive rgb for keypresses
+        if (enable_keytracker) {
+            for (int i = 0; i < tk_length; i++) {
+                if (tracked_keys[i].press) {
+                    static bool is_alt_color_key;
+                    is_alt_color_key = false;
+                    for (uint8_t j = 0; j < keylight_alt_color_keys_count; j++) {
+                        if (tracked_keys[i].index == keylight_alt_color_keys[j]) {
+                            is_alt_color_key = true;
+                        #ifdef CONFIG_KEYLIGHT_ALT_COLOR_KEY_COLOR
+                            rgb_matrix_set_color(keylight_alt_color_keys[j], CONFIG_KEYLIGHT_ALT_COLOR_KEY_COLOR);
+                        #else
+                            rgb_matrix_set_color(keylight_alt_color_keys[j], RGB_RED);
+                        #endif
+                            break;
+                        }
+                    }
+                    if (!is_alt_color_key) {
+                    #ifdef CONFIG_KEYLIGHT_STD_COLOR
+                        rgb_matrix_set_color(tracked_keys[i].index, CONFIG_KEYLIGHT_STD_COLOR);
+                    #else
+                        rgb_matrix_set_color(tracked_keys[i].index, RGB_WHITE);
+                    #endif
+                    }
+                }
+            #ifdef CONFIG_KEYS_FADE_TO_BLUE
+                // do the key fade if key should fade
+                else if (key_should_fade(tracked_keys[i], layer)) {
+                    if (tracked_keys[i].fade > 255) {
+                        rgb_matrix_set_color(tracked_keys[i].index, RGB_WHITE);
+                    }
+                    else if (tracked_keys[i].fade > 200) {
+                        rgb_matrix_set_color(tracked_keys[i].index, tracked_keys[i].fade, tracked_keys[i].fade, 255);
+                    } else if (tracked_keys[i].fade > 175) {
+                        rgb_matrix_set_color(tracked_keys[i].index, tracked_keys[i].fade, tracked_keys[i].fade, tracked_keys[i].fade + 55);
+                    } else if (tracked_keys[i].fade >  115) {
+                        rgb_matrix_set_color(tracked_keys[i].index, tracked_keys[i].fade, tracked_keys[i].fade, tracked_keys[i].fade + 80);
+                    } else if (tracked_keys[i].fade > 80) {
+                        rgb_matrix_set_color(tracked_keys[i].index, tracked_keys[i].fade, tracked_keys[i].fade, tracked_keys[i].fade + 100);
+                    } else if (tracked_keys[i].fade > 35) {
+                        rgb_matrix_set_color(tracked_keys[i].index, tracked_keys[i].fade, tracked_keys[i].fade, tracked_keys[i].fade + 150);
+                    } else {
+                        rgb_matrix_set_color(tracked_keys[i].index, 35, 24, 189);
+                    }
+                }
+            #else
+                // do the key fade if key should fade
+                // this is a modified fade to get a smoother look and be mostly white but a bit blue
+                else if (key_should_fade(tracked_keys[i], layer)) {
+                    if (tracked_keys[i].fade > 255) {
+                        rgb_matrix_set_color(tracked_keys[i].index, RGB_WHITE);
+                    } 
+                    else if (tracked_keys[i].fade > 230) {
+                        rgb_matrix_set_color(tracked_keys[i].index, tracked_keys[i].fade, tracked_keys[i].fade, 255);
+                    } else {
+                        rgb_matrix_set_color(tracked_keys[i].index, tracked_keys[i].fade, tracked_keys[i].fade, tracked_keys[i].fade + 25);
+                    }  
+                }
+            #endif
+            }
+        }
+        if (macro_recording) {
+            // flash the indicator if macro is recording
+            if (timer_elapsed(macro_timer) > 250) {
+                is_macro_led_on = !is_macro_led_on;;
+                macro_timer = timer_read();
+            }
+            if (is_macro_led_on) {
+                for (uint8_t i = 0; i < rgb_layer_indicators_count; i++) {
+                    rgb_matrix_set_color(rgb_layer_indicators[i], RGB_RED); // indicators
+                }
+                if (macro_direction == 1) {
+                    rgb_matrix_set_color(I_MREC1, RGB_RED);   // macro1 record key
+                }
+                else {
+                    rgb_matrix_set_color(I_MREC2, RGB_RED);   // macro2 record key
+                }
+            }
+            else {
+                for (uint8_t i = 0; i < rgb_layer_indicators_count; i++) {
+                    rgb_matrix_set_color(rgb_layer_indicators[i], RGB_BLACK); // indicators
+                }
+                if (macro_direction == 1) {
+                    rgb_matrix_set_color(I_MREC1, RGB_BLACK);   // macro1 record key
+                }
+                else {
+                    rgb_matrix_set_color(I_MREC2, RGB_BLACK);   // macro2 record key
+                }
+            }
+        }
+        // if this is a color test, then light keys in each qmk named color
+        if (color_test) {
+            // turn off the color test if it has been going for 15 seconds
+            if (timer_elapsed(color_test_timer) > 15000) {
+                color_test = false;
+            }
+            else { // show the named colors defined in color.h, https://docs.qmk.fm/features/rgb_matrix
+                rgb_matrix_set_color(I_Q, RGB_AZURE);
+                rgb_matrix_set_color(I_W, RGB_BLACK);
+                rgb_matrix_set_color(I_E, RGB_BLUE);
+                rgb_matrix_set_color(I_R, RGB_CHARTREUSE);
+                rgb_matrix_set_color(I_T, RGB_CORAL);
+                rgb_matrix_set_color(I_Y, RGB_CYAN);
+                rgb_matrix_set_color(I_U, RGB_GOLD);
+                rgb_matrix_set_color(I_I, RGB_GOLDENROD);
+                rgb_matrix_set_color(I_O, RGB_GREEN);
+                rgb_matrix_set_color(I_P, RGB_MAGENTA);
+                rgb_matrix_set_color(I_A, RGB_ORANGE);
+                rgb_matrix_set_color(I_S, RGB_PINK);
+                rgb_matrix_set_color(I_D, RGB_PURPLE);
+                rgb_matrix_set_color(I_F, RGB_RED);
+                rgb_matrix_set_color(I_G, RGB_SPRINGGREEN);
+                rgb_matrix_set_color(I_H, RGB_TEAL);
+                rgb_matrix_set_color(I_J, RGB_TURQUOISE);
+                rgb_matrix_set_color(I_K, RGB_WHITE);
+                rgb_matrix_set_color(I_L, RGB_YELLOW);
+            }
+        }
+        // track if this is the middle of an accent key tap dance and illuminate the appropriate accent char
+        if (act_char_led_index > 0) {
+            rgb_matrix_set_color(act_char_led_index, RGB_WHITE);  // accent char led 
+        } 
+        // track if mouse button is held on SFT_LAYR
+        if (layer == SFT_LAYR && ms_btn_held) {
+            rgb_matrix_set_color(I_MHLD, RGB_WHITE);         // mouse btn1 hold key
+        }
+        // track mode keys on WIDE_LAYR
+        if (layer == WIDE_LAYR) {
+            switch (wide_text_mode) {
+            case WIDE_STHRU:
+                rgb_matrix_set_color(I_STHRU, RGB_WHITE);    // sthru toggle
+                break;
+            case WIDE_UNDERLN:
+                rgb_matrix_set_color(I_UNDERLN, RGB_WHITE);  // underln toggle
+                break;
+            case WIDE_BARTEXT:
+                rgb_matrix_set_color(I_BARTEXT, RGB_WHITE);  // bartext toggle
+                break;
+            case WIDE_BBRTEXT:
+                rgb_matrix_set_color(I_BBRTEXT, RGB_WHITE);  // bbrtext toggle
+                break;
+            default:
+                break;
+            }
+        }
+        // track caps_lock
+        if (host_keyboard_led_state().caps_lock) {
+            rgb_matrix_set_color(I_CAPS, RGB_WHITE);  // caps
+            // if caps is on, turn alhpa keys red
+            for (uint8_t i = led_min; i < led_max; i++) {
+                if (is_capslock_shifted(i)) {
+                    rgb_matrix_set_color(i, RGB_RED);
+                }
+            }
+        }
+        // track num_lock
+        if (layer == SFT_LAYR && host_keyboard_led_state().num_lock) {
+            rgb_matrix_set_color(I_NUMLOCK, RGB_WHITE);
+        }
+        // track scroll_lock
+        if (layer == FN_LAYR && host_keyboard_led_state().scroll_lock) {
+            rgb_matrix_set_color(I_SLOCK, RGB_WHITE);
+        }
+            
+    #ifdef KEYBOARD_IS_BRIDGE
+        #ifdef WIRELESS_ENABLE
+        // CTL_LAYR will alwys show connection indicator; other layers for 4 seconds after wireless/battery keycode is used
+        if (layer == CTL_LAYR || (wls_action_timer && timer_elapsed32(wls_action_timer) < 4000)) {
+            return true;
+        }
+        #endif
+    #elif KEYBOARD_IS_LEMOKEY
+        // show wireless connection if just switched modes or if on KCTL_LAYR in bt or 2.4g modes
+        if (wireless_mode_token || layer == KCTL_LAYR)
+        {
+            if (wireless_get_state() == WT_CONNECTED) {
+                // host_index is set to 24 for 2.4g, bt is 1,2,3
+                rgb_matrix_set_color(wireless_get_host_index() == 24 ? I_N4 : wireless_get_host_index() + 14, RGB_WHITE);
+            }
+        }
+    #elif KEYBOARD_IS_KEYCHRON
+        // show wireless connection if just switched modes or on KCTL_LAYR if in bt or 2.4g modes
+        if (wireless_mode_token || layer == KCTL_LAYR)
+        {
+            if (wireless_get_state() == WT_CONNECTED) {
+                // host_index is set to 24 for 2.4g, bt is 1,2,3
+                rgb_matrix_set_color(wireless_get_host_index() == 24 ? I_N4 : wireless_get_host_index() + 19, RGB_WHITE);
+            }
+        }
+    #endif
+#ifdef CONFIG_HAS_KCLK_BATTERY
+    }
+#endif
+    return false;
 }
 
 // initialize tap structure associated with each tap dance key
@@ -4138,13 +4965,23 @@ bool key_should_fade(keytracker key, uint8_t layer) {
         (layer == WIDE_LAYR && (key.index == I_BARTEXT || key.index == I_STHRU ||
         key.index == I_UNDERLN || key.index == I_BBRTEXT)) ||                                         // wide-text toggles
         (layer == KCTL_LAYR && (key.index == I_FJLIGHT || key.index == I_HROWLIGHT || 
-                                key.index == I_SEMI || key.index == I_APOS || key.index == I_ENT)) || // ktrack/hrow/fj indicators
+                                key.index == I_KTRACK ||
+#ifdef CONFIG_HAS_SECOND_KTRACK_KEY 
+                                key.index == I_KTRACK2 || 
+#endif
+#ifdef CONFIG_HAS_SECOND_FJLIGHT_KEY
+                                key.index == I_FJLIGHT2 || 
+#endif
+#ifdef CONFIG_HAS_SECOND_HROWLIGHT_KEY
+                                key.index == I_HROWLIGHT2 
+#endif
+                                )) ||                                                                 // ktrack/hrow/fj indicators
         (layer == KCTL_LAYR && (key.index >= I_N1 && key.index <= I_N4)) ||                           // wireless mode keys
         (os_changed) ||                                                                               // mac/win/lin change
         (layer == WSYM_LAYR && (key.index == I_GRV || key.index == I_N1 || key.index == I_E ||
                                 key.index == I_I || key.index == I_U || key.index == I_N ||           // accent keys
                                 key.index == I_RALT || key.index == I_LGUI)) ||                       // sym_layr ralt, lgui
-#ifdef HAS_ROPT_KEY
+#ifdef CONFIG_HAS_ROPT_KEY
         (layer == MSYM_LAYR && (key.index == I_LOPT || key.index == I_ROPT)) ||                       // sym_layr lopt, ropt
         (layer == EMO_LAYR && (key.index == I_RCMD || key.index == I_ROPT)) ||                        // emo_layr rcmd, rpot
 #else
@@ -4233,6 +5070,11 @@ uint32_t leader_error_callback(uint32_t trigger_time, void* cb_arg) {
 uint32_t wireless_mode_callback(uint32_t trigger_time, void *cb_arg) {
     enable_keytracker = true;
     wireless_mode_token = INVALID_DEFERRED_TOKEN;
+    // get rid of any lingering fade
+    for (int i = 0; i < tk_length; i++) {
+        tracked_keys[i].press = false;
+        tracked_keys[i].fade = 0;
+    }
     return 0;
 }
 
@@ -4328,4 +5170,26 @@ bool is_base_layer(uint8_t layer) {
 
 bool app_switch_active(void) {
     return is_cmd_tab_active || is_cmd_shift_tab_active;
+}
+
+void keyboard_post_init_user(void) {
+    // read the user config from EEPROM
+    user_config.raw = eeconfig_read_user();
+    // and set this so layers switch correctly on user's first os change
+    layer_state_set(default_layer_state);
+}
+
+void eeconfig_init_user(void) {  // EEPROM is getting reset!
+    user_config.raw = 0;
+#ifdef CONFIG_EEPROM_RESET_DEFAULT_IS_LINUX
+    user_config.is_linux_base = true; // set default here
+#else
+    user_config.is_linux_base = false; // set default here
+#endif
+    eeconfig_update_user(user_config.raw); // write default value to EEPROM now
+#ifdef CONFIG_EEPROM_RESET_DEFAULT_LAYER
+    set_single_persistent_default_layer(CONFIG_EEPROM_RESET_DEFAULT_LAYER);
+#else
+    set_single_persistent_default_layer(0);
+#endif
 }

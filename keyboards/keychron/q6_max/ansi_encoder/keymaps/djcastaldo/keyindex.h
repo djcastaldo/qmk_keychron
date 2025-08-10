@@ -97,9 +97,12 @@ enum key_indexes {
     I_K = 67,
     I_L = 68,
     I_LEAD = 68,
+    I_KTRACK2 = 69,
     I_SLOCK = 69,
     I_SEMI = 69,
     I_APOS = 70,
+    I_FJLIGHT2 = 70,
+    I_HROWLIGHT2 = 71,
     I_ENT = 71,
     I_PMINS = 73,
     I_LSFT = 79,
@@ -116,14 +119,14 @@ enum key_indexes {
     I_RSFT = 90,
     I_UP = 91,
     I_LCTL = 95,
-    I_LALT = 96,
+    I_LGUI = 96,
     I_LOPT = 96,
-    I_LGUI = 97,
+    I_LALT = 97,
     I_LCMD = 97,
     I_SPACE = 98,
-    I_RGUI = 99,
+    I_RALT = 99,
     I_RCMD = 99,
-    I_RALT = 100,
+    I_RGUI = 100,
     I_ROPT = 100,
     I_FN = 101,
     I_RCTL = 102,
@@ -131,3 +134,11 @@ enum key_indexes {
     I_DOWN = 104,
     I_RIGHT = 105
 };
+
+// for sending index to color array after a config.h define
+typedef struct {
+    uint8_t index;
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+} led_color_t;
