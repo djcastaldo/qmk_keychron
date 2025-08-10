@@ -331,6 +331,7 @@ typedef union {
     uint32_t raw;
     struct {
         bool is_linux_base : 1;
+        uint8_t rgb_mode   : 7;
     };
 } user_config_t;
 

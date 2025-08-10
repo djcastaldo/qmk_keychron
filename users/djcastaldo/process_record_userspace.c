@@ -63,6 +63,16 @@ const uint8_t keylight_alt_color_keys_count = CONFIG_KEYLIGHT_ALT_COLOR_KEYS_COU
 #else
 const uint8_t keylight_alt_color_keys_count = 0;
 #endif
+#ifdef CONFIG_LOCK_LAYR_EXTRA_FLASH_KEYS
+const uint8_t lock_layr_extra_flash_keys[] = CONFIG_LOCK_LAYR_EXTRA_FLASH_KEYS;
+#else
+const uint8_t lock_layr_extra_flash_keys[] = {};
+#endif
+#ifdef CONFIG_LOCK_LAYR_EXTRA_FLASH_KEYS_COUNT
+const uint8_t lock_layr_extra_flash_keys_count = CONFIG_LOCK_LAYR_EXTRA_FLASH_KEYS_COUNT;
+#else
+const uint8_t lock_layr_extra_flash_keys_count = 0;
+#endif
 
 // setup keytracker
 deferred_token key_token = INVALID_DEFERRED_TOKEN;
@@ -129,8 +139,6 @@ uint16_t key_lock_timer;
 // for tracking os and base layer changes
 bool os_changed;
 uint16_t os_change_timer;
-// for storing the last rgb_mode to return to after returning from LOCK_LAYR
-uint8_t saved_rgb_mode;
 // for tracking if an accent char tap dance should light up a particular key to show what the tap will send
 uint8_t act_char_led_index = 0;
 // use this to highlight keyboard shortcuts with rgb when winkey (or linux super) is held
@@ -2807,7 +2815,8 @@ bool process_leader_userspace(void) {
         }
     }
     else if (leader_sequence_four_keys(KC_L, KC_O, KC_C, KC_K)) { // switch to LOCK_LAYR
-        saved_rgb_mode = rgb_matrix_get_mode();
+        user_config.rgb_mode = rgb_matrix_get_mode();
+        eeconfig_update_user(user_config.raw);
         rgblight_mode(RGB_MATRIX_BAND_VAL);
         layer_on(LOCK_LAYR);
     }
@@ -3338,6 +3347,17 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                     rgb_matrix_set_color(I_ROPT, RGB_YELLOW);     // ropt
                     #endif
                 #endif
+                    break;
+                case LOCK_LAYR:
+                    for (uint8_t i = 0; i < lock_layr_extra_flash_keys_count; i++) {
+                    #ifdef CONFIG_LOCK_LAYR_EXTRA_FLASH_COLOR
+                        rgb_matrix_set_color(lock_layr_extra_flash_keys[i], CONFIG_LOCK_LAYR_EXTRA_FLASH_COLOR);
+                    #else
+                        rgb_matrix_set_color(lock_layr_extra_flash_keys[i], RGB_RED);
+                    #endif
+                    }
+                    break;
+                default:
                     break;
                 }
             }
@@ -4158,7 +4178,8 @@ void kbunlock_finished (tap_dance_state_t *state, void *user_data) {
             break;
         case TRIPLE_TAP:
             layer_off(LOCK_LAYR); // three taps unlocks the LOCK_LAYR
-            rgblight_mode(saved_rgb_mode);
+            user_config.raw = eeconfig_read_user();
+            rgblight_mode(user_config.rgb_mode);
             break;
         case SINGLE_HOLD:
             break;
@@ -5186,6 +5207,7 @@ void eeconfig_init_user(void) {  // EEPROM is getting reset!
 #else
     user_config.is_linux_base = false; // set default here
 #endif
+    user_config.rgb_mode = RGB_MATRIX_DEFAULT_MODE;
     eeconfig_update_user(user_config.raw); // write default value to EEPROM now
 #ifdef CONFIG_EEPROM_RESET_DEFAULT_LAYER
     set_single_persistent_default_layer(CONFIG_EEPROM_RESET_DEFAULT_LAYER);
