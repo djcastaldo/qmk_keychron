@@ -70,6 +70,7 @@ enum key_indexes {
     I_K = 52,
     I_L = 53,
     I_LEAD = 53,
+    I_KTRACK = 54,
     I_SEMI = 54,
     I_SLOCK = 54,
     I_APOS = 55,

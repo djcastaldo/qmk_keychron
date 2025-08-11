@@ -77,6 +77,7 @@ enum userspace_keycodes {
     SECRET30,
     SECRET31,
     LLOCK,
+    BASE_CHG,
     WM_SYM,
     JIGGLE,
     FJLIGHT,
@@ -145,6 +146,7 @@ enum userspace_keycodes {
     DUAL_SNAP,
     AP_GLOB,
     COLORTEST,
+    MSYMGRV,
     OPT2,
     OPT3,
     OPT4,
@@ -307,7 +309,8 @@ enum {
     RCMD_OSL    = 12,
     LOPT_OSL    = 13,
     ROPT_OSL    = 14,
-    MOUSE_ACCEL = 15
+    RCTL_OSL    = 15,
+    MOUSE_ACCEL = 16
 };
 
 // tap dance setup
@@ -322,9 +325,10 @@ enum {
     DOUBLE_TAP = 3,
     DOUBLE_HOLD = 4,
     TRIPLE_TAP = 5,
-    QUAD_TAP = 6,
-    PENT_TAP = 7,
-    HEXA_TAP = 8
+    TRIPLE_HOLD = 6,
+    QUAD_TAP = 7,
+    PENT_TAP = 8,
+    HEXA_TAP = 9
 };
 
 typedef union {
@@ -360,6 +364,7 @@ enum {
 extern uint8_t wide_text_mode;
 extern bool wide_firstchar;
 
+extern tap_dance_action_t tap_dance_actions[17];
 // functions associated with all tap dances
 int cur_dance (tap_dance_state_t *state);
 // functions associated with individual tap dances

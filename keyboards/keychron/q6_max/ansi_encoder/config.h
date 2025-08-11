@@ -86,6 +86,8 @@
 /* monitored base layers for macos */
 #    define CONFIG_MACOS_BASE_LAYERS { MAC_BASE }
 #    define CONFIG_MACOS_BASE_LAYERS_COUNT 1
+#    define CONFIG_DEFAULT_MAC_LAYR MAC_BASE
+#    define CONFIG_DEFAULT_WIN_LAYR WIN_BASE
 
 /* monitored base layers for macos */
 #    define CONFIG_ALL_BASE_LAYERS { MAC_BASE, WIN_BASE }
@@ -105,11 +107,11 @@
 
 /* rgb_matrix_indicators_advanced_user settings */
 #    define CONFIG_HAS_ROPT_KEY
+#    define CONFIG_HAS_LLOCK_KEY
 #    define CONFIG_HAS_SECOND_KTRACK_KEY
 #    define CONFIG_HAS_SECOND_HROWLIGHT_KEY
 #    define CONFIG_HAS_SECOND_FJLIGHT_KEY
 #    define CONFIG_HAS_KCLK_BATTERY
-#    define CONFIG_HAS_LLOCK_KEY
 #    define CONFIG_FN_LAYR_COLOR RGB_GREEN
 #    define CONFIG_MREC_KEY_COLOR RGB_CORAL
 #    define CONFIG_SHIFT_LAYR_COLOR RGB_ORANGE
@@ -167,3 +169,7 @@
 #    define CONFIG_LOCK_LAYR_EXTRA_FLASH_KEYS { I_ESC, I_EKS }
 #    define CONFIG_LOCK_LAYR_EXTRA_FLASH_KEYS_COUNT 2
 #    define CONFIG_LOCK_LAYR_EXTRA_FLASH_COLOR RGB_RED
+#    define CONFIG_KCLK_24G_HOST_IDX 24
+#    define CONFIG_KCLK_BT_KEY_START_IDX 19
+#    define CONFIG_HAS_BASE_LAYER_TOGGLE
+#    define CONFIG_SWITCH_PIN B12

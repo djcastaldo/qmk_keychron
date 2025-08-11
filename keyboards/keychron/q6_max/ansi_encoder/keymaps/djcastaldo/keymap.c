@@ -3,12 +3,7 @@
 // most of the code for this keybaord comes from userspace
 
 #include QMK_KEYBOARD_H
-#include "keychron_common.h"
 #include "layers.h"
-#include "keyindex.h"
-#include "wireless/battery.h"
-#include "wireless/bat_level_animation.h"
-#include "wireless/wireless.h"
 #include "users/djcastaldo/process_record_userspace.h"
 
 __attribute__ ((weak))
