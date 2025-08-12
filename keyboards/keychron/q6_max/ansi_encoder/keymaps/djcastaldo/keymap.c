@@ -226,7 +226,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
 //`-------------------------------------------------------------------------------------------------------------------------------------`
     [MSYM_LAYR] = LAYOUT_109_ansi(
-        _______, SUP1, SUP2, SUP3, _______, SUITH, SUITD, SUITC, SUITS,  CIRCLI, _______, _______, NBSP, KC_MUTE,
+        _______, SUP1, SUP2, SUP3, _______, SUITH, SUITD, SUITC, SUITS,  CIRCLI, _______, _______, NBSP, ENC_UNIMENU,
                                                                              _______,_______,_______,  _______, _______, _______,_______,
         LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,_______,
                                                                                   LLOCK,_______,_______, _______,_______,_______,_______,
@@ -236,7 +236,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                                          _______,_______,_______,_______,
         KC_LSFT,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS,LTRANS, KC_RSFT,     _______,     _______,_______,_______,
         _______,_______,_______,      _______,      _______,_______,_______,_______, _______,_______,_______, _______, _______, _______),
-//  [WSYM_LAYR] right now, this is just a copy of MSYM_LAYR, need to update it
+//  [WSYM_LAYR]
 //,-------------------------------------------------------------------------------------------------------------------------------------,
 //: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
 //:|    | |SUP1||SUP2||SUP3||    | |SUTH||SUTD||SUTC||SUTS| |CRCI||    ||    ||NBSP| : Vol : |    ||    ||    | |    ||    ||    ||    |:
@@ -254,7 +254,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
 //`-------------------------------------------------------------------------------------------------------------------------------------`
     [WSYM_LAYR] = LAYOUT_109_ansi(
-        _______, SUP1, SUP2, SUP3, _______, SUITH, SUITD, SUITC, SUITS,  CIRCLI, _______, _______, NBSP, KC_MUTE,
+        _______, SUP1, SUP2, SUP3, _______, SUITH, SUITD, SUITC, SUITS,  CIRCLI, _______, _______, NBSP, ENC_UNIMENU,
                                                                              _______,_______,_______,  _______, _______, _______,_______,
         TD(ACT_GRV), TD(ACT_1), OPT2, OPT3, OPT4, OPT5, OPT6, OPT7, OPT8, OPT9, OPT0, OPTMIN, OPTEQ, _______,
                                                                                   LLOCK,_______,_______, _______,_______,_______,_______,
@@ -382,7 +382,8 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [SFT_LAYR]  = {ENCODER_CCW_CW(ENC_SCROLLAPPL, ENC_SCROLLAPPR)},
     [KCTL_LAYR] = {ENCODER_CCW_CW(ENC_RGBL, ENC_RGBR)},
     [TMUX_LAYR] = {ENCODER_CCW_CW(ENC_TSIZEL, ENC_TSIZER)},
-    [MSYM_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [MSYM_LAYR] = {ENCODER_CCW_CW(ENC_MENUL, ENC_MENUR)},
+    [WSYM_LAYR] = {ENCODER_CCW_CW(ENC_MENUL, ENC_MENUR)},
     [WIDE_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [CIRC_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [EMO_LAYR]  = {ENCODER_CCW_CW(ENC_MENUL, ENC_MENUR)},
