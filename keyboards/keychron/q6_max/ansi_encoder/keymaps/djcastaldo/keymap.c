@@ -437,16 +437,22 @@ void leader_end_user(void) {
 
 bool dip_switch_update_keymap(uint8_t index, bool active) {
     if (index == 0) {
+        uint8_t current_layer = get_highest_layer(layer_state);
+        uint8_t current_base = get_highest_layer(default_layer_state);
         if (active) {
-            set_single_persistent_default_layer(WIN_BASE);
-            layer_move(WIN_BASE);
+            if (current_base != WIN_BASE) {
+                set_single_persistent_default_layer(WIN_BASE);
+            }
+            if (current_layer != LOCK_LAYR) {
+                layer_move(WIN_BASE);
+            }
         }
         else {
-            set_single_persistent_default_layer(MAC_BASE);
-            layer_move(MAC_BASE);
-            if (user_config.is_linux_base) {
-                user_config.is_linux_base = false;
-                eeconfig_update_user(user_config.raw);
+            if (current_base != MAC_BASE) {
+                set_single_persistent_default_layer(MAC_BASE);
+            }
+            if (current_layer != LOCK_LAYR) {
+                layer_move(MAC_BASE);
             }
         }
         os_changed = true;
