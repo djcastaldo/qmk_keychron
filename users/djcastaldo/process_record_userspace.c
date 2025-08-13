@@ -988,23 +988,23 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             // get current mod states
             const uint8_t mods = get_mods();
             if (mods & MOD_MASK_SHIFT) {
-                rgb_matrix_set_speed(RGB_MATRIX_DEFAULT_SPD);
+                rgb_matrix_set_speed_noeeprom(RGB_MATRIX_DEFAULT_SPD);
             }
             else if ((mods & MOD_MASK_CTRL) && (mods & (MOD_MASK_ALT | MOD_MASK_GUI))) {
-                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_mode(RGB_MATRIX_DEFAULT_MODE);
+                rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_mode_noeeprom(RGB_MATRIX_DEFAULT_MODE);
             }
             else if (mods & MOD_MASK_CTRL) {
-                rgb_matrix_sethsv(RGB_MATRIX_DEFAULT_HUE, rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_sethsv_noeeprom(RGB_MATRIX_DEFAULT_HUE, rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
             }
             else if (mods & (MOD_MASK_ALT | MOD_MASK_GUI)) {
-                rgb_matrix_sethsv(rgb_matrix_get_hue(), RGB_MATRIX_DEFAULT_SAT, RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), RGB_MATRIX_DEFAULT_SAT, RGB_MATRIX_MAXIMUM_BRIGHTNESS);
             }
             // otherwise reset everything
             else {
-                rgb_matrix_mode(RGB_MATRIX_DEFAULT_MODE);
-                rgb_matrix_set_speed(RGB_MATRIX_DEFAULT_SPD);
-                rgb_matrix_sethsv(RGB_MATRIX_DEFAULT_HUE, RGB_MATRIX_DEFAULT_SAT, RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_mode_noeeprom(RGB_MATRIX_DEFAULT_MODE);
+                rgb_matrix_set_speed_noeeprom(RGB_MATRIX_DEFAULT_SPD);
+                rgb_matrix_sethsv_noeeprom(RGB_MATRIX_DEFAULT_HUE, RGB_MATRIX_DEFAULT_SAT, RGB_MATRIX_MAXIMUM_BRIGHTNESS);
             }
         }
         return false;
@@ -1019,23 +1019,23 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             // get current mod states
             const uint8_t mods = get_mods();
             if (mods & MOD_MASK_SHIFT) {
-                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_decrease_speed();
+                rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_decrease_speed_noeeprom();
             }
             else if ((mods & MOD_MASK_CTRL) && (mods & (MOD_MASK_ALT | MOD_MASK_GUI))) {
-                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_step_reverse();
+                rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_step_reverse_noeeprom();
             }
             else if (mods & MOD_MASK_CTRL) {
-                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_decrease_hue();
+                rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_decrease_hue_noeeprom();
             }
             else if (mods & (MOD_MASK_ALT | MOD_MASK_GUI)) {
-                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_decrease_sat();
+                rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_decrease_sat_noeeprom();
             }
             else {
-                rgb_matrix_decrease_val();
+                rgb_matrix_decrease_val_noeeprom();
             }
         }
         return false;
@@ -1046,23 +1046,23 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             // get current mod states
             const uint8_t mods = get_mods();
             if (mods & MOD_MASK_SHIFT) {
-                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_increase_speed();
+                rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_increase_speed_noeeprom();
             }
             else if ((mods & MOD_MASK_CTRL) && (mods & (MOD_MASK_ALT | MOD_MASK_GUI))) {
-                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_step();
+                rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_step_noeeprom();
             }
             else if (mods & MOD_MASK_CTRL) {
-                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_increase_hue();
+                rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_increase_hue_noeeprom();
             }
             else if (mods & (MOD_MASK_ALT | MOD_MASK_GUI)) {
-                rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_increase_sat();
+                rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_increase_sat_noeeprom();
             }
             else {
-                rgb_matrix_increase_val();
+                rgb_matrix_increase_val_noeeprom();
             }
         }
         return false;
@@ -1121,7 +1121,7 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
     case RGB_SPD:
     case RGB_SPI:
         if (record->event.pressed)
-            rgb_matrix_sethsv(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+            rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
         break;
     case DUAL_PLUSMIN:
         if (record->event.pressed) {
@@ -3056,9 +3056,9 @@ bool process_leader_userspace(void) {
         lock_anim_active = true;
         #endif
         #ifdef CONFIG_LOCK_ANIMATION
-        rgb_matrix_mode(CONFIG_LOCK_ANIMATION);
+        rgb_matrix_mode_noeeprom(CONFIG_LOCK_ANIMATION);
         #else
-        rgb_matrix_mode(RGB_MATRIX_BAND_VAL);
+        rgb_matrix_mode_noeeprom(RGB_MATRIX_BAND_VAL);
         #endif
     }
 #if defined(CONFIG_MAC_BASE_CHANGE_GROUP) || defined(CONFIG_WIN_BASE_CHANGE_GROUP)
@@ -4623,7 +4623,7 @@ void kbunlock_finished (tap_dance_state_t *state, void *user_data) {
             #endif
             // in case dip switch was changed while in lock mode
             layer_move(get_highest_layer(default_layer_state));
-            rgb_matrix_mode(user_config.rgb_mode);
+            rgb_matrix_mode_noeeprom(user_config.rgb_mode);
             break;
         case SINGLE_HOLD:
             break;
@@ -5732,7 +5732,7 @@ void keyboard_post_init_user(void) {
     user_config.raw = eeconfig_read_user();
     // and set this so layers switch correctly on user's first os change
     layer_state_set(default_layer_state);
-    rgb_matrix_mode(user_config.rgb_mode);
+    rgb_matrix_mode_noeeprom(user_config.rgb_mode);
 }
 
 void eeconfig_init_user(void) {  // EEPROM is getting reset!
