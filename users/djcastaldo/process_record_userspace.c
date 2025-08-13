@@ -988,23 +988,23 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             // get current mod states
             const uint8_t mods = get_mods();
             if (mods & MOD_MASK_SHIFT) {
-                rgb_matrix_set_speed_noeeprom(RGB_MATRIX_DEFAULT_SPD);
+                rgb_matrix_set_speed(RGB_MATRIX_DEFAULT_SPD);
             }
             else if ((mods & MOD_MASK_CTRL) && (mods & (MOD_MASK_ALT | MOD_MASK_GUI))) {
                 rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_mode_noeeprom(RGB_MATRIX_DEFAULT_MODE);
+                rgb_matrix_mode(RGB_MATRIX_DEFAULT_MODE);
             }
             else if (mods & MOD_MASK_CTRL) {
-                rgb_matrix_sethsv_noeeprom(RGB_MATRIX_DEFAULT_HUE, rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_sethsv(RGB_MATRIX_DEFAULT_HUE, rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
             }
             else if (mods & (MOD_MASK_ALT | MOD_MASK_GUI)) {
-                rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), RGB_MATRIX_DEFAULT_SAT, RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_sethsv(rgb_matrix_get_hue(), RGB_MATRIX_DEFAULT_SAT, RGB_MATRIX_MAXIMUM_BRIGHTNESS);
             }
             // otherwise reset everything
             else {
-                rgb_matrix_mode_noeeprom(RGB_MATRIX_DEFAULT_MODE);
-                rgb_matrix_set_speed_noeeprom(RGB_MATRIX_DEFAULT_SPD);
-                rgb_matrix_sethsv_noeeprom(RGB_MATRIX_DEFAULT_HUE, RGB_MATRIX_DEFAULT_SAT, RGB_MATRIX_MAXIMUM_BRIGHTNESS);
+                rgb_matrix_mode(RGB_MATRIX_DEFAULT_MODE);
+                rgb_matrix_set_speed(RGB_MATRIX_DEFAULT_SPD);
+                rgb_matrix_sethsv(RGB_MATRIX_DEFAULT_HUE, RGB_MATRIX_DEFAULT_SAT, RGB_MATRIX_MAXIMUM_BRIGHTNESS);
             }
         }
         return false;
@@ -1020,22 +1020,22 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             const uint8_t mods = get_mods();
             if (mods & MOD_MASK_SHIFT) {
                 rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_decrease_speed_noeeprom();
+                rgb_matrix_decrease_speed();
             }
             else if ((mods & MOD_MASK_CTRL) && (mods & (MOD_MASK_ALT | MOD_MASK_GUI))) {
                 rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_step_reverse_noeeprom();
+                rgb_matrix_step_reverse();
             }
             else if (mods & MOD_MASK_CTRL) {
                 rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_decrease_hue_noeeprom();
+                rgb_matrix_decrease_hue();
             }
             else if (mods & (MOD_MASK_ALT | MOD_MASK_GUI)) {
                 rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_decrease_sat_noeeprom();
+                rgb_matrix_decrease_sat();
             }
             else {
-                rgb_matrix_decrease_val_noeeprom();
+                rgb_matrix_decrease_val();
             }
         }
         return false;
@@ -1047,22 +1047,22 @@ bool process_record_userspace(uint16_t keycode, keyrecord_t *record) {
             const uint8_t mods = get_mods();
             if (mods & MOD_MASK_SHIFT) {
                 rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_increase_speed_noeeprom();
+                rgb_matrix_increase_speed();
             }
             else if ((mods & MOD_MASK_CTRL) && (mods & (MOD_MASK_ALT | MOD_MASK_GUI))) {
                 rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_step_noeeprom();
+                rgb_matrix_step();
             }
             else if (mods & MOD_MASK_CTRL) {
                 rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_increase_hue_noeeprom();
+                rgb_matrix_increase_hue();
             }
             else if (mods & (MOD_MASK_ALT | MOD_MASK_GUI)) {
                 rgb_matrix_sethsv_noeeprom(rgb_matrix_get_hue(), rgb_matrix_get_sat(), RGB_MATRIX_MAXIMUM_BRIGHTNESS);
-                rgb_matrix_increase_sat_noeeprom();
+                rgb_matrix_increase_sat();
             }
             else {
-                rgb_matrix_increase_val_noeeprom();
+                rgb_matrix_increase_val();
             }
         }
         return false;
@@ -3666,19 +3666,21 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 if (is_layer_lock_led_on) {
                 #ifdef CONFIG_HAS_LLOCK_KEY
                     rgb_matrix_set_color(I_LLOCK, RGB_WHITE); // just make it white
-                #endif
+                #else
                     for (uint8_t i = 0; i < rgb_layer_indicators_count; i++) {
                         rgb_matrix_set_color(rgb_layer_indicators[i], RGB_WHITE);
                     }
+                #endif
                 }
                 else if ((timer_elapsed(layer_lock_timer) > 200 && timer_elapsed(layer_lock_timer) < 400) || 
                          (timer_elapsed(layer_lock_timer) > 600)) {
                 #ifdef CONFIG_HAS_LLOCK_KEY
                     rgb_matrix_set_color(I_LLOCK, RGB_WHITE); // white alternate with layer color
-                #endif
+                #else
                     for (uint8_t i = 0; i < rgb_layer_indicators_count; i++) {
                         rgb_matrix_set_color(rgb_layer_indicators[i], RGB_WHITE);
                     }
+                #endif
                 }
             }
         }
@@ -5732,7 +5734,7 @@ void keyboard_post_init_user(void) {
     user_config.raw = eeconfig_read_user();
     // and set this so layers switch correctly on user's first os change
     layer_state_set(default_layer_state);
-    rgb_matrix_mode_noeeprom(user_config.rgb_mode);
+    rgb_matrix_mode(user_config.rgb_mode);
 }
 
 void eeconfig_init_user(void) {  // EEPROM is getting reset!
