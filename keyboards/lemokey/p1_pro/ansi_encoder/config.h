@@ -88,7 +88,7 @@
 #    define MK_C_INTERVAL_1 8
 
 /* leader key settings */
-#    define LEADER_TIMEOUT 200
+#    define LEADER_TIMEOUT 250
 #    define LEADER_PER_KEY_TIMING
 #    define LEADER_NO_TIMEOUT
 
