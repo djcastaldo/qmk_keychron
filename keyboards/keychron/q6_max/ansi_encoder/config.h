@@ -32,7 +32,7 @@
 /* Allow shutdown of led driver to save power */
 #    define RGB_MATRIX_DRIVER_SHUTDOWN_ENABLE
 /* Turn off backlight on low brightness to save power */
-#    define RGB_MATRIX_BRIGHTNESS_TURN_OFF_VAL 32
+#    define RGB_MATRIX_BRIGHTNESS_TURN_OFF_VAL 0
 
 /* Indications */
 #    define NUM_LOCK_INDEX 36
@@ -174,3 +174,4 @@
 #    define CONFIG_HAS_BASE_LAYER_TOGGLE
 #    define CONFIG_SWITCH_PIN B12
 #    define CONFIG_LOCK_ANIMATION_TIMEOUT 300000
+#    define CONFIG_LOCK_RESTORE_ANIMATION_FROM_SUSPEND_MS 200
