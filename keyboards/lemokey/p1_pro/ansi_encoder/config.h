@@ -65,7 +65,7 @@
 #endif
 
 /* increase layer count above the default of 4 */
-#    define DYNAMIC_KEYMAP_LAYER_COUNT 15
+#    define DYNAMIC_KEYMAP_LAYER_COUNT 16
 
 /* force enable NKRO */
 #    define FORCE_NKRO
@@ -92,8 +92,9 @@
 #    define LEADER_PER_KEY_TIMING
 #    define LEADER_NO_TIMEOUT
 
-/* for tmux send_string delays */
+/* for send_string delays */
 #    define TMUX_DELAY 35
+#    define CONFIG_VS_LAYR_SEND_STRING_DELAY 35
 
 /* monitored base layers for macos */
 #    define CONFIG_MACOS_BASE_LAYERS { MAC_BASE }
@@ -122,6 +123,7 @@
 #    define CONFIG_SHIFT_LAYR_COLOR RGB_ORANGE
 #    define CONFIG_KCTL_LAYR_COLOR RGB_RED
 #    define CONFIG_TMUX_LAYR_COLOR RGB_CYAN
+#    define CONFIG_VS_LAYR_COLOR RGB_PURPLE
 #    define CONFIG_SYM_LAYR_COLOR RGB_BLUE
 #    define CONFIG_WIDE_LAYR_COLOR RGB_PURPLE
 #    define CONFIG_CIRC_LAYR_COLOR RGB_CORAL
@@ -132,8 +134,10 @@
          { I_CAPS, RGB_BLUE }, \
          { I_FN, RGB_BLUE }, \
          { I_TAB, 0x77, 0x77, 0x77 }, \
+         { I_BSLS, 0x77, 0x77, 0x77 }, \
      }
-#    define CONFIG_EXTRA_BASE_LAYR_COLORS_COUNT 3
+#    define CONFIG_EXTRA_BASE_LAYR_COLORS_COUNT 4
+
 #    define CONFIG_ACCENT_KEY_COLOR RGB_YELLOW
 #    define CONFIG_CAPS_WORD_SHIFT_COLOR 0x77,0x77,0x77
 #    define CONFIG_HROWLIGHT_COLOR RGB_GREEN
@@ -147,6 +151,7 @@
 #    define CONFIG_EEPROM_RESET_DEFAULT_IS_LINUX
 #    define CONFIG_LOCK_ANIMATION_TIMEOUT 120000
 #    define CONFIG_LOCK_RESTORE_ANIMATION_FROM_SUSPEND_MS 100
+#    define CONFIG_LOCK_ANIMATION_COLOR_HSV 10,255,255
 
 /* custom sleep setup */
 #    define CONFIG_CUSTOM_SLEEP_TIMEOUT 300000

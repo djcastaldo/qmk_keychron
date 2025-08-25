@@ -54,7 +54,7 @@
 #endif
 
 /* increase layer count above the default of 4 */
-#    define DYNAMIC_KEYMAP_LAYER_COUNT 15
+#    define DYNAMIC_KEYMAP_LAYER_COUNT 16
 
 /* force enable NKRO */
 #    define FORCE_NKRO
@@ -82,6 +82,7 @@
 
 /* for tmux send_string delays */
 #    define TMUX_DELAY 25
+#    define CONFIG_VS_LAYR_SEND_STRING_DELAY 35
 
 /* monitored base layers for macos */
 #    define CONFIG_MACOS_BASE_LAYERS { MAC_BASE }
@@ -117,6 +118,7 @@
 #    define CONFIG_SHIFT_LAYR_COLOR RGB_ORANGE
 #    define CONFIG_KCTL_LAYR_COLOR RGB_RED
 #    define CONFIG_TMUX_LAYR_COLOR RGB_CYAN
+#    define CONFIG_VS_LAYR_COLOR RGB_PURPLE
 #    define CONFIG_SYM_LAYR_COLOR RGB_SPRINGGREEN
 #    define CONFIG_WIDE_LAYR_COLOR RGB_TURQUOISE
 #    define CONFIG_CIRC_LAYR_COLOR RGB_CORAL 
@@ -152,8 +154,9 @@
          { I_CAPS, RGB_GREEN }, \
          { I_FN, RGB_GREEN }, \
          { I_TAB, 0x77,0x77,0x77 }, \
+         { I_BSLS, 0x77,0x77,0x77 }, \
      }
-#    define CONFIG_EXTRA_BASE_LAYR_COLORS_COUNT 28
+#    define CONFIG_EXTRA_BASE_LAYR_COLORS_COUNT 29
 #    define CONFIG_ACCENT_KEY_COLOR RGB_WHITE
 #    define CONFIG_CAPS_WORD_SHIFT_COLOR 0x77,0x77,0x77
 #    define CONFIG_HROWLIGHT_COLOR RGB_GREEN
@@ -175,3 +178,4 @@
 #    define CONFIG_SWITCH_PIN B12
 #    define CONFIG_LOCK_ANIMATION_TIMEOUT 300000
 #    define CONFIG_LOCK_RESTORE_ANIMATION_FROM_SUSPEND_MS 200
+#    define CONFIG_LOCK_ANIMATION_COLOR_HSV HSV_RED

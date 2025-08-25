@@ -81,6 +81,7 @@ enum key_indexes {
     I_I = 47,
     I_O = 48,
     I_P = 49,
+    I_BSLS = 52,
     I_HROWLIGHT = 54,
     I_END = 54,
     I_BARTEXT = 54,

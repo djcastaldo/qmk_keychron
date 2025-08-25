@@ -60,7 +60,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                              DUAL_SNAP,KC_SIRI,AP_GLOB,DUAL_F13,DUAL_F14,KC_CALC,LOCKSCR,
         KC_GRV,KC_1,KC_2,KC_3,KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, BSPCFAST,
                                                                                  KC_INS,KC_HOME,KC_PGUP,KC_NUM,KC_PSLS,KC_PAST,DUAL_PMNS,
-        LT(TMUX_LAYR,KC_TAB),KC_Q,KC_W,KC_E,KC_R,KC_T,KC_Y,KC_U,KC_I,KC_O,KC_P,KC_LBRC,KC_RBRC,KC_BSLS,
+        LT(TMUX_LAYR,KC_TAB),KC_Q,KC_W,KC_E,KC_R,KC_T,KC_Y,KC_U,KC_I,KC_O,KC_P,KC_LBRC,KC_RBRC,LT(EMO_LAYR,KC_BSLS),
                                                                                                  KC_DEL,KC_END,KC_PGDN,KC_P7,KC_P8,KC_P9,
         TD(CAPS_LAYR),KC_A,KC_S,KC_D,KC_F,KC_G,KC_H,KC_J,KC_K,KC_L,KC_SCLN,KC_QUOT, KC_ENT,                 KC_P4, KC_P5, KC_P6, KC_PPLS,
         KC_LSFT, KC_Z,KC_X,KC_C,KC_V,KC_B,KC_N,KC_M,KC_COMM,KC_DOT,KC_SLSH, TD(RSFT_OSL),         KC_UP,        KC_P1, KC_P2, KC_P3,
@@ -87,7 +87,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                             KC_PSCR,KC_CTANA,RGB_MOD,  DUAL_F13,DUAL_F14,KC_CALC,LOCKSCR,
         KC_GRV,KC_1,KC_2,KC_3,KC_4,KC_5,KC_6,KC_7,KC_8,KC_9,KC_0,KC_MINS,KC_EQL,BSPCFAST,KC_INS,KC_HOME,KC_PGUP,
                                                                                                         KC_NUM,KC_PSLS,KC_PAST,DUAL_PMNS,
-        LT(TMUX_LAYR,KC_TAB),KC_Q,KC_W,KC_E,KC_R,KC_T,KC_Y,KC_U,KC_I,KC_O,KC_P,KC_LBRC,KC_RBRC,KC_BSLS,
+        LT(TMUX_LAYR,KC_TAB),KC_Q,KC_W,KC_E,KC_R,KC_T,KC_Y,KC_U,KC_I,KC_O,KC_P,KC_LBRC,KC_RBRC,TD(DYN_LAYR),
                                                                                                  KC_DEL,KC_END,KC_PGDN,KC_P7,KC_P8,KC_P9,
         TD(CAPS_LAYR),KC_A,KC_S,KC_D,KC_F,KC_G,KC_H,KC_J,KC_K,KC_L, KC_SCLN, KC_QUOT,   KC_ENT,             KC_P4, KC_P5, KC_P6, KC_PPLS,
         KC_LSFT,KC_Z,KC_X,KC_C,KC_V,KC_B,KC_N,KC_M,KC_COMM,KC_DOT, KC_SLSH,         TD(RSFT_OSL),        KC_UP,      KC_P1, KC_P2, KC_P3,
@@ -208,6 +208,35 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                                              LTRANS,LTRANS,LTRANS,LTRANS,
         _______,LTRANS,LTRANS,LTRANS,_______,_______,LTRANS,_______,LTRANS,LTRANS,LTRANS, _______,  LTRANS,  LTRANS,LTRANS,LTRANS,
         KC_LCTL,KC_LALT,_______,         LTRANS,        _______,KC_LALT,_______,KC_RCTL, LTRANS,LTRANS,LTRANS,  LTRANS, LTRANS, _______),
+//  [VS_LAYR]
+//,-------------------------------------------------------------------------------------------------------------------------------------,
+//: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
+//:|    | |    ||Rnme||    || F4 | | F5 ||    ||    || F8 | | F9 ||F10 ||F11 ||F12 | : Ins : |    ||    ||    | |    ||    ||    ||    |:
+//:|____| |____||____||____||____| |____||____||____||____| |____||____||____||____| `.___.  |____||____||____| |____||____||____||____|:
+//: _______________________________________________________________________________________   ________________   ______________________ :
+//:|    ||    ||    ||    ||    ||    ||    ||    ||    ||    ||    ||    ||    ||         | |LLck||    ||LnUp| |    ||    ||    ||    |:
+//:|____||____||____||____||____||____||____||____||____||____||____||____||____||_________| |____||____||____| |____||____||____||____|:
+//:|       ||    ||WrdW||ErrL||Repl||    ||    ||Uncm||Info||Outp||Publ||    ||Mtch||      | |LDel||    ||LnDn| |    ||    ||    ||    |:
+//:|_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____||    |:
+//:|        ||    ||LSrt||DupL||Find||Goto||    ||Join||    ||Solu||    ||    ||           |                    |    ||    ||    ||    |:
+//:|________||____||____||____||____||____||____||____||____||____||____||____||___________|        ____        |____||____||____||____|:
+//:|           ||    ||    ||LCom||Clip||    ||Noti||    ||    ||    ||Comm||              |       |    |       |    ||    ||    ||    |:
+//:|___________||____||____||____||____||____||____||____||____||____||____||______________|  ____ |____| ____  |____||____||____||    |:
+//:|     ||     ||     ||                                     ||     ||     ||     ||      | |    ||    ||    | |          ||    ||    |:
+//:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
+//`-------------------------------------------------------------------------------------------------------------------------------------`
+    [VS_LAYR] = LAYOUT_109_ansi(
+        _______,_______,VSRNAME,_______, KC_F4, KC_F5,_______,_______, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, VSINSLN,
+                                                                            _______,_______,_______, _______, _______, _______,_______,
+        _______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,
+                                                                                  LLOCK,_______,VSMVLNU, _______,_______,_______,_______,
+        _______,_______,VSWRDWP,VSERR,VSREPL,_______,_______,VSLNCMU,VSINFO,VSOUTPT,VSPUB,_______,VSMATCH,_______,
+                                                                                       VSDELLN,_______,VSMVLND,_______,_______,_______,
+        _______,_______,VSLNSRT,VSDUPLN,VSFIND,VSGOTO,_______,VSLJOIN,_______,VSSOLU,_______,_______,_______,
+                                                                                                         _______,_______,_______,_______,
+        _______,_______,_______, VSLNCMC,VSCLIPB,_______,VSNOTIF,_______,_______,_______,VSLBCMT, _______,  _______,
+                                                                                                         _______,_______,_______,
+        _______,_______,_______,      _______,     _______,_______,_______,_______, _______,_______,_______, _______, _______, _______),
 //  [MSYM_LAYR]
 //,-------------------------------------------------------------------------------------------------------------------------------------,
 //: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
@@ -382,6 +411,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [SFT_LAYR]  = {ENCODER_CCW_CW(ENC_SCROLLAPPL, ENC_SCROLLAPPR)},
     [KCTL_LAYR] = {ENCODER_CCW_CW(ENC_RGBL, ENC_RGBR)},
     [TMUX_LAYR] = {ENCODER_CCW_CW(ENC_TSIZEL, ENC_TSIZER)},
+    [VS_LAYR]   = {ENCODER_CCW_CW(ENC_VOLD, ENC_VOLU)},
     [MSYM_LAYR] = {ENCODER_CCW_CW(ENC_MENUL, ENC_MENUR)},
     [WSYM_LAYR] = {ENCODER_CCW_CW(ENC_MENUL, ENC_MENUR)},
     [WIDE_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
