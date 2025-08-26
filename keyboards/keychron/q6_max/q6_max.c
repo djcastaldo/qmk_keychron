@@ -27,6 +27,7 @@
 #    include "battery.h"
 #endif
 #    include "layers.h"
+#    include "process_record_userspace.h"
 
 #define POWER_ON_LED_DURATION 3000
 static uint32_t power_on_indicator_timer;
@@ -38,7 +39,7 @@ bool dip_switch_update_kb(uint8_t index, bool active) {
     }
     dip_switch_update_user(index, active);
 
-    return dip_switch_update_keymap(index, active);
+    return dip_switch_update_userspace(index, active); // djc
 }
 #endif
 

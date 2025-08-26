@@ -17,5 +17,3 @@ enum layers {
     EMO_LAYR,
     LOCK_LAYR
 };
-
-bool dip_switch_update_keymap(uint8_t index, bool active);

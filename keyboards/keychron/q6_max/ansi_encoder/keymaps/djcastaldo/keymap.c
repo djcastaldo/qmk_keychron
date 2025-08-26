@@ -465,28 +465,3 @@ void leader_end_user(void) {
 
     is_in_leader_sequence = false;
 }
-
-bool dip_switch_update_keymap(uint8_t index, bool active) {
-    if (index == 0) {
-        uint8_t current_layer = get_highest_layer(layer_state);
-        uint8_t current_base = get_highest_layer(default_layer_state);
-        if (active) {
-            if (current_base != WIN_BASE) {
-                set_single_persistent_default_layer(WIN_BASE);
-            }
-            if (current_layer != LOCK_LAYR) {
-                layer_move(WIN_BASE);
-            }
-        }
-        else {
-            if (current_base != MAC_BASE) {
-                set_single_persistent_default_layer(MAC_BASE);
-            }
-            if (current_layer != LOCK_LAYR) {
-                layer_move(MAC_BASE);
-            }
-        }
-        os_changed = true;
-    }
-    return true;
-}
