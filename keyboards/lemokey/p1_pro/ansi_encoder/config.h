@@ -95,6 +95,8 @@
 /* for send_string delays */
 #    define TMUX_DELAY 35
 #    define CONFIG_VS_LAYR_SEND_STRING_DELAY 35
+#    define CONFIG_RDP_DELAY_KEY 15
+#    define CONFIG_RDP_DELAY_MOD 20
 
 /* monitored base layers for macos */
 #    define CONFIG_MACOS_BASE_LAYERS { MAC_BASE }
