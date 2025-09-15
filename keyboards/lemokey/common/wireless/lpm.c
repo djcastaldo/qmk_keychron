@@ -301,7 +301,7 @@ void lpm_task(void) {
         lpm_enter_low_power();
         lpm_post_enter_low_power();
 
-        lpm_standby(LOW_POWER_MODE);
+        //lpm_standby(LOW_POWER_MODE); // djc
         lpm_early_wakeup();
         lpm_wakeup_init();
 
