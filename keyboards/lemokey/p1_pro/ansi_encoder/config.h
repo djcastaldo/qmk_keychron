@@ -44,6 +44,8 @@
 #    define RGB_MATRIX_DRIVER_SHUTDOWN_ENABLE
 /* Turn off backlight on low brightness to save power */
 #    define RGB_MATRIX_BRIGHTNESS_TURN_OFF_VAL 0
+/* djc: don't do the deep sleep which makes wake unreliable on lock layer */
+#    define NO_LEMOKEY_DEEP_SLEEP
 
 /* Caps lock indicating led */
 #    define CAPS_LOCK_INDEX 44
