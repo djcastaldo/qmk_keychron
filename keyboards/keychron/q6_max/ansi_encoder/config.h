@@ -109,6 +109,7 @@
 /* rgb_matrix_indicators_advanced_user settings */
 #    define CONFIG_HAS_ROPT_KEY
 #    define CONFIG_HAS_LLOCK_KEY
+#    define CONFIG_HAS_KLOCK_KEY
 #    define CONFIG_HAS_SECOND_KTRACK_KEY
 #    define CONFIG_HAS_SECOND_HROWLIGHT_KEY
 #    define CONFIG_HAS_SECOND_FJLIGHT_KEY
