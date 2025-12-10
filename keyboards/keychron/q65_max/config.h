@@ -42,10 +42,12 @@
 #        define LED_DRIVER_SHUTDOWN_PIN B7
 
 #        define BT_HOST_LED_MATRIX_LIST \
-            { 17, 18, 19 }
+              { 1, 2, 3 }
+//            { 17, 18, 19 }
 
 #        define P2P4G_HOST_LED_MATRIX_LIST \
-            { 20 }
+              { 4 }
+//            { 20 }
 
 #        define BAT_LEVEL_LED_LIST \
             { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
@@ -75,8 +77,8 @@
 #endif
 
 /* Factory test keys */
-#define FN_KEY_1 MO(2)
-#define FN_KEY_2 MO(3)
-#define FN_KEY_3 MO(4)
+//#define FN_KEY_1 MO(2)
+//#define FN_KEY_2 MO(3)
+//#define FN_KEY_3 MO(4)
 
 #define MATRIX_IO_DELAY 10

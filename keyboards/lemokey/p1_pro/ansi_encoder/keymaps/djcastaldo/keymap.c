@@ -314,9 +314,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  :  _______________________________________________________________________________________________________________________  ______  :
 //  : |      ||  E1  ||  E2  ||  E3  ||  E4  ||  E5  ||  E6  ||  E7  ||  E8  ||  E9  ||  E0  ||  E-  ||  E+  ||              | | EDel | :
 //  : |______||______||______||______||______||______||______||______||______||______||______||______||______||______________| |______| :
-//  : |          ||      || Car  || Bus  ||Train ||Taxi  ||      ||  US  ||  EI  || EOK  ||  PI  ||      ||      ||ECheckMrk | |EMark | :
+//  : |          ||      || Car  || Bus  ||Train ||Taxi  ||      ||      ||  EI  || EOK  ||      ||  US  ||  PI  ||          | |EMark | :
 //  : |__________||______||______||______||______||______||______||______||______||______||______||______||______||__________| |______| :
-//  : |             ||Aster ||Sungls||      ||      ||Globe || Hash ||      || Keyb ||EBulb ||      ||ESShot||               | |QMark | :
+//  : |             ||Aster ||Sungls||      ||      ||Globe || Hash ||CMark || Keyb ||EBulb ||      ||ESShot||               | |QMark | :
 //  : |_____________||______||______||______||______||______||______||______||______||______||______||______||_______________:.|______| :
 //  : |                 ||EShh  ||      ||      ||      ||Bottle||Ninja || EMic ||      || Grim || Div  ||           | | EUp  |         :
 //  : |_________________||______||______||______||______||______||______||______||______||______||______||___________:.|______| ______  :
@@ -326,8 +326,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [EMO_LAYR] = LAYOUT_ansi_82(
         _______, E_HAND,E_SNAIL,E_STOP,E_PACKAGE,  E_PIZZA,E_BURGER,E_CHICKEN,E_TACO,  E_SMILE,E_SMIRK,E_ASTON,E_SAD, LLOCK, ENC_UNIMENU,
         _______, E_K1,  E_K2,   E_K3,  E_K4,   E_K5,   E_K6,   E_K7,   E_K8,   E_K9,   E_K0,  E_MINS, E_PLUS,         _______,   E_TRASH,
-        _______, _______, E_CAR, E_BUS, E_TRAIN, E_TAXI, _______, E_FLAGUS,  E_I,  E_OK, E_FLAGPI, _______, _______,  E_CMARK,   E_EMARK,
-        _______, E_STAR, E_SGLASS, _______, _______, E_GLOBE, E_HASH, _______, E_KB, E_BULB, _______, E_SSHOT,        _______,   E_QMARK,
+        _______, _______, E_CAR, E_BUS, E_TRAIN, E_TAXI, _______, _______,  E_I,  E_OK, _______, E_FLAGUS, E_FLAGPI,  _______,   E_EMARK,
+        _______, E_STAR, E_SGLASS, _______, _______, E_GLOBE, E_HASH, E_CMARK, E_KB, E_BULB, _______, E_SSHOT,        _______,   E_QMARK,
         _______,    E_SHH, _______, _______, _______, E_BOTTLE, E_NINJA, E_MIC, _______, E_GRIM, E_DIV,      _______, E_POINTU,
         _______, _______, _______,                    _______,                  _______, _______, _______,  E_POINTL, E_POINTD, E_POINTR
     ),
