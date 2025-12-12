@@ -118,6 +118,10 @@
 /* rgb_matrix_indicators_advanced_user settings */
 #    define CONFIG_HAS_LLOCK_KEY
 #    define CONFIG_HAS_KLOCK_KEY
+#    define CONFIG_HAS_SECOND_KTRACK_KEY
+#    define CONFIG_HAS_SECOND_HROWLIGHT_KEY
+#    define CONFIG_HAS_SECOND_FJLIGHT_KEY
+#    define CONFIG_HAS_FKEY_LAYR
 #    define CONFIG_HAS_KCLK_BATTERY
 #    define CONFIG_RGB_LAYER_INDICATORS \
      { \
@@ -141,6 +145,7 @@
 #    define CONFIG_WIDE_LAYR_COLOR RGB_TURQUOISE
 #    define CONFIG_CIRC_LAYR_COLOR RGB_CORAL
 #    define CONFIG_EMO_LAYR_COLOR RGB_PURPLE
+#    define CONFIG_FKEY_LAYR_COLOR RGB_WHITE
 #    define CONFIG_DEFUALT_LAYR_COLOR 0x77,0x77,0x77
 #    define CONFIG_EXTRA_BASE_LAYR_COLORS \
      { \
@@ -148,8 +153,9 @@
          { I_FN, RGB_BLUE }, \
          { I_TAB, 0x77,0x77,0x77 }, \
          { I_BSLS, 0x77,0x77,0x77 }, \
+         { I_FKEY, 0x77,0x77,0x77 }, \
      }
-#    define CONFIG_EXTRA_BASE_LAYR_COLORS_COUNT 4
+#    define CONFIG_EXTRA_BASE_LAYR_COLORS_COUNT 5
 #    define CONFIG_ACCENT_KEY_COLOR RGB_YELLOW
 #    define CONFIG_CAPS_WORD_SHIFT_COLOR 0x77,0x77,0x77
 #    define CONFIG_HROWLIGHT_COLOR RGB_GREEN

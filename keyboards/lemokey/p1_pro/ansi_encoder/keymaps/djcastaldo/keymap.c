@@ -207,7 +207,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  [WSYM_LAYR] (blue)
 //  ,-----------------------------------------------------------------------------------------------------------------------------------,
 //  :  ______    ______________________________    ______________________________    ______________________________    ______   .----.  :
-//  : |      |  | SUP1 || SUP2 || SUP3 ||      |  |SUITH ||SUITD ||SUITC ||SUITS |  |CIRCLI||      ||      || NBSP |  |LLock | : Vol  : :
+//  : |      |  | SUP1 || SUP2 || SUP3 ||      |  |SUITH ||SUITD ||SUITC ||SUITS |  |CIRCLI||      ||      || NBSP |  |LLock | : Uni  : :
 //  : |______|  |______||______||______||______|  |______||______||______||______|  |______||______||______||______|  |______| '.____.' :
 //  :  _______________________________________________________________________________________________________________________  ______  :
 //  : |TD(G) ||TD(1) ||OPT2  ||OPT3  ||OPT4  ||OPT5  ||OPT6  ||OPT7  ||OPT8  ||OPT9  ||OPT0  ||OPTMIN||OPTEQ ||              | |      | :
@@ -233,7 +233,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  [MSYM_LAYR] (blue)
 //  ,-----------------------------------------------------------------------------------------------------------------------------------,
 //  :  ______    ______________________________    ______________________________    ______________________________    ______   .----.  :
-//  : |      |  | SUP1 || SUP2 || SUP3 ||      |  |SUITH ||SUITD ||SUITC ||SUITS |  |CIRCLI||      ||      || NBSP |  |LLock | : Vol  : :
+//  : |      |  | SUP1 || SUP2 || SUP3 ||      |  |SUITH ||SUITD ||SUITC ||SUITS |  |CIRCLI||      ||      || NBSP |  |LLock | : Uni  : :
 //  : |______|  |______||______||______||______|  |______||______||______||______|  |______||______||______||______|  |______| '.____.' :
 //  :  _______________________________________________________________________________________________________________________  ______  :
 //  : |LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||LTRANS||              | |      | :
@@ -366,7 +366,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [SFT_LAYR]  = {ENCODER_CCW_CW(ENC_SCROLLAPPL, ENC_SCROLLAPPR)},
     [KCTL_LAYR] = {ENCODER_CCW_CW(ENC_RGBL, ENC_RGBR)},
     [TMUX_LAYR] = {ENCODER_CCW_CW(ENC_TSIZEL, ENC_TSIZER)},
-    [VS_LAYR]   = {ENCODER_CCW_CW(VSMVLNU, VSMVLND)},
+    [VS_LAYR]   = {ENCODER_CCW_CW(ENC_MENUL, ENC_MENUR)},
     [WSYM_LAYR] = {ENCODER_CCW_CW(ENC_MENUL, ENC_MENUR)},
     [MSYM_LAYR] = {ENCODER_CCW_CW(ENC_MENUL, ENC_MENUR)},
     [WIDE_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},

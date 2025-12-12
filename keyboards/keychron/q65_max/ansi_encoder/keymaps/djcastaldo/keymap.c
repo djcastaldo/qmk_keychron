@@ -39,11 +39,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
     [MAC_BASE] = LAYOUT_ansi_73(
-        ENC_MUTEPLAY,  DUAL_ESC, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, BSPCFAST,   KC_INS,
+        ENC_MUTEPLAY,  DUAL_ESC, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, BSPCFAST,             KC_INS,
         KC_GRV,LT(TMUX_LAYR,KC_TAB),KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P,KC_LBRC,KC_RBRC,LT(EMO_LAYR,KC_BSLS),KC_DEL,
-        OSL(FKEY_LAYR), TD(CAPS_LAYR), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT, KC_ENT,    KC_PGUP,
-        DUAL_SNAP, KC_LSFT,   KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, TD(RSFT_OSL), KC_UP,    KC_PGDN,
-        AP_GLOB, KC_LCTL, KC_LOPT, KC_LCMD,         KC_SPC,        TD(RCMD_OSL), TD(FN_OSL), KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT),
+        OSL(FKEY_LAYR), TD(CAPS_LAYR), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,   KC_ENT,           KC_PGUP,
+        DUAL_SNAP, KC_LSFT,   KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, TD(RSFT_OSL),          KC_UP,    KC_PGDN,
+        AP_GLOB, KC_LCTL, KC_LOPT, KC_LCMD,              KC_SPC,             TD(RCMD_OSL), TD(FN_OSL), KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT),
 
 // [WIN_BASE]
 //,------------------------------------------------------------------------------------------------------------,
@@ -62,11 +62,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
     [WIN_BASE] = LAYOUT_ansi_73(
-        ENC_MUTEPLAY,  DUAL_ESC, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, BSPCFAST,           KC_INS,
-        KC_GRV, LT(TMUX_LAYR,KC_TAB), KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, TD(DYN_LAYR), KC_DEL,
+        ENC_MUTEPLAY,  DUAL_ESC, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, BSPCFAST,            KC_INS,
+        KC_GRV, LT(TMUX_LAYR,KC_TAB), KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, TD(DYN_LAYR),  KC_DEL,
         OSL(FKEY_LAYR), TD(CAPS_LAYR), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,   KC_ENT,          KC_PGUP,
-        KC_PSCR, KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, TD(RSFT_OSL),     KC_UP,            KC_PGDN,
-        KC_APP,  KC_LCTL, TD(LGUI_OSL), KC_LALT,     KC_SPC,       TD(RALT_OSL), TD(FN_OSL), KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT),
+        KC_PSCR, KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, TD(RSFT_OSL),             KC_UP,    KC_PGDN,
+        KC_APP,  KC_LCTL, TD(LGUI_OSL), KC_LALT,           KC_SPC,          TD(RALT_OSL), TD(FN_OSL), KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT),
 
 // [FKEY_LAYR]
 //,------------------------------------------------------------------------------------------------------------,
@@ -130,12 +130,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: |____|  |_____||_____||_____||_____________________________________||____||____||____| |MsLt||MsDn||MsRt|  :
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
-    [WIN_FN1] = LAYOUT_ansi_73(
-        RGB_TOG,     KC_GRV,  KC_BRID,  KC_BRIU,  KC_TASK, KC_FILE, RGB_VAD, RGB_VAI, KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE,  KC_VOLD,  KC_VOLU,  _______,          _______,
-        _______,     _______, BT_HST1,  BT_HST2,  BT_HST3, P2P4G,  _______, _______, _______, _______, _______, _______,  _______,  _______,   _______,          _______,
-        _______,     RGB_TOG, RGB_MOD,  RGB_VAI,  RGB_HUI, RGB_SAI, RGB_SPI, _______, _______, _______, _______, _______,  _______,            _______,          _______,
-        _______,     _______,           RGB_RMOD, RGB_VAD, RGB_HUD, RGB_SAD, RGB_SPD, NK_TOGG, _______, _______, _______,  _______,            _______, _______, _______,
-        _______,     _______, _______,  _______,                             _______,                            _______,  _______,  _______,  _______, _______, _______),
+  [SFT_LAYR] = LAYOUT_ansi_73(
+   ENC_APPHIDE,  FORCEQUIT, SOC1, SOC2, SOC3, SOC4, SOC5, SOC6, SOC7, SOC8, SOC9, SOC0, _______, _______,      _______,              LLOCK,
+   KC_MYCM, _______, FQLOOK, _______,_______,_______, TIMESTAMP, _______, KC_P7, KC_P8, KC_P9,DUAL_PLUSMIN,_______,_______, KC_APP, KC_NUM,
+   FDOCS, _______, FAPPS, _______, _______, _______, _______, _______, KC_P4, KC_P5, KC_P6, DUAL_MULTDIV,  _______,      _______,  MK_HOLD,
+   FDOWNL, _______, MK_ACCEL2, _______, KC_MPRV, KC_MPLY, KC_MNXT, _______, KC_P1, KC_P2, KC_P3, _______,  _______, KC_MS_UP,   MC_MS_BTN2,
+   KC_CALC, _______, _______, MK_ACCEL0,             KC_P0,             KC_PDOT, _______, KC_MS_BTN1, KC_MS_LEFT, KC_MS_DOWN, KC_MS_RIGHT),
 
 // [KCTL_LAYR]
 //,------------------------------------------------------------------------------------------------------------,
@@ -145,20 +145,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:  ____   |____||____||____||____||____||____||____||____||____||____||____||____||____||_________|   |____| :
 //: |Log |  |       ||    ||    ||    ||Rebt||    ||    ||    ||    ||    ||    ||    ||    ||      |   |RTog| :
 //: |____|  |_______||____||____||____||____||____||____||____||____||____||____||____||____||______|   |____| :
-//: |KTrk|  |        ||    ||    ||    ||Flsh||    ||    ||    ||    ||    ||KTrk||FLit||HRowLight  |   |Val+| :
+//: |KTrk|  |        ||    ||    ||    ||Flsh||    ||    ||    ||KLck||    ||KTrk||FLit||HRowLight  |   |Mod+| :
 //: |____|  |________||____||____||____||____||____||____||____||____||____||____||____||___________|   |____| :
-//: |FLit|  |           ||    ||    ||ECLr||    ||Boot||    ||    ||    ||    ||    ||         | .----. |Val-| :
-//: |____|  |___________||____||____||____||____||____||____||____||____||____||____||_________| |Mod+| |____| :
-//: |HLit|  |     ||     ||     ||        Battery Level Check          ||    ||    ||    | .----.`----`.----.  :
-//: |____|  |_____||_____||_____||_____________________________________||____||____||____| |Spd-||Mod-||Spd+|  :
+//: |FLit|  |           ||    ||    ||ECLr||    ||Boot||    ||    ||    ||    ||    ||         | .----. |Mod-| :
+//: |____|  |___________||____||____||____||____||____||____||____||____||____||____||_________| |Bri+| |____| :
+//: |HLit|  |     ||     ||     ||        Battery Level Check          ||    ||ROpt||    | .----.`----`.----.  :
+//: |____|  |_____||_____||_____||_____________________________________||____||____||____| |Spd-||Bri-||Spd+|  :
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
-    [FN2] = LAYOUT_ansi_73(
-        _______,    KC_TILD, KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,    _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,            _______,          _______,
-        _______,    _______,           _______,   _______, _______, _______, BAT_LVL, _______, _______, _______, _______,  _______,            _______, _______, _______,
-        _______,    _______, _______,  _______,                              _______,                            _______,  _______,  _______,  _______, _______, _______),
+  [KCTL_LAYR] = LAYOUT_ansi_73(
+   ENC_RGBPUSH, _______, BT_HST1, BT_HST2, BT_HST3, P2P4G,_______,_______,_______,_______,_______,_______,COLORTEST,DB_TOGG,_______, LLOCK,
+   SECRET0, _______, _______, _______, _______, QK_RBT, _______, _______, _______,_______,_______,_______,_______,_______,_______, CSTMTOG,
+   KTRACK, _______, _______, _______, _______, FLASH_KB, _______, _______, _______, QK_LOCK, _______, KTRACK, FJLIGHT, HROWLIGHT,  RGB_MOD,
+   FJLIGHT, _______, _______, _______, EE_CLR, _______, BOOTLDR, _______, _______, _______, _______, _______, _______,  RGB_VAI,  RGB_RMOD,
+   HROWLIGHT, _______, _______, _______,                BAT_LVL,                   _______, KC_ROPT, _______,   RGB_SPD, RGB_VAD, RGB_SPI),
 
 // [TMUX_LAYR]
 //,------------------------------------------------------------------------------------------------------------,
@@ -172,16 +172,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: |____|  |________||____||____||____||____||____||____||____||____||____||____||____||___________|   |____| :
 //: |WLft|  |           ||LTRN||LTRN||LTRN||    ||    ||LTRN||    ||LTRN||LTRN||LTRN||         | .----. |    | :
 //: |____|  |___________||____||____||____||____||____||____||____||____||____||____||_________| |LTRN| |____| :
-//: |WRgt|  |LCtl ||LAlt ||     ||               LTRN                  ||LAlt||    ||RCtl| .----.`----`.----.  :
+//: |WRgt|  |     ||     ||LAlt ||               LTRN                  ||LAlt||    ||    | .----.`----`.----.  :
 //: |____|  |_____||_____||_____||_____________________________________||____||____||____| |LTRN||LTRN||LTRN|  :
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
-    [FN2] = LAYOUT_ansi_73(
-        _______,    KC_TILD, KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,    _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,            _______,          _______,
-        _______,    _______,           _______,   _______, _______, _______, BAT_LVL, _______, _______, _______, _______,  _______,            _______, _______, _______,
-        _______,    _______, _______,  _______,                              _______,                            _______,  _______,  _______,  _______, _______, _______),
+  [TMUX_LAYR] = LAYOUT_ansi_73(
+   ENC_TMON, _______, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,   _______,     LLOCK,
+   TMUXLKEY, _______, LTRANS,LTRANS, _______, _______, LTRANS, _______, _______, _______, LTRANS, LTRANS, LTRANS, LTRANS, _______, _______,
+   TMUXLCMD, _______, _______, LTRANS, LTRANS, _______, _______, _______, TJPANE, _______, LTRANS, LTRANS, LTRANS,       _______,   LTRANS,
+   TWINLFT,  _______,  LTRANS, LTRANS, LTRANS, _______, _______, LTRANS, _______, LTRANS, LTRANS, LTRANS,   _______,      LTRANS,  _______,
+   TWINRGT,  _______, _______, KC_LALT,                 LTRANS,                      KC_LALT, _______, _______,  LTRANS,  LTRANS,  LTRANS),
 
 // [VS_LAYR]
 //,------------------------------------------------------------------------------------------------------------,
@@ -199,18 +199,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: |____|  |_____||_____||_____||_____________________________________||____||____||____| |    ||    ||    |  :
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
-    [FN2] = LAYOUT_ansi_73(
-        _______,    KC_TILD, KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,    _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,            _______,          _______,
-        _______,    _______,           _______,   _______, _______, _______, BAT_LVL, _______, _______, _______, _______,  _______,            _______, _______, _______,
-        _______,    _______, _______,  _______,                              _______,                            _______,  _______,  _______,  _______, _______, _______),
+  [VS_LAYR] = LAYOUT_ansi_73(
+   VSINSLN, _______,  KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12,       _______,          LLOCK,
+   VSNOTIF, _______,_______, VSWRDWP, VSERR, VSRNAME, _______,_______, VSLNCMU, VSINFO, VSOUTPT, VSPUB, _______, VSMATCH, _______, VSDELLN,
+   VSERR, _______, _______, VSLNSRT, VSDUPLN, VSFIND, VSGOTO, VSREPL, VSLJOIN, _______, VSSOLU, _______, _______,       _______,   VSMVLNU,
+   VSOUTPT, _______,  _______, _______, VSLNCMC, VSCLIPB, _______, VSNOTIF, _______, _______, _______, VSLBCMT, _______,  _______, VSMVLND,
+   VSINFO, _______, _______, _______,                   _______,                   _______, _______, _______,   _______, _______, _______),
 
 
 // [MSYM_LAYR]
 //,------------------------------------------------------------------------------------------------------------,
 //:  ,---.                                                                                                     :
-//: : Vol :  _______________________________________________________________________________________     ____  :
+//: : Uni :  _______________________________________________________________________________________     ____  :
 //: `.___.' |SUTH||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||         |   |LLck| : 
 //:  ____   |____||____||____||____||____||____||____||____||____||____||____||____||____||_________|   |____| :
 //: |LTRN|  |       ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN  |   |SUP1| :
@@ -223,18 +223,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: |____|  |_____||_____||_____||_____________________________________||____||____||____| |    ||    ||    |  :
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
-    [FN2] = LAYOUT_ansi_73(
-        _______,    KC_TILD, KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,    _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,            _______,          _______,
-        _______,    _______,           _______,   _______, _______, _______, BAT_LVL, _______, _______, _______, _______,  _______,            _______, _______, _______,
-        _______,    _______, _______,  _______,                              _______,                            _______,  _______,  _______,  _______, _______, _______),
+  [MSYM_LAYR] = LAYOUT_ansi_73(
+   ENC_UNIMENU, SUITH, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,   _______,    LLOCK,
+   LTRANS, _______,  LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,   LTRANS,        SUP1,
+   SUITD,  _______,   LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,          _______,       SUP2,
+   SUITC,    KC_LSFT, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,  KC_RSFT,          _______,     SUP3,
+   SUITS,  _______, _______, _______,                      _______,                    NBSP, _______, _______,  _______, _______, _______),
 
 
 // [WSYM_LAYR]
 //,------------------------------------------------------------------------------------------------------------,
 //:  ,---.                                                                                                     :
-//: : Vol :  _______________________________________________________________________________________     ____  :
+//: : Uni :  _______________________________________________________________________________________     ____  :
 //: `.___.' |SUTH||TD-1||OPT2||OPT3||OPT4||OPT5||OPT6||OPT7||OPT8||OPT9||OPT0||OMIN||OPEQ||         |   |LLck| : 
 //:  ____   |____||____||____||____||____||____||____||____||____||____||____||____||____||_________|   |____| :
 //: |TGRV|  |       ||OPTQ||OPTW||TD-E||OPTR||OPTT||OPTY||TD-U||TD-I||OPTO||OPTP||OLBR||ORBR||OPTBSL|   |SUP1| :
@@ -247,12 +247,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: |____|  |_____||_____||_____||_____________________________________||____||____||____| |    ||    ||    |  :
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
-    [FN2] = LAYOUT_ansi_73(
-        _______,    KC_TILD, KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,    _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,            _______,          _______,
-        _______,    _______,           _______,   _______, _______, _______, BAT_LVL, _______, _______, _______, _______,  _______,            _______, _______, _______,
-        _______,    _______, _______,  _______,                              _______,                            _______,  _______,  _______,  _______, _______, _______),
+  [WSYM_LAYR] = LAYOUT_ansi_73(
+   ENC_UNIMENU,   SUITH, TD(ACT_1), OPT2, OPT3, OPT4, OPT5, OPT6, OPT7, OPT8, OPT9, OPT0, OPTMIN, OPTEQ,         _______,            LLOCK,
+   TD(ACT_GRV),   _______, OPTQ, OPTW, TD(ACT_E), OPTR, OPTT, OPTY, TD(ACT_U), TD(ACT_I), OPTO, OPTP, OPTLBR, OPTRBR, OPTBSL,         SUP1,
+   SUITD,          _______,   OPTA, OPTS, OPTD, OPTF, OPTG, OPTH, OPTJ, OPTK, OPTL, OPTSEM, OPTAPO,                 _______,          SUP2,
+   SUITC,    KC_LSFT,           OPTZ, OPTX, OPTC, OPTV, OPTB, TD(ACT_N), OPTM, OPTCOM, OPTDOT, OPTSLS,     KC_RSFT,      _______,     SUP3,
+   SUITS,    _______, _______, _______,                   _______,                     NBSP, _______, _______,  _______, _______, _______),
 
 // [WIDE_LAYR]
 //,------------------------------------------------------------------------------------------------------------,
@@ -270,12 +270,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: |____|  |_____||_____||_____||_____________________________________||____||____||____| |    ||    ||    |  :
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
-    [FN2] = LAYOUT_ansi_73(
-        _______,    KC_TILD, KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,    _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,            _______,          _______,
-        _______,    _______,           _______,   _______, _______, _______, BAT_LVL, _______, _______, _______, _______,  _______,            _______, _______, _______,
-        _______,    _______, _______,  _______,                              _______,                            _______,  _______,  _______,  _______, _______, _______),
+  [WIDE_LAYR] = LAYOUT_ansi_73(
+   ENC_MUTEPLAY,  _______, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, _______,  LLOCK,
+   LTRANS,   _______, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,      BARTEXT,
+   KC_NO,    _______, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,          _______,      STHRU,
+   _______,  _______,    LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,       _______,  _______,  UNDERLN,
+   BBRTEXT,  _______, _______, _______,                   _______,                  _______, _______, _______,  _______, _______, _______),
 
 // [CIRC_LAYR]
 //,------------------------------------------------------------------------------------------------------------,
@@ -293,12 +293,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: |____|  |_____||_____||_____||_____________________________________||____||____||____| |    ||    ||    |  :
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
-    [FN2] = LAYOUT_ansi_73(
-        _______,    KC_TILD, KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,    _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,            _______,          _______,
-        _______,    _______,           _______,   _______, _______, _______, BAT_LVL, _______, _______, _______, _______,  _______,            _______, _______, _______,
-        _______,    _______, _______,  _______,                              _______,                            _______,  _______,  _______,  _______, _______, _______),
+  [CIRC_LAYR] = LAYOUT_ansi_73(
+   ENC_MUTEPLAY, _______, CIRCL1, CIRCL2, CIRCL3, CIRCL4, CIRCL5, CIRCL6, CIRCL7, CIRCL8, CIRCL9, CIRCL0, _______, _______, _______, LLOCK,
+   _______,    _______, CIRCLQ, CIRCLW, CIRCLE, CIRCLR, CIRCLT, CIRCLY, CIRCLU, CIRCLI, CIRCLO, CIRCLP, _______, _______, _______, _______,
+   KC_NO,      _______,  CIRCLA, CIRCLS, CIRCLD, CIRCLF, CIRCLG, CIRCLH, CIRCLJ, CIRCLK, CIRCLL, _______, _______,     _______,    _______,
+   _______,    _______,   CIRCLZ, CIRCLX, CIRCLC, CIRCLV, CIRCLB, CIRCLN, CIRCLM, _______, _______, _______,   _______,  _______,  _______,
+   _______,    _______, _______, _______,                 _______,                  _______, _______, _______,  _______, _______, _______),
 
 // [EMO_LAYR]
 //,------------------------------------------------------------------------------------------------------------,
@@ -316,12 +316,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: |____|  |_____||_____||_____||_____________________________________||____||____||____| |ELft||EDwn||ERgt|  :
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
-    [FN2] = LAYOUT_ansi_73(
-        _______,    KC_TILD, KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,    _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,            _______,          _______,
-        _______,    _______,           _______,   _______, _______, _______, BAT_LVL, _______, _______, _______, _______,  _______,            _______, _______, _______,
-        _______,    _______, _______,  _______,                              _______,                            _______,  _______,  _______,  _______, _______, _______),
+  [EMO_LAYR] = LAYOUT_ansi_73(
+   ENC_UNIMENU,     _______, E_K1, E_K2, E_K3, E_K4, E_K5, E_K6, K_K7, E_K8, E_K9, E_K0, E_MINS, E_PLUS,         _______,            LLOCK,
+   E_SMILE,_______,E_PIZZA, E_BURGER, E_CHICKEN, E_TACO,_______,E_BULB,_______, E_I, E_OK, E_PACKAGE, E_FLAGUS, E_FLAGPI, _______, E_TRASH,
+   E_SMIRK, _______, E_STAR, E_SGLASS, E_DRINK, E_SSHOT, E_GLOBE, E_HASH, E_CMARK, E_KB, E_SNAIL, E_STOP, E_HAND,     _______,     E_EMARK,
+   E_ASTON,   _______, E_BUS, E_TRAIN, E_CAR, E_TAXI, E_BOTTLE, E_NINJA, E_MIC, E_SHH, E_GRIM, E_DIV,    _______,      E_POINTU,   E_QMARK,
+   E_SAD,    _______, _______, _______,             _______,             _______, _______, _______,          E_POINTL, E_POINTD, E_POINTR),
 
 // [LOCK_LAYR]
 //,------------------------------------------------------------------------------------------------------------,
@@ -339,12 +339,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: |____|  |_____||_____||_____||_____________________________________||____||____||____| | NO || NO || NO |  :
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
-    [FN2] = LAYOUT_ansi_73(
-        _______,    KC_TILD, KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,    _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______,    _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______, _______,  _______,            _______,          _______,
-        _______,    _______,           _______,   _______, _______, _______, BAT_LVL, _______, _______, _______, _______,  _______,            _______, _______, _______,
-        _______,    _______, _______,  _______,                              _______,                            _______,  _______,  _______,  _______, _______, _______)
+    [LOCK_LAYR] = LAYOUT_ansi_73(
+        TD(KB_UNLOCK), KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,    KC_NO,          KC_NO,
+        KC_NO,  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,   KC_NO,                  KC_NO,
+        KC_NO,   KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,            KC_NO,               KC_NO,
+        KC_NO,    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,                KC_NO,        KC_NO,   KC_NO,
+        KC_NO,    KC_NO, KC_NO, KC_NO,                KC_NO,                 KC_NO, KC_NO, KC_NO,                  KC_NO,   KC_NO,   KC_NO)
 };
 
 // clang-format on
@@ -357,11 +357,11 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [SFT_LAYR]  = {ENCODER_CCW_CW(ENC_SCROLLAPPL, ENC_SCROLLAPPR)},
     [KCTL_LAYR] = {ENCODER_CCW_CW(ENC_RGBL, ENC_RGBR)},
     [TMUX_LAYR] = {ENCODER_CCW_CW(ENC_TSIZEL, ENC_TSIZER)},
-    [VS_LAYR]   = {ENCODER_CCW_CW(VSMVLNU, VSMVLND)},
+    [VS_LAYR]   = {ENCODER_CCW_CW(ENC_MENUL, ENC_MENUR)},
     [MSYM_LAYR] = {ENCODER_CCW_CW(ENC_MENUL, ENC_MENUR)},
     [WSYM_LAYR] = {ENCODER_CCW_CW(ENC_MENUL, ENC_MENUR)},
-    [WIDE_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [CIRC_LAYR] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [WIDE_LAYR] = {ENCODER_CCW_CW(ENC_VOLD, ENC_VOLU)},
+    [CIRC_LAYR] = {ENCODER_CCW_CW(ENC_VOLD, ENC_VOLU)},
     [EMO_LAYR]  = {ENCODER_CCW_CW(ENC_MENUL, ENC_MENUR)},
     [LOCK_LAYR] = {ENCODER_CCW_CW(KC_NO, KC_NO)}
 };
