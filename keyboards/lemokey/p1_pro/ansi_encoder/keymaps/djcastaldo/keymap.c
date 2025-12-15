@@ -198,8 +198,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [VS_LAYR] = LAYOUT_ansi_82(
         _______, _______, VSRNAME, _______, KC_F4,  KC_F5 , _______, _______, KC_F8,  KC_F9, KC_F10, KC_F11, KC_F12,    LLOCK,  VSINSLN,
         _______,  _______,_______,_______,_______,_______,_______,_______,_______, _______, _______, _______, _______, _______, VSDELLN,
-        _______,    _______,VSWRDWP, VSERR, VSREPL,_______,_______, VSLNCMU, VSINFO ,VSOUTPT, VSPUB, _______, VSMATCH, _______, VSMVLNU,
-        _______,       _______, VSLNSRT, VSDUPLN, VSFIND, VSGOTO, _______, VSLJOIN, _______, VSSOLU, _______, _______, _______, VSMVLND,
+        _______,   _______,VSWRDWP, VSERR, VSRNAME,_______,_______, VSLNCMU, VSINFO ,VSOUTPT, VSPUB, _______, VSMATCH, _______, VSMVLNU,
+        _______,       _______, VSLNSRT, VSDUPLN, VSFIND, VSGOTO, VSREPL, VSLJOIN, _______, VSSOLU, _______, _______, _______,  VSMVLND,
         _______,         _______,_______, VSLNCMC, VSCLIPB,_______, VSNOTIF,_______,_______,_______, VSLBCMT, _______, _______,
         _______,  _______,  _______,                       _______,                  _______,_______,_______, _______, _______, _______
     ),

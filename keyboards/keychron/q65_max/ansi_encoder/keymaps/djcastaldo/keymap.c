@@ -32,9 +32,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: |____|  |_______||____||____||____||____||____||____||____||____||____||____||____||____||______|   |____| :
 //: |FKey|  |TD(CAPS)|| A  || S  || D  || F  || G  || H  || J  || K  || L  || ;  || '  ||   Enter   |   |PgUp| :
 //: |____|  |________||____||____||____||____||____||____||____||____||____||____||____||___________|   |____| :
-//: |SSht|  |   Shift   || Z  || X  || C  || V  || B  || N  || M  || ,  || .  || /  ||TD(RSFT) | .----. |PgDn| :
+//: |SSht|  |  LShift   || Z  || X  || C  || V  || B  || N  || M  || ,  || .  || /  ||TD(RSFT) | .----. |PgDn| :
 //: |____|  |___________||____||____||____||____||____||____||____||____||____||____||_________| | up | |____| :
-//: |Glob|  | Ctl ||TDLOP|| Cmd ||                Space                ||TRCM||T-FN|| Ct | .----.`----`.----.  :
+//: |Glob|  |LCtl ||LOpt ||LCmd ||                Space                ||TRCM||T-FN||RCtl| .----.`----`.----.  :
 //: |____|  |_____||_____||_____||_____________________________________||____||____||____| | lt || dn || rt |  :
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
@@ -55,9 +55,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: |____|  |_______||____||____||____||____||____||____||____||____||____||____||____||____||______|   |____| :
 //: |FKey|  |TD(CAPS)|| A  || S  || D  || F  || G  || H  || J  || K  || L  || ;  || '  ||   Enter   |   |PgUp| :
 //: |____|  |________||____||____||____||____||____||____||____||____||____||____||____||___________|   |____| :
-//: |PScr|  |   Shift   || Z  || X  || C  || V  || B  || N  || M  || ,  || .  || /  ||TD(RSFT) | .----. |PgDn| :
+//: |PScr|  |  LShift   || Z  || X  || C  || V  || B  || N  || M  || ,  || .  || /  ||TD(RSFT) | .----. |PgDn| :
 //: |____|  |___________||____||____||____||____||____||____||____||____||____||____||_________| | up | |____| :
-//: |Menu|  | Ctl ||TDLGU|| Alt ||                Space                ||TRAL||T-FN|| Ct | .----.`----`.----.  :
+//: |Menu|  |LCtl ||TDLGU||LAlt ||                Space                ||TRAL||T-FN||RCtl| .----.`----`.----.  :
 //: |____|  |_____||_____||_____||_____________________________________||____||____||____| | lt || dn || rt |  :
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
@@ -120,22 +120,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: :Scrol:  _______________________________________________________________________________________     ____  :
 //: `.___.' |Quit||SOC1||SOC2||SOC3||SOC4||SOC5||SOC6||SOC7||SOC8||SOC9||SOC0||    ||    ||         |   |LLck| : 
 //:  ____   |____||____||____||____||____||____||____||____||____||____||____||____||____||_________|   |____| :
-//: |Comp|  |       ||QLok||    ||    ||    ||Time||    || P7 || P8 || P9 || +- ||    ||    ||Menu  |   |NLck| :
+//: |Comp|  |Menu   ||QLok||    ||    ||    ||Time||    || P7 || P8 || P9 || +- ||CrsL||CrsR||OverVw|   |NLck| :
 //: |____|  |_______||____||____||____||____||____||____||____||____||____||____||____||____||______|   |____| :
-//: |Docs|  |        ||Apps||    ||    ||    ||    ||    || P4 || P5 || P6 || */ ||    ||           |   |MHld| :
+//: |Docs|  |        ||Apps||Siri||    ||    ||    ||    || P4 || P5 || P6 || */ ||    ||           |   |MHld| :
 //: |____|  |________||____||____||____||____||____||____||____||____||____||____||____||___________|   |____| :
-//: |Dls |  |           ||MAc2||    ||MPrv||MPly||MNxt||    || P1 || P2 || P3 ||    ||         | .----. |RClk| :
+//: |Dls |  |           ||MAc2||    ||MPrv||MPly||MNxt||    || P1 || P2 || P3 ||Stat||         | .----. |RClk| :
 //: |____|  |___________||____||____||____||____||____||____||____||____||____||____||_________| |MsUp| |____| :
-//: |Calc|  |     ||     ||MAcl0||                  P0                 || P. ||    ||LClk| .----.`----`.----.  :
+//: |Calc|  |     ||     ||MAcl0||                  P0                 || P. ||OHld||LClk| .----.`----`.----.  :
 //: |____|  |_____||_____||_____||_____________________________________||____||____||____| |MsLt||MsDn||MsRt|  :
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
   [SFT_LAYR] = LAYOUT_ansi_73(
    ENC_APPHIDE,  FORCEQUIT, SOC1, SOC2, SOC3, SOC4, SOC5, SOC6, SOC7, SOC8, SOC9, SOC0, _______, _______,      _______,              LLOCK,
-   KC_MYCM, _______, FQLOOK, _______,_______,_______, TIMESTAMP, _______, KC_P7, KC_P8, KC_P9,DUAL_PLUSMIN,_______,_______, KC_APP, KC_NUM,
-   FDOCS, _______, FAPPS, _______, _______, _______, _______, _______, KC_P4, KC_P5, KC_P6, DUAL_MULTDIV,  _______,      _______,  MK_HOLD,
-   FDOWNL, _______, MK_ACCEL2, _______, KC_MPRV, KC_MPLY, KC_MNXT, _______, KC_P1, KC_P2, KC_P3, _______,  _______, KC_MS_UP,   MC_MS_BTN2,
-   KC_CALC, _______, _______, MK_ACCEL0,             KC_P0,             KC_PDOT, _______, KC_MS_BTN1, KC_MS_LEFT, KC_MS_DOWN, KC_MS_RIGHT),
+   KC_MYCM, KC_APP, FQLOOK, _______,_______,_______, TIMESTAMP,_______, KC_P7, KC_P8, KC_P9,DUAL_PLUSMIN,CURSORL,CURSORR,TOVERVIEW, KC_NUM,
+   FDOCS, _______, FAPPS, MOD_SIRI, _______, _______, _______, _______, KC_P4, KC_P5, KC_P6, DUAL_MULTDIV,  _______,     _______,  MK_HOLD,
+   FDOWNL, _______, MK_ACCEL2, _______, KC_MPRV, KC_MPLY, KC_MNXT, _______, KC_P1, KC_P2, KC_P3, FSTATBAR, _______, KC_MS_UP,   MC_MS_BTN2,
+   KC_CALC, _______, _______, MK_ACCEL0,             KC_P0,            KC_PDOT, OPT_HOLD, KC_MS_BTN1, KC_MS_LEFT, KC_MS_DOWN, KC_MS_RIGHT),
 
 // [KCTL_LAYR]
 //,------------------------------------------------------------------------------------------------------------,
@@ -260,9 +260,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: : Vol :  _______________________________________________________________________________________     ____  :
 //: `.___.' |    ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||         |   |LLck| : 
 //:  ____   |____||____||____||____||____||____||____||____||____||____||____||____||____||_________|   |____| :
-//: |LTRN|  |       ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN  |   |Bar | :
+//: |LTRN|  |       ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN  |   |Thru| :
 //: |____|  |_______||____||____||____||____||____||____||____||____||____||____||____||____||______|   |____| :
-//: | NO |  |        ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||           |   |Thru| :
+//: | NO |  |        ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||           |   |Bar | :
 //: |____|  |________||____||____||____||____||____||____||____||____||____||____||____||___________|   |____| :
 //: |    |  |           ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||         | .----. |Undr| :
 //: |____|  |___________||____||____||____||____||____||____||____||____||____||____||_________| |    | |____| :
@@ -272,8 +272,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //`------------------------------------------------------------------------------------------------------------`
   [WIDE_LAYR] = LAYOUT_ansi_73(
    ENC_MUTEPLAY,  _______, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, _______,  LLOCK,
-   LTRANS,   _______, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,      BARTEXT,
-   KC_NO,    _______, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,          _______,      STHRU,
+   LTRANS,   _______, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,        STHRU,
+   KC_NO,    _______, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,          _______,    BARTEXT,
    _______,  _______,    LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,       _______,  _______,  UNDERLN,
    BBRTEXT,  _______, _______, _______,                   _______,                  _______, _______, _______,  _______, _______, _______),
 
@@ -376,6 +376,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_record_keychron_common(keycode, record)) {
         return false;
     }
+    // secrets
     return process_record_secrets(keycode, record);
 }
 
