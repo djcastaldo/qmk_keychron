@@ -134,7 +134,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    ENC_APPHIDE,  FORCEQUIT, SOC1, SOC2, SOC3, SOC4, SOC5, SOC6, SOC7, SOC8, SOC9, SOC0, _______, _______,      _______,              LLOCK,
    KC_MYCM, KC_APP, FQLOOK, _______,_______,_______, TIMESTAMP,_______, KC_P7, KC_P8, KC_P9,DUAL_PLUSMIN,CURSORL,CURSORR,TOVERVIEW, KC_NUM,
    FDOCS, _______, FAPPS, MOD_SIRI, _______, _______, _______, _______, KC_P4, KC_P5, KC_P6, DUAL_MULTDIV,  _______,     _______,  MK_HOLD,
-   FDOWNL, _______, MK_ACCEL2, _______, KC_MPRV, KC_MPLY, KC_MNXT, _______, KC_P1, KC_P2, KC_P3, FSTATBAR, _______, KC_MS_UP,   MC_MS_BTN2,
+   FDOWNL, _______, MK_ACCEL2, _______, KC_MPRV, KC_MPLY, KC_MNXT, _______, KC_P1, KC_P2, KC_P3, FSTATBAR, _______, KC_MS_UP,   KC_MS_BTN2,
    KC_CALC, _______, _______, MK_ACCEL0,             KC_P0,            KC_PDOT, OPT_HOLD, KC_MS_BTN1, KC_MS_LEFT, KC_MS_DOWN, KC_MS_RIGHT),
 
 // [KCTL_LAYR]
@@ -317,7 +317,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
   [EMO_LAYR] = LAYOUT_ansi_73(
-   ENC_UNIMENU,     _______, E_K1, E_K2, E_K3, E_K4, E_K5, E_K6, K_K7, E_K8, E_K9, E_K0, E_MINS, E_PLUS,         _______,            LLOCK,
+   ENC_UNIMENU,     _______, E_K1, E_K2, E_K3, E_K4, E_K5, E_K6, E_K7, E_K8, E_K9, E_K0, E_MINS, E_PLUS,         _______,            LLOCK,
    E_SMILE,_______,E_PIZZA, E_BURGER, E_CHICKEN, E_TACO,_______,E_BULB,_______, E_I, E_OK, E_PACKAGE, E_FLAGUS, E_FLAGPI, _______, E_TRASH,
    E_SMIRK, _______, E_STAR, E_SGLASS, E_DRINK, E_SSHOT, E_GLOBE, E_HASH, E_CMARK, E_KB, E_SNAIL, E_STOP, E_HAND,     _______,     E_EMARK,
    E_ASTON,   _______, E_BUS, E_TRAIN, E_CAR, E_TAXI, E_BOTTLE, E_NINJA, E_MIC, E_SHH, E_GRIM, E_DIV,    _______,      E_POINTU,   E_QMARK,
