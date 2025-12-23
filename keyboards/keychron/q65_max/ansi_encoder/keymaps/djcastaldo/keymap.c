@@ -131,10 +131,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
   [SFT_LAYR] = LAYOUT_ansi_73(
-   ENC_APPHIDE,  FORCEQUIT, SOC1, SOC2, SOC3, SOC4, SOC5, SOC6, SOC7, SOC8, SOC9, SOC0, _______, _______,      _______,              LLOCK,
+   ENC_APPHIDE, WM_QUIT, WM_SOC1,WM_SOC2,WM_SOC3,WM_SOC4,WM_SOC5,WM_SOC6,WM_SOC7,WM_SOC8,WM_SOC9,WM_SOC0, _______, _______, _______, LLOCK,
    KC_MYCM, KC_APP, FQLOOK, _______,_______,_______, TIMESTAMP,_______, KC_P7, KC_P8, KC_P9,DUAL_PLUSMIN,CURSORL,CURSORR,TOVERVIEW, KC_NUM,
-   FDOCS, _______, FAPPS, MOD_SIRI, _______, _______, _______, _______, KC_P4, KC_P5, KC_P6, DUAL_MULTDIV,  _______,     _______,  MK_HOLD,
-   FDOWNL, _______, MK_ACCEL2, _______, KC_MPRV, KC_MPLY, KC_MNXT, _______, KC_P1, KC_P2, KC_P3, FSTATBAR, _______, KC_MS_UP,   KC_MS_BTN2,
+   WM_DOCS, _______, FAPPS, MOD_SIRI, _______, _______, _______, _______, KC_P4, KC_P5, KC_P6, DUAL_MULTDIV,  _______,   _______,  MK_HOLD,
+   WM_DLS, _______, MK_ACCEL2, _______, KC_MPRV, KC_MPLY, KC_MNXT, _______, KC_P1, KC_P2, KC_P3, FSTATBAR, _______, KC_MS_UP,   KC_MS_BTN2,
    KC_CALC, _______, _______, MK_ACCEL0,             KC_P0,            KC_PDOT, OPT_HOLD, KC_MS_BTN1, KC_MS_LEFT, KC_MS_DOWN, KC_MS_RIGHT),
 
 // [KCTL_LAYR]
