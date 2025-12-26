@@ -123,6 +123,7 @@
 #    define CONFIG_HAS_SECOND_FJLIGHT_KEY
 #    define CONFIG_HAS_FKEY_LAYR
 #    define CONFIG_HAS_KCLK_BATTERY
+#    define CONFIG_BLINK_LAYR_EVEN_WITH_KEYCODE_ASSIGNED
 #    define CONFIG_KEY_INDEX_MAX 71
 /* this was the original indicator config
 #    define CONFIG_RGB_LAYER_INDICATORS \
