@@ -59,7 +59,7 @@
 #    define RGB_MATRIX_DEFAULT_HUE 170
 #    define RGB_MATRIX_DEFAULT_SAT 255
 #    define RGB_MATRIX_DEFAULT_VAL 255
-#    define RGB_MATRIX_DEFAULT_SPD 80
+#    define RGB_MATRIX_DEFAULT_SPD 70
 
 #endif
 
