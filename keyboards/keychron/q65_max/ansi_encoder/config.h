@@ -124,6 +124,7 @@
 #    define CONFIG_HAS_FKEY_LAYR
 #    define CONFIG_HAS_KCLK_BATTERY
 #    define CONFIG_KEY_INDEX_MAX 71
+/* this was the original indicator config
 #    define CONFIG_RGB_LAYER_INDICATORS \
      { \
         I_INDICATOR1, \
@@ -135,9 +136,16 @@
         I_INDICATOR7, \
         I_INDICATOR8 \
      }
-#    define CONFIG_RGB_LAYER_INDICATORS_COUNT 8
+*/
+// single indicator config
+#    define CONFIG_RGB_LAYER_INDICATORS { I_INDICATOR1 }
+#    define CONFIG_RGB_LAYER_INDICATORS_COUNT 1
+/* original multi-indicator config 
 #    define I_INDICATOR I_INDICATOR1, I_INDICATOR2, I_INDICATOR3, I_INDICATOR4, \
                         I_INDICATOR5, I_INDICATOR6, I_INDICATOR7, I_INDICATOR8
+*/
+// single indicator config
+#    define I_INDICATOR I_INDICATOR1
 #    define CONFIG_FN_LAYR_COLOR RGB_GREEN
 #    define CONFIG_MREC_KEY_COLOR RGB_MAGENTA
 #    define CONFIG_SHIFT_LAYR_COLOR RGB_ORANGE
