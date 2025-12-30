@@ -95,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //,------------------------------------------------------------------------------------------------------------,
 //:  ,---.                                                                                                     :
 //: :Zoom :  _______________________________________________________________________________________     ____  :
-//: `.___.' |    ||    ||    ||VRep||    ||CkOt||    ||    ||    ||    ||    ||Arow||Wave||         |   |LLck| : 
+//: `.___.' |    ||    ||    ||VRep||    ||CkOt||    ||    ||    ||News||    ||Arow||Wave||         |   |LLck| :
 //:  ____   |____||____||____||____||____||____||____||____||____||____||____||____||____||_________|   |____| :
 //: |GLog|  |MO-TMUX||WMl2||WMl1||Mail||RPho||WPho||    ||    ||    ||    ||    ||MRc1||MRc2||VS/EMO|   |SLck| :
 //: |____|  |_______||____||____||____||____||____||____||____||____||____||____||____||____||______|   |____| :
@@ -108,7 +108,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
   [FN_LAYR] = LAYOUT_ansi_73(
-   F_ZOOMR, _______, _______, _______,VI_REPLACE, _______, GIT_CHKOUT, _______,_______,_______,_______,_______, ARROW,WAVE, _______, LLOCK,
+   F_ZOOMR, _______, _______, _______,VI_REPLACE, _______, GIT_CHKOUT, _______,_______,_______, GNEWS, _______, ARROW,WAVE, _______, LLOCK,
    GIT_LOG, MO(TMUX_LAYR), SECRET3,SECRET2,SECRET1,SECRET8,SECRET9,_______,_______,_______,_______,_______,DM_REC1,DM_REC2,VSEMOLR,KC_SCRL,
    GIT_ADD, _______, SECRET4, SECRET5, SECRET6, SECRET7, _______, _______, _______, _______, QK_LEAD, _______, _______, _______,   KC_HOME,
    GIT_COMMIT,MO(SFT_LAYR),_______,SECRET10,SECRET11,SECRET12,SECRET13,_______,_______,DM_PLY1,DM_PLY2,KC_PAUS,MO(SFT_LAYR),_______,KC_END,
@@ -118,7 +118,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //,------------------------------------------------------------------------------------------------------------,
 //:  ,---.                                                                                                     :
 //: :Scrol:  _______________________________________________________________________________________     ____  :
-//: `.___.' |Quit||SOC1||SOC2||SOC3||SOC4||SOC5||SOC6||SOC7||SOC8||SOC9||SOC0||    ||    ||         |   |LLck| : 
+//: `.___.' |Quit||SOC1||SOC2||SOC3||SOC4||SOC5||SOC6||SOC7||SOC8||SOC9||SOC0||BriD||BriU||         |   |LLck| :
 //:  ____   |____||____||____||____||____||____||____||____||____||____||____||____||____||_________|   |____| :
 //: |Comp|  |Menu   ||QLok||    ||    ||    ||Time||    || P7 || P8 || P9 || +- ||CrsL||CrsR||OverVw|   |NLck| :
 //: |____|  |_______||____||____||____||____||____||____||____||____||____||____||____||____||______|   |____| :
@@ -131,7 +131,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:                                                                                        `----'`----'`----'  :
 //`------------------------------------------------------------------------------------------------------------`
   [SFT_LAYR] = LAYOUT_ansi_73(
-   ENC_APPHIDE, WM_QUIT, WM_SOC1,WM_SOC2,WM_SOC3,WM_SOC4,WM_SOC5,WM_SOC6,WM_SOC7,WM_SOC8,WM_SOC9,WM_SOC0, _______, _______, _______, LLOCK,
+   ENC_APPHIDE, WM_QUIT, WM_SOC1,WM_SOC2,WM_SOC3,WM_SOC4,WM_SOC5,WM_SOC6,WM_SOC7,WM_SOC8,WM_SOC9,WM_SOC0, KC_BRID, KC_BRIU, _______, LLOCK,
    KC_MYCM, KC_APP, FQLOOK, _______,_______,_______, TIMESTAMP,_______, KC_P7, KC_P8, KC_P9,DUAL_PLUSMIN,CURSORL,CURSORR,TOVERVIEW, KC_NUM,
    WM_DOCS, _______, FAPPS, WM_SIRCAT, _______, _______, _______, _______, KC_P4, KC_P5, KC_P6, DUAL_MULTDIV, _______,   _______,  MK_HOLD,
    WM_DLS, _______, MK_ACCEL2, _______, KC_MPRV, KC_MPLY, KC_MNXT, _______, KC_P1, KC_P2, KC_P3, FSTATBAR,KC_MS_BTN1, KC_MS_UP, KC_MS_BTN2,
