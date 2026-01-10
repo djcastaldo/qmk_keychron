@@ -147,6 +147,7 @@
 */
 // single indicator config
 #    define I_INDICATOR I_INDICATOR1
+#    define CONFIG_FLASH_CAPS_ON_ALL_LAYERS
 #    define CONFIG_FN_LAYR_COLOR RGB_GREEN
 #    define CONFIG_MREC_KEY_COLOR RGB_MAGENTA
 #    define CONFIG_SHIFT_LAYR_COLOR RGB_ORANGE
