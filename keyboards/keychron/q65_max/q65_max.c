@@ -58,6 +58,11 @@ void keyboard_post_init_kb(void) {
 
 #ifdef LK_WIRELESS_ENABLE
 bool lpm_is_kb_idle(void) {
+    // djc: modified for battery_drain_mode
+    if (battery_drain_mode) {
+        return false;
+    }
+    // exisitng Keychron logic
     return !factory_reset_indicating();
 }
 #endif

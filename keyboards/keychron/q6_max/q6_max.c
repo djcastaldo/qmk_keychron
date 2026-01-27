@@ -81,6 +81,11 @@ bool keychron_task_kb(void) {
 
 #ifdef LK_WIRELESS_ENABLE
 bool lpm_is_kb_idle(void) {
+    // djc: modified for battery_drain_mode
+    if (battery_drain_mode) {
+        return false;
+    }
+    // exisitng Keychron logic
     return power_on_indicator_timer == 0 && !factory_reset_indicating();
 }
 #endif
