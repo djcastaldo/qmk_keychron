@@ -26,6 +26,7 @@
 #    include "wireless_common.h"
 #    include "battery.h"
 #endif
+#    include "process_record_userspace.h"
 
 #define POWER_ON_LED_DURATION 3000
 static uint32_t power_on_indicator_timer_buffer;
