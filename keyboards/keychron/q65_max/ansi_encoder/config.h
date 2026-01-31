@@ -193,3 +193,8 @@
 #    define CONFIG_CUSTOM_SLEEP_WARNING 5000
 #    define CONFIG_CUSTOM_BLINK_INTERVAL 250
 #    define CONFIG_CUSTOM_BT_TURN_OFF_DELAY 10000
+
+// add for more accurate battery tracking on q max boards
+#    define FULL_VOLTAGE_VALUE     4100
+#    define EMPTY_VOLTAGE_VALUE    3700
+#    define SHUTDOWN_VOLTAGE_VALUE 3550

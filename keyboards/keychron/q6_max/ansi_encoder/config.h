@@ -180,3 +180,8 @@
 #    define CONFIG_LOCK_ANIMATION_TIMEOUT 300000
 #    define CONFIG_LOCK_RESTORE_ANIMATION_FROM_SUSPEND_MS 200
 #    define CONFIG_LOCK_ANIMATION_COLOR_HSV HSV_RED
+
+// add for more accurate battery tracking on q max boards
+#    define FULL_VOLTAGE_VALUE     4100
+#    define EMPTY_VOLTAGE_VALUE    3700
+#    define SHUTDOWN_VOLTAGE_VALUE 3550
