@@ -142,6 +142,8 @@ uint16_t battery_get_voltage(void) {
     return voltage;
 }
 
+// djc commenting the original keychron battery_get_percentage()
+/*
 uint8_t battery_get_percentage(void) {
     if (voltage > FULL_VOLTAGE_VALUE) return 100;
 
@@ -154,6 +156,40 @@ uint8_t battery_get_percentage(void) {
     } else
         return 0;
 }
+*/
+
+// djc modified battery_get_percentage for more sensical battery percentage readings.
+uint8_t battery_get_percentage(void) {
+
+    // Hard clamps
+    if (voltage >= FULL_VOLTAGE_VALUE) return 100;
+    if (voltage <= SHUTDOWN_VOLTAGE_VALUE) return 0;
+
+    // ---- Non-linear display curve ----
+
+    // Top region: 100% → 70%
+    if (voltage >= (EMPTY_VOLTAGE_VALUE + 150)) {
+        return 70 +
+            (uint32_t)(voltage - (EMPTY_VOLTAGE_VALUE + 150))
+            * 30
+            / (FULL_VOLTAGE_VALUE - (EMPTY_VOLTAGE_VALUE + 150));
+    }
+
+    // Middle region: 70% → 20%
+    if (voltage >= EMPTY_VOLTAGE_VALUE) {
+        return 20 +
+            (uint32_t)(voltage - EMPTY_VOLTAGE_VALUE)
+            * 50
+            / 150;   // 150 mV span
+    }
+
+    // Bottom region: 20% → 0%
+    return (uint32_t)(voltage - SHUTDOWN_VOLTAGE_VALUE)
+           * 20
+           / (EMPTY_VOLTAGE_VALUE - SHUTDOWN_VOLTAGE_VALUE);
+}
+
+
 
 bool battery_is_empty(void) {
     return bat_empty > BATTERY_EMPTY_COUNT;
