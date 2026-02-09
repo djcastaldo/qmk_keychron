@@ -129,7 +129,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:|    | |    ||    ||MCtl||LPad| |    ||    ||MPrv||MPly| |MNxt||    ||    ||    | :Scrol: |KLck||    ||Find| |Home||Apps||Docs||DLs |:
 //:|____| |____||____||____||____| |____||____||____||____| |____||____||____||____| `.___.  |____||____||____| |____||____||____||____|:
 //: _______________________________________________________________________________________   ________________   ______________________ :
-//:|Quit||SOC1||SOC2||SOC3||SOC4||SOC5||SOC6||SOC7||SOC8||SOC9||SOC0||    ||    ||         | |LLck||TPrv||APrv| |QLok||Insp||Hide||Stat|:
+//:|Quit||SOC1||SOC2||SOC3||SOC4||SOC5||SOC6||SOC7||SOC8||SOC9||SOC0||BriD||BriU||         | |LLck||TPrv||APrv| |QLok||Insp||Hide||Stat|:
 //:|____||____||____||____||____||____||____||____||____||____||____||____||____||_________| |____||____||____| |____||____||____||____|:
 //:|MAcel2 ||QLok||    ||    ||    ||Time||    ||Btn1||MSUp||OHld||    ||    ||    ||OverVw| |FDel||TNxt||ANxt| |    ||    ||    ||    |:
 //:|_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____||    |:
@@ -142,8 +142,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //`-------------------------------------------------------------------------------------------------------------------------------------`
     [SFT_LAYR] = LAYOUT_109_ansi(
         _______,_______,_______,KC_MCTRL,KC_LNPAD,_______,_______,KC_MPRV,KC_MPLY,KC_MNXT,_______,_______,_______, ENC_APPHIDE,
-                                                                                      QK_LOCK,_______,NEWFINDER,FHOME,FAPPS,FDOCS,FDOWNL,
-        FORCEQUIT,SOC1,SOC2,SOC3,SOC4,SOC5,SOC6,SOC7,SOC8,SOC9,SOC0,_______,_______,_______,
+                                                                                  QK_LOCK,_______,NEWFINDER,KC_MYCM,FAPPS,WM_DOCS,WM_DLS,
+        FORCEQUIT,WM_SOC1,WM_SOC2,WM_SOC3,WM_SOC4,WM_SOC5,WM_SOC6,WM_SOC7,WM_SOC8,WM_SOC9,WM_SOC0,KC_BRID,KC_BRIU,_______,
                                                                              LLOCK,V_TAB_PRV,SCMDGRAVE,FQLOOK,FINSPECT,FVHIDDEN,FSTATBAR,
         MK_ACCEL2,FQLOOK,_______,_______,_______,TIMESTAMP,_______,KC_MS_BTN1,KC_MS_UP,OPT_HOLD,_______,_______,_______,TOVERVIEW,
                                                                                       FDELETE,V_TAB_NXT,CMDGRAVE,_______,_______,_______,
