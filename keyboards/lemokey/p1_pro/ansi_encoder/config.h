@@ -167,3 +167,6 @@
 #    define FULL_VOLTAGE_VALUE     4100
 #    define EMPTY_VOLTAGE_VALUE    3700
 #    define SHUTDOWN_VOLTAGE_VALUE 3550
+
+/* for process_key_sequence */
+#    define CONFIG_MAX_SEQ_QUEUE 4
