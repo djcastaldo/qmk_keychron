@@ -61,6 +61,7 @@
 
 /* tap time for tap dancing */
 #    define TAPPING_TERM 250
+#    define TAPPING_TERM_PER_KEY
 
 /* enable caps word when both shift keys are tapped */
 #    define BOTH_SHIFTS_TURNS_ON_CAPS_WORD

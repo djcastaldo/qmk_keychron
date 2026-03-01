@@ -60,6 +60,7 @@
 #    define RGB_MATRIX_DEFAULT_SAT 255
 #    define RGB_MATRIX_DEFAULT_VAL 255
 #    define RGB_MATRIX_DEFAULT_SPD 70
+#    define RGB_MATRIX_MAXIMUM_BRIGHTNESS 255
 
 #endif
 
@@ -71,6 +72,7 @@
 
 /* tap time for tap dancing */
 #    define TAPPING_TERM 250
+#    define TAPPING_TERM_PER_KEY
 
 /* enable caps word when both shift keys are tapped */
 #    define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
