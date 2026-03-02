@@ -122,7 +122,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         MO(SFT_LAYR), _______, SECRET10, SECRET11, _______,_______,_______,_______,_______,_______,_______, MO(SFT_LAYR),
                                                                                                       _______,   SECRET7,SECRET8,SECRET9,
         _______, WM_SYM, MO(KCTL_LAYR),          _______,          MO(KCTL_LAYR), WM_SYM, _______, _______,
-                                                                                  _______, _______, _______, TIMESTAMP, _______,_______),
+                                                                                  _______, _______, _______, WM_TIME, _______,_______),
 //  [SFT_LAYR]
 //,-------------------------------------------------------------------------------------------------------------------------------------,
 //: ____   ______________________   ______________________   ______________________   ,---.   ________________   ______________________ :
@@ -131,25 +131,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: _______________________________________________________________________________________   ________________   ______________________ :
 //:|Quit||SOC1||SOC2||SOC3||SOC4||SOC5||SOC6||SOC7||SOC8||SOC9||SOC0||BriD||BriU||         | |LLck||TPrv||APrv| |QLok||Insp||Hide||Stat|:
 //:|____||____||____||____||____||____||____||____||____||____||____||____||____||_________| |____||____||____| |____||____||____||____|:
-//:|MAcel2 ||QLok||    ||    ||    ||Time||    ||Btn1||MSUp||OHld||    ||    ||    ||OverVw| |FDel||TNxt||ANxt| |    ||    ||    ||    |:
+//:|MAcel2 ||QLok||Insp||Hide||    ||Time||    ||Btn1||MSUp||OHld||    ||    ||    ||OverVw| |FDel||TNxt||ANxt| |    ||    ||    ||    |:
 //:|_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____||    |:
-//:|        ||    ||    ||    ||    ||    ||    ||MLft||MSDn||MRgt||TDAc||    ||           |                    |cd..||cd ~||cQMK||    |:
+//:|        ||Apps||Siri||Docs||MyCm||    ||    ||MLft||MSDn||MRgt||TDAc||    ||           |                    |cd..||cd ~||cQMK||    |:
 //:|________||____||____||____||____||____||____||____||____||____||____||____||___________|        ____        |____||____||____||____|:
-//:|           ||MAc2||    ||    ||    ||    ||    ||MHld||CsrL||CsrR||Stat||              |       |    |       |ls  ||log ||rsnc||    |:
+//:|           ||MAc2||    ||MPrv||MPly||MNxt||    ||MHld||CsrL||CsrR||Stat||              |       |    |       |ls  ||log ||rsnc||    |:
 //:|___________||____||____||____||____||____||____||____||____||____||____||______________|  ____ |____| ____  |____||____||____||    |:
 //:|     ||     ||MAcl0||                                     ||     ||     ||     ||      | |    ||    ||    | |Timestamp ||    ||    |:
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
 //`-------------------------------------------------------------------------------------------------------------------------------------`
     [SFT_LAYR] = LAYOUT_109_ansi(
         _______,_______,_______,KC_MCTRL,KC_LNPAD,_______,_______,KC_MPRV,KC_MPLY,KC_MNXT,_______,_______,_______, ENC_APPHIDE,
-                                                                                  QK_LOCK,_______,NEWFINDER,KC_MYCM,FAPPS,WM_DOCS,WM_DLS,
+                                                                               QK_LOCK,_______,WM_MYCM,KC_MYCM,WM_APPS,WM_DOCS,WM_DLS,
         FORCEQUIT,WM_SOC1,WM_SOC2,WM_SOC3,WM_SOC4,WM_SOC5,WM_SOC6,WM_SOC7,WM_SOC8,WM_SOC9,WM_SOC0,KC_BRID,KC_BRIU,_______,
-                                                                             LLOCK,V_TAB_PRV,SCMDGRAVE,FQLOOK,FINSPECT,FVHIDDEN,FSTATBAR,
-        MK_ACCEL2,FQLOOK,_______,_______,_______,TIMESTAMP,_______,KC_MS_BTN1,KC_MS_UP,OPT_HOLD,_______,_______,_______,TOVERVIEW,
+                                                                             LLOCK,V_TAB_PRV,SCMDGRAVE,WM_QLOOK,WM_INSPECT,WM_VHIDDEN,WM_STATB,
+        MK_ACCEL2,WM_QLOOK,WM_INSPECT,WM_VHIDDEN,_______,WM_TIME,_______,KC_MS_BTN1,KC_MS_UP,OPT_HOLD,_______,_______,_______,WM_OVIEW,
                                                                                       FDELETE,V_TAB_NXT,CMDGRAVE,_______,_______,_______,
-        _______,_______,_______,_______,_______,_______,_______,KC_MS_LEFT,KC_MS_DOWN,KC_MS_RIGHT,TD(MOUSE_ACCEL),_______,_______,
+        _______,WM_APPS,WM_SIRCAT,WM_DOCS,WM_MYCM,_______,_______,KC_MS_LEFT,KC_MS_DOWN,KC_MS_RIGHT,TD(MOUSE_ACCEL),_______,_______,
                                                                                                         BACKDIR,HOMEDIR,SECRET22,_______,
-        _______,MK_ACCEL2,_______,_______,_______,_______,_______,MK_HOLD,CURSORL,CURSORR,FSTATBAR,_______,_______,
+        _______,MK_ACCEL2,_______,KC_MPRV,KC_MPLY,KC_MNXT,_______,MK_HOLD,CURSORL,CURSORR,FSTATBAR,_______,_______,
                                                                                                         LSLTRAH,GIT_LOG,SECRET25,
         _______,_______,MK_ACCEL0,     _______,    _______,_______,_______,_______, _______,_______,_______,  TIMESTAMP,_______,_______),
 //  [KCTL_LAYR]
