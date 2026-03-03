@@ -106,9 +106,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |      |  |MyComp||      || Calc || LPad |  |      || Prev || Play || Next |  |      || Mute || Vol- || Vol+ |  |LLock | :Scroll: :
 //  : |______|  |______||______||______||______|  |______||______||______||______|  |______||______||______||______|  |______| '.____.' :
 //  :  _______________________________________________________________________________________________________________________  ______  :
-//  : |      ||      ||      ||      ||      ||      ||      ||      ||      ||      ||      ||      ||      ||              | | Num  | :
+//  : | Quit || SOC1 || SOC2 || SOC3 || SOC4 || SOC5 || SOC6 || SOC7 || SOC8 || SOC9 || SOC0 ||      ||      ||              | | Num  | :
 //  : |______||______||______||______||______||______||______||______||______||______||______||______||______||______________| |______| :
-//  : | Menu     ||QLook ||Inspct||Hidden||      || Time ||      ||  P7  ||  P8  ||  P9  || +  - ||      ||      ||          | |MSHold| :
+//  : | Menu     ||QLook ||Inspct||Hidden||      || Time ||      ||  P7  ||  P8  ||  P9  || +  - || CrsL || CrsR || OverView | |MSHold| :
 //  : |__________||______||______||______||______||______||______||______||______||______||______||______||______||__________| |______| :
 //  : |             || Apps ||VAsst || Docs ||MyComp|| Home ||      ||  P4  ||  P5  ||  P6  || *  / ||      ||               | | RClk | :
 //  : |_____________||______||______||______||______||______||______||______||______||______||______||______||_______________:.|______| :
@@ -119,8 +119,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
     [SFT_LAYR] = LAYOUT_ansi_82(
         _______, WM_MYCM,_______,KC_CALC,KC_LPAD,_______,KC_MPRV, KC_MPLY, KC_MNXT,_______,KC_MUTE,KC_VOLD, KC_VOLU, LLOCK, ENC_APPHIDE,
-        _______,_______,_______,_______,_______,_______, _______, _______, _______, _______, _______, _______, _______, _______, KC_NUM,
-        KC_APP, WM_QLOOK,WM_INSPECT,WM_VHIDDEN,_______,WM_TIME,_______,KC_P7,KC_P8,KC_P9,DUAL_PLUSMIN,_______,_______,WM_OVIEW, MK_HOLD,
+        WM_QUIT,WM_SOC1,WM_SOC2,WM_SOC3,WM_SOC4,WM_SOC5, WM_SOC6, WM_SOC7, WM_SOC8, WM_SOC9, WM_SOC0, _______, _______, _______, KC_NUM,
+        KC_APP, WM_QLOOK,WM_INSPECT,WM_VHIDDEN,_______,WM_TIME,_______,KC_P7,KC_P8,KC_P9,DUAL_PLUSMIN,CURSORL,CURSORR,WM_OVIEW, MK_HOLD,
         _______,WM_APPS,WM_SIRCAT,WM_DOCS,WM_MYCM,KC_MYCM, _______, KC_P4, KC_P5, KC_P6, DUAL_MULTDIV, _______,    _______,  KC_MS_BTN2,
         _______, MK_ACCEL2, _______, _______, _______, _______, _______, KC_P1, KC_P2, KC_P3, WM_STATB,       KC_MS_BTN1,  KC_MS_UP,
         _______,_______, MK_ACCEL0,                KC_P0,             KC_PDOT, _______, _______, KC_MS_LEFT, KC_MS_DOWN, KC_MS_RIGHT
