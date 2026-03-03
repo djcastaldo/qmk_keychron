@@ -40,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |_________||________||_________||______________________________________________||______||______|______|  |______||______||______| :
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
     [WIN_BASE] = LAYOUT_ansi_82(
-        DUAL_ESC,  KC_F1, KC_F2, KC_F3,  KC_F4,  KC_F5,  KC_F6,  KC_F7,  KC_F8,  KC_F9, KC_F10, KC_F11, DUAL_F12,  KC_APP, ENC_MUTEPLAY,
+        DUAL_ESC,  KC_F1, KC_F2, KC_F3,  KC_F4,  KC_F5,  KC_F6,  KC_F7, KC_F8,  KC_F9, KC_F10, KC_F11, KC_F12,   KC_LPAD,  ENC_MUTEPLAY,
         KC_GRV,  KC_1,   KC_2,   KC_3,   KC_4,   KC_5,   KC_6,   KC_7,   KC_8,   KC_9,   KC_0, KC_MINS, KC_EQL,   BSPCFAST,      KC_DEL,
         LT(TMUX_LAYR,KC_TAB), KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC,      TD(DYN_LAYR),  KC_PGUP,
         TD(CAPS_LAYR),  KC_A,   KC_S,   KC_D,   KC_F,   KC_G,   KC_H,   KC_J,    KC_K,  KC_L,  KC_SCLN, KC_QUOT,      KC_ENT,   KC_PGDN,
@@ -66,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |_________||________||_________||______________________________________________||______||______|______|  |______||______||______| :
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
     [MAC_BASE] = LAYOUT_ansi_82(
-        DUAL_ESC,  KC_F1, KC_F2, KC_F3,  KC_F4,   KC_F5, KC_F6,  KC_F7,  KC_F8,  KC_F9, KC_F10, KC_F11, DUAL_F12, KC_LPAD, ENC_MUTEPLAY,
+        DUAL_ESC,  KC_F1, KC_F2, KC_F3,  KC_F4,   KC_F5, KC_F6,  KC_F7,  KC_F8,  KC_F9, KC_F10, KC_F11, KC_F12,   KC_F14,  ENC_MUTEPLAY,
         KC_GRV,  KC_1,   KC_2,   KC_3,   KC_4,   KC_5,   KC_6,   KC_7,   KC_8,   KC_9,   KC_0, KC_MINS, KC_EQL,   BSPCFAST,      KC_DEL,
         LT(TMUX_LAYR,KC_TAB), KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P,KC_LBRC,KC_RBRC, LT(EMO_LAYR,KC_BSLS), KC_PGUP,
         TD(CAPS_LAYR),  KC_A,   KC_S,   KC_D,   KC_F,   KC_G,   KC_H,   KC_J,    KC_K,  KC_L,  KC_SCLN, KC_QUOT,      KC_ENT,   KC_PGDN,
@@ -103,12 +103,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  [SFT_LAYR] (yellow/orange)
 //  ,-----------------------------------------------------------------------------------------------------------------------------------,
 //  :  ______    ______________________________    ______________________________    ______________________________    ______   .----.  :
-//  : |      |  |MyComp||      || Calc || Menu |  |      || Prev || Play || Next |  |      || Mute || Vol- || Vol+ |  |LLock | :Scroll: :
+//  : |      |  |MyComp||      || Calc || LPad |  |      || Prev || Play || Next |  |      || Mute || Vol- || Vol+ |  |LLock | :Scroll: :
 //  : |______|  |______||______||______||______|  |______||______||______||______|  |______||______||______||______|  |______| '.____.' :
 //  :  _______________________________________________________________________________________________________________________  ______  :
 //  : |      ||      ||      ||      ||      ||      ||      ||      ||      ||      ||      ||      ||      ||              | | Num  | :
 //  : |______||______||______||______||______||______||______||______||______||______||______||______||______||______________| |______| :
-//  : |          ||QLook ||Inspct||Hidden||      || Time ||      ||  P7  ||  P8  ||  P9  || +  - ||      ||      ||          | |MSHold| :
+//  : | Menu     ||QLook ||Inspct||Hidden||      || Time ||      ||  P7  ||  P8  ||  P9  || +  - ||      ||      ||          | |MSHold| :
 //  : |__________||______||______||______||______||______||______||______||______||______||______||______||______||__________| |______| :
 //  : |             || Apps ||VAsst || Docs ||MyComp|| Home ||      ||  P4  ||  P5  ||  P6  || *  / ||      ||               | | RClk | :
 //  : |_____________||______||______||______||______||______||______||______||______||______||______||______||_______________:.|______| :
@@ -118,9 +118,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  : |_________||________||_________||______________________________________________||______||______|______|  |______||______||______| :
 //  `-----------------------------------------------------------------------------------------------------------------------------------`
     [SFT_LAYR] = LAYOUT_ansi_82(
-        _______, WM_MYCM,_______,KC_CALC,KC_APP, _______,KC_MPRV, KC_MPLY, KC_MNXT,_______,KC_MUTE,KC_VOLD, KC_VOLU, LLOCK, ENC_APPHIDE,
+        _______, WM_MYCM,_______,KC_CALC,KC_LPAD,_______,KC_MPRV, KC_MPLY, KC_MNXT,_______,KC_MUTE,KC_VOLD, KC_VOLU, LLOCK, ENC_APPHIDE,
         _______,_______,_______,_______,_______,_______, _______, _______, _______, _______, _______, _______, _______, _______, KC_NUM,
-        _______,WM_QLOOK,WM_INSPECT,WM_VHIDDEN,_______,WM_TIME,_______,KC_P7,KC_P8,KC_P9,DUAL_PLUSMIN,_______,_______,WM_OVIEW, MK_HOLD,
+        KC_APP, WM_QLOOK,WM_INSPECT,WM_VHIDDEN,_______,WM_TIME,_______,KC_P7,KC_P8,KC_P9,DUAL_PLUSMIN,_______,_______,WM_OVIEW, MK_HOLD,
         _______,WM_APPS,WM_SIRCAT,WM_DOCS,WM_MYCM,KC_MYCM, _______, KC_P4, KC_P5, KC_P6, DUAL_MULTDIV, _______,    _______,  KC_MS_BTN2,
         _______, MK_ACCEL2, _______, _______, _______, _______, _______, KC_P1, KC_P2, KC_P3, WM_STATB,       KC_MS_BTN1,  KC_MS_UP,
         _______,_______, MK_ACCEL0,                KC_P0,             KC_PDOT, _______, _______, KC_MS_LEFT, KC_MS_DOWN, KC_MS_RIGHT
