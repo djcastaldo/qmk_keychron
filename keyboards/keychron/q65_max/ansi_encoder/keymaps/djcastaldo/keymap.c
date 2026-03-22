@@ -51,7 +51,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: : vol :  _______________________________________________________________________________________     ____  :
 //: `.___.' |DEsc|| 1  || 2  || 3  || 4  || 5  || 6  || 7  || 8  || 9  || 0  || -  || =  || BspcFast|   |Ins | : 
 //:  ____   |____||____||____||____||____||____||____||____||____||____||____||____||____||_________|   |____| :
-//: |Grv`|  |LT-TMUX|| Q  || W  || E  || R  || T  || Y  || U  || I  || O  || P  || [  || ]  ||TD-DYN|   |Del | :
+//: |Grv`|  |LT-TMUX|| Q  || W  || E  || R  || T  || Y  || U  || I  || O  || P  || [  || ]  ||DYN_LT|   |Del | :
 //: |____|  |_______||____||____||____||____||____||____||____||____||____||____||____||____||______|   |____| :
 //: |FKey|  |TD(CAPS)|| A  || S  || D  || F  || G  || H  || J  || K  || L  || ;  || '  ||   Enter   |   |PgUp| :
 //: |____|  |________||____||____||____||____||____||____||____||____||____||____||____||___________|   |____| :
@@ -63,7 +63,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //`------------------------------------------------------------------------------------------------------------`
     [WIN_BASE] = LAYOUT_ansi_73(
         ENC_MUTEPLAY,  DUAL_ESC, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, BSPCFAST,            KC_INS,
-        KC_GRV, LT(TMUX_LAYR,KC_TAB), KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, TD(DYN_LAYR),  KC_DEL,
+        KC_GRV, LT(TMUX_LAYR,KC_TAB), KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC,  DYN_LT,       KC_DEL,
         OSL_FKEY, TD(CAPSFK_OSL), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,        KC_ENT,          KC_PGUP,
         KC_PSCR, KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, TD(RSFT_OSL),             KC_UP,    KC_PGDN,
         KC_APP,  KC_LCTL, TD(LGUI_OSL), KC_LALT,           KC_SPC,           TD(RALT_OSL), OSL_FNSYM, SP_RCTL, KC_LEFT, KC_DOWN, KC_RGHT),

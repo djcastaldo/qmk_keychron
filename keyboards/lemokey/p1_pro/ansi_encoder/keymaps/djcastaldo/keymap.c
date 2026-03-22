@@ -30,7 +30,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //  :  _______________________________________________________________________________________________________________________  ______  :
 //  : | `    || 1    || 2    || 3    || 4    || 5    || 6    || 7    || 8    || 9    || 0    || -    || =    || Backspace    | |Delete| :
 //  : |______||______||______||______||______||______||______||______||______||______||______||______||______||______________| |______| :
-//  : | LT(TMUX) || Q    || W    || E    || R    || T    || Y    || U    || I    || O    || P    || [    || ]    || \        | | PgUp | :
+//  : | LT(TMUX) || Q    || W    || E    || R    || T    || Y    || U    || I    || O    || P    || [    || ]    || DYN_LT   | | PgUp | :
 //  : |__________||______||______||______||______||______||______||______||______||______||______||______||______||__________| |______| :
 //  : | TD(CAPS)    || A    || S    || D    || F    || G    || H    || J    || K    || L    || ;    || '    || Enter         | | PgDn | :
 //  : |_____________||______||______||______||______||______||______||______||______||______||______||______||_______________:.|______| :
@@ -42,7 +42,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [WIN_BASE] = LAYOUT_ansi_82(
         DUAL_ESC,  KC_F1, KC_F2, KC_F3,  KC_F4,  KC_F5,  KC_F6,  KC_F7, KC_F8,  KC_F9, KC_F10, KC_F11, KC_F12,   KC_LPAD,  ENC_MUTEPLAY,
         KC_GRV,  KC_1,   KC_2,   KC_3,   KC_4,   KC_5,   KC_6,   KC_7,   KC_8,   KC_9,   KC_0, KC_MINS, KC_EQL,   BSPCFAST,      KC_DEL,
-        LT(TMUX_LAYR,KC_TAB), KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC,      TD(DYN_LAYR),  KC_PGUP,
+        LT(TMUX_LAYR,KC_TAB), KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC,       DYN_LT,       KC_PGUP,
         TD(CAPS_LAYR),  KC_A,   KC_S,   KC_D,   KC_F,   KC_G,   KC_H,   KC_J,    KC_K,  KC_L,  KC_SCLN, KC_QUOT,      KC_ENT,   KC_PGDN,
         KC_LSFT,            KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_N,  KC_M, KC_COMM, KC_DOT, KC_SLSH, TD(RSFT_OSL), KC_UP,
         KC_LCTL, TD(LGUI_OSL), KC_LALT,              KC_SPC,               TD(RALT_OSL), OSL_FNSYM, KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT
