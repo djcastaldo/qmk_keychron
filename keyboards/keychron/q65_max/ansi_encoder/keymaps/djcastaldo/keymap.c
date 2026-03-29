@@ -32,7 +32,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: |____|  |_______||____||____||____||____||____||____||____||____||____||____||____||____||______|   |____| :
 //: |FKey|  |TD(CPFK)|| A  || S  || D  || F  || G  || H  || J  || K  || L  || ;  || '  ||   Enter   |   |PgUp| :
 //: |____|  |________||____||____||____||____||____||____||____||____||____||____||____||___________|   |____| :
-//: |SSht|  |  LShift   || Z  || X  || C  || V  || B  || N  || M  || ,  || .  || /  ||TD(RSFT) | .----. |PgDn| :
+//: |SSht|  |  LShift   || Z  || X  || C  || V  || B  || N  || M  || ,  || .  || /  ||RSFT_TD  | .----. |PgDn| :
 //: |____|  |___________||____||____||____||____||____||____||____||____||____||____||_________| | up | |____| :
 //: |Glob|  |LCtl ||LOpt ||LCmd ||                Space                ||TRCM||T-FN||SRCt| .----.`----`.----.  :
 //: |____|  |_____||_____||_____||_____________________________________||____||____||____| | lt || dn || rt |  :
@@ -42,7 +42,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         ENC_MUTEPLAY,  DUAL_ESC, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, BSPCFAST,             KC_INS,
         KC_GRV,LT(TMUX_LAYR,KC_TAB),KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P,KC_LBRC,KC_RBRC,LT(EMO_LAYR,KC_BSLS),KC_DEL,
         OSL_FKEY, TD(CAPSFK_OSL), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,        KC_ENT,           KC_PGUP,
-        DUAL_SNAP, KC_LSFT,   KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, TD(RSFT_OSL),          KC_UP,    KC_PGDN,
+        DUAL_SNAP, KC_LSFT,   KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, RSFT_TD,               KC_UP,    KC_PGDN,
         AP_GLOB, KC_LCTL, KC_LOPT, KC_LCMD,              KC_SPC,              TD(RCMD_OSL), OSL_FNSYM, SP_RCTL, KC_LEFT, KC_DOWN, KC_RGHT),
 
 // [WIN_BASE]
@@ -55,7 +55,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: |____|  |_______||____||____||____||____||____||____||____||____||____||____||____||____||______|   |____| :
 //: |FKey|  |TD(CAPS)|| A  || S  || D  || F  || G  || H  || J  || K  || L  || ;  || '  ||   Enter   |   |PgUp| :
 //: |____|  |________||____||____||____||____||____||____||____||____||____||____||____||___________|   |____| :
-//: |PScr|  |  LShift   || Z  || X  || C  || V  || B  || N  || M  || ,  || .  || /  ||TD(RSFT) | .----. |PgDn| :
+//: |PScr|  |  LShift   || Z  || X  || C  || V  || B  || N  || M  || ,  || .  || /  ||RSFT_TD  | .----. |PgDn| :
 //: |____|  |___________||____||____||____||____||____||____||____||____||____||____||_________| | up | |____| :
 //: |Menu|  |LCtl ||TDLGU||LAlt ||                Space                ||TRAL||T-FN||SRCt| .----.`----`.----.  :
 //: |____|  |_____||_____||_____||_____________________________________||____||____||____| | lt || dn || rt |  :
@@ -65,7 +65,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         ENC_MUTEPLAY,  DUAL_ESC, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_MINS, KC_EQL, BSPCFAST,            KC_INS,
         KC_GRV, LT(TMUX_LAYR,KC_TAB), KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC,  DYN_LT,       KC_DEL,
         OSL_FKEY, TD(CAPSFK_OSL), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,        KC_ENT,          KC_PGUP,
-        KC_PSCR, KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, TD(RSFT_OSL),             KC_UP,    KC_PGDN,
+        KC_PSCR, KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, RSFT_TD,                  KC_UP,    KC_PGDN,
         KC_APP,  KC_LCTL, TD(LGUI_OSL), KC_LALT,           KC_SPC,           TD(RALT_OSL), OSL_FNSYM, SP_RCTL, KC_LEFT, KC_DOWN, KC_RGHT),
 
 // [FKEY_LAYR]

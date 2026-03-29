@@ -51,7 +51,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:|_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____|| +  |:
 //:|TD(Caps)|| A  || S  || D  || F  || G  || H  || J  || K  || L  || ;  || '  || Enter     |                    | 4  || 5  || 6  ||    |:
 //:|________||____||____||____||____||____||____||____||____||____||____||____||___________|        ____        |____||____||____||____|:
-//:| Shift     || Z  || X  || C  || V  || B  || N  || M  || ,  || .  || /  ||TD(SFT_OSL)   |       |Up  |       | 1  || 2  || 3  ||    |:
+//:| Shift     || Z  || X  || C  || V  || B  || N  || M  || ,  || .  || /  || RSFT_TD      |       |Up  |       | 1  || 2  || 3  ||    |:
 //:|___________||____||____||____||____||____||____||____||____||____||____||______________|  ____ |____| ____  |____||____||____||Ent |:
 //:|Ctrl ||Opt  || Cmd ||                Space                ||TDCmd||Opt  ||TDFn ||Ctrl  | |Left||Down||Rigt| |    0     || .  ||    |:
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
@@ -64,7 +64,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         LT(TMUX_LAYR,KC_TAB),KC_Q,KC_W,KC_E,KC_R,KC_T,KC_Y,KC_U,KC_I,KC_O,KC_P,KC_LBRC,KC_RBRC,LT(EMO_LAYR,KC_BSLS),
                                                                                                  KC_DEL,KC_END,KC_PGDN,KC_P7,KC_P8,KC_P9,
         TD(CAPS_LAYR),KC_A,KC_S,KC_D,KC_F,KC_G,KC_H,KC_J,KC_K,KC_L,KC_SCLN,KC_QUOT, KC_ENT,                 KC_P4, KC_P5, KC_P6, KC_PPLS,
-        KC_LSFT, KC_Z,KC_X,KC_C,KC_V,KC_B,KC_N,KC_M,KC_COMM,KC_DOT,KC_SLSH, TD(RSFT_OSL),         KC_UP,        KC_P1, KC_P2, KC_P3,
+        KC_LSFT, KC_Z,KC_X,KC_C,KC_V,KC_B,KC_N,KC_M,KC_COMM,KC_DOT,KC_SLSH, RSFT_TD,              KC_UP,        KC_P1, KC_P2, KC_P3,
         KC_LCTL, KC_LOPT, KC_LCMD,  KC_SPC,  TD(RCMD_OSL),TD(ROPT_OSL),OSL_FNSYM,KC_RCTL,KC_LEFT,KC_DOWN,KC_RGHT,KC_P0,KC_PDOT,KC_PENT),
 //  [WIN_BASE]
 //,-------------------------------------------------------------------------------------------------------------------------------------,
@@ -78,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //:|_______||____||____||____||____||____||____||____||____||____||____||____||____||______| |____||____||____| |____||____||____|| +  |:
 //:|TD(Caps)|| A  || S  || D  || F  || G  || H  || J  || K  || L  || ;  || '  || Enter     |                    | 4  || 5  || 6  ||    |:
 //:|________||____||____||____||____||____||____||____||____||____||____||____||___________|        ____        |____||____||____||____|:
-//:| Shift     || Z  || X  || C  || V  || B  || N  || M  || ,  || .  || /  || TD(RSFT_OSL) |       |Up  |       | 1  || 2  || 3  ||    |:
+//:| Shift     || Z  || X  || C  || V  || B  || N  || M  || ,  || .  || /  || RSFT_TD      |       |Up  |       | 1  || 2  || 3  ||    |:
 //:|___________||____||____||____||____||____||____||____||____||____||____||______________|  ____ |____| ____  |____||____||____||Ent |:
 //:|LCtrl||TLGUI||LAlt ||                Space                ||TRAlt||RWin ||TDFn ||RCtrl | |Left||Down||Rigt| |    0     || .  ||    |:
 //:|_____||_____||_____||_____________________________________||_____||_____||_____||______| |____||____||____| |__________||____||____|:
@@ -91,7 +91,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         LT(TMUX_LAYR,KC_TAB),KC_Q,KC_W,KC_E,KC_R,KC_T,KC_Y,KC_U,KC_I,KC_O,KC_P,KC_LBRC,KC_RBRC, DYN_LT,
                                                                                                  KC_DEL,KC_END,KC_PGDN,KC_P7,KC_P8,KC_P9,
         TD(CAPS_LAYR),KC_A,KC_S,KC_D,KC_F,KC_G,KC_H,KC_J,KC_K,KC_L, KC_SCLN, KC_QUOT,   KC_ENT,             KC_P4, KC_P5, KC_P6, KC_PPLS,
-        KC_LSFT,KC_Z,KC_X,KC_C,KC_V,KC_B,KC_N,KC_M,KC_COMM,KC_DOT, KC_SLSH,         TD(RSFT_OSL),        KC_UP,      KC_P1, KC_P2, KC_P3,
+        KC_LSFT,KC_Z,KC_X,KC_C,KC_V,KC_B,KC_N,KC_M,KC_COMM,KC_DOT, KC_SLSH,         RSFT_TD,             KC_UP,      KC_P1, KC_P2, KC_P3,
         KC_LCTL, TD(LGUI_OSL),KC_LALT,  KC_SPC, TD(RALT_OSL),KC_RWIN,OSL_FNSYM,KC_RCTL, KC_LEFT,KC_DOWN,KC_RGHT, KC_P0,KC_PDOT,KC_PENT),
 //  [FN_LAYR]
 //,-------------------------------------------------------------------------------------------------------------------------------------,
