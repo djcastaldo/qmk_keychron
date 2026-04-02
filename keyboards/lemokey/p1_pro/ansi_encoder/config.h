@@ -170,4 +170,4 @@
 #    define SHUTDOWN_VOLTAGE_VALUE 3550
 
 /* for process_key_sequence */
-#    define CONFIG_MAX_SEQ_QUEUE 4
+#    define CONFIG_MAX_SEQ_QUEUE 5
