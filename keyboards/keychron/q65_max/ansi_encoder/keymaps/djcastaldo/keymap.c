@@ -213,9 +213,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: : Uni :  _______________________________________________________________________________________     ____  :
 //: `.___.' |    ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||         |   |LLck| : 
 //:  ____   |____||____||____||____||____||____||____||____||____||____||____||____||____||_________|   |____| :
-//: |LTRN|  |       ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN  |   |SUP1| :
+//: |LTRN|  |       ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN  |   |SUP2| :
 //: |____|  |_______||____||____||____||____||____||____||____||____||____||____||____||____||______|   |____| :
-//: |SUTD|  |        ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||           |   |SUP2| :
+//: |SUTD|  |        ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||           |   |SUP3| :
 //: |____|  |________||____||____||____||____||____||____||____||____||____||____||____||___________|   |____| :
 //: |SUTC|  |  LShift   ||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN||LTRN|| RShift  | .----. |NBSP| :
 //: |____|  |___________||____||____||____||____||____||____||____||____||____||____||_________| |    | |____| :
@@ -225,8 +225,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //`------------------------------------------------------------------------------------------------------------`
   [MSYM_LAYR] = LAYOUT_ansi_73(
    ENC_UNIMENU, _______, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,   _______,  LLOCK,
-   LTRANS, _______,  LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,   LTRANS,        SUP1,
-   SUITD,  _______,   LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,          _______,       SUP2,
+   LTRANS, _______,  LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,   LTRANS,        SUP2,
+   SUITD,  _______,   LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,          _______,       SUP3,
    SUITC,    KC_LSFT, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS, LTRANS,  KC_RSFT,          _______,     NBSP,
    SUITS,  _______, _______, TD(SUIT_CYCLE),             _______,             TD(SUP_CYCLE), _______, _______,  _______, _______, _______),
 
@@ -237,9 +237,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //: : Uni :  _______________________________________________________________________________________     ____  :
 //: `.___.' |    ||TD-1||OPT2||OPT3||OPT4||OPT5||OPT6||OPT7||OPT8||OPT9||OPT0||OMIN||OPEQ||         |   |LLck| : 
 //:  ____   |____||____||____||____||____||____||____||____||____||____||____||____||____||_________|   |____| :
-//: |TGRV|  |       ||OPTQ||OPTW||TD-E||OPTR||OPTT||OPTY||TD-U||TD-I||OPTO||OPTP||OLBR||ORBR||OPTBSL|   |SUP1| :
+//: |TGRV|  |       ||OPTQ||OPTW||TD-E||OPTR||OPTT||OPTY||TD-U||TD-I||OPTO||OPTP||OLBR||ORBR||OPTBSL|   |SUP2| :
 //: |____|  |_______||____||____||____||____||____||____||____||____||____||____||____||____||______|   |____| :
-//: |SUTD|  |        ||OPTA||OPTS||OPTD||OPTF||OPTG||OPTH||OPTJ||OPTK||OPTL||OSEM||OAPO||           |   |SUP2| :
+//: |SUTD|  |        ||OPTA||OPTS||OPTD||OPTF||OPTG||OPTH||OPTJ||OPTK||OPTL||OSEM||OAPO||           |   |SUP3| :
 //: |____|  |________||____||____||____||____||____||____||____||____||____||____||____||___________|   |____| :
 //: |SUTC|  |  LShift   ||OPTZ||OPTX||OPTC||OPTV||OPTB||TD-N||OPTM||OCOM||ODOT||OSLS|| RShift  | .----. |NBSP| :
 //: |____|  |___________||____||____||____||____||____||____||____||____||____||____||_________| |    | |____| :
@@ -249,8 +249,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //`------------------------------------------------------------------------------------------------------------`
   [WSYM_LAYR] = LAYOUT_ansi_73(
    ENC_UNIMENU,   _______, TD(ACT_1), OPT2, OPT3, OPT4, OPT5, OPT6, OPT7, OPT8, OPT9, OPT0, OPTMIN, OPTEQ,         _______,          LLOCK,
-   TD(ACT_GRV),   _______, OPTQ, OPTW, TD(ACT_E), OPTR, OPTT, OPTY, TD(ACT_U), TD(ACT_I), OPTO, OPTP, OPTLBR, OPTRBR, OPTBSL,         SUP1,
-   SUITD,          _______,   OPTA, OPTS, OPTD, OPTF, OPTG, OPTH, OPTJ, OPTK, OPTL, OPTSEM, OPTAPO,                 _______,          SUP2,
+   TD(ACT_GRV),   _______, OPTQ, OPTW, TD(ACT_E), OPTR, OPTT, OPTY, TD(ACT_U), TD(ACT_I), OPTO, OPTP, OPTLBR, OPTRBR, OPTBSL,         SUP2,
+   SUITD,          _______,   OPTA, OPTS, OPTD, OPTF, OPTG, OPTH, OPTJ, OPTK, OPTL, OPTSEM, OPTAPO,                 _______,          SUP3,
    SUITC,    KC_LSFT,           OPTZ, OPTX, OPTC, OPTV, OPTB, TD(ACT_N), OPTM, OPTCOM, OPTDOT, OPTSLS,     KC_RSFT,      _______,     NBSP,
    SUITS,    _______, _______, TD(SUIT_CYCLE),            _______,            TD(SUP_CYCLE), _______, _______,  _______, _______, _______),
 
